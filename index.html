@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>QNT CUP | Torneio de Valorant</title>
+  
+  <!-- Meta tags para redes sociais e bio -->
+  <meta name="description" content="Página Oficial da QNT CUP - Campeonato de Valorant. Inscrições, chaveamento, regras, patrocinadores e transmissão. @qntcupoficial">
+  <meta name="theme-color" content="#ff4655">
+  
+  <!-- Open Graph / Instagram / WhatsApp preview -->
+  <meta property="og:title" content="QNT CUP - Campeonato de Valorant">
+  <meta property="og:description" content="Inscrições abertas para a QNT CUP. Apenas 4 equipes! Premiação em VP e dinheiro.">
+  <meta property="og:image" content="assets/logo.jpg">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts: Rajdhani, Chakra Petch, Oswald, Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,700&family=Rajdhani:wght@500;600;700&family=Teko:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Custom Tactical Crosshair (Desktop) -->
+  <div class="tactical-crosshair" id="tacticalCrosshair">
+    <div class="crosshair-ring"></div>
+    <div class="crosshair-dot"></div>
+  </div>
+
+  <!-- Agentes Valorant Flutuantes nas Laterais (Identidade Oficial do Banner) -->
+  <aside class="agent-side-banner agent-left" aria-hidden="true">
+    <img src="assets/agent_jett.png" alt="Jett Valorant">
+    <div class="agent-callout">
+      <span class="agent-role">DUELISTA</span>
+      <span class="agent-name">JETT // BR</span>
+    </div>
+  </aside>
+
+  <aside class="agent-side-banner agent-right" aria-hidden="true">
+    <img src="assets/agent_reyna.png" alt="Reyna Valorant">
+    <div class="agent-callout">
+      <span class="agent-role">DUELISTA</span>
+      <span class="agent-name">REYNA // BR</span>
+    </div>
+  </aside>
+
+  <!-- Background Cyber Canvas & Tactical Scanlines -->
+  <div class="bg-vignette"></div>
+  <canvas id="ambientCanvas"></canvas>
+  <div class="scanlines"></div>
+  <div class="spike-alarm-overlay" id="spikeAlarmOverlay"></div>
+
+  <!-- HUD Header Bar -->
+  <header class="hud-topbar">
+    <div class="hud-status">
+      <span class="pulse-dot"></span>
+      <span class="hud-status-text">STATUS: <strong class="text-neon-red">INSCRIÇÕES ABERTAS</strong></span>
+    </div>
+    
+    <div class="hud-controls">
+      <!-- Botão de Música Ambiente de Lobby (VCT) - Ligado por Padrão -->
+      <button id="bgmToggleBtn" class="hud-icon-btn sound-click" title="Música Ambiente de Lobby (VCT)" aria-label="Música de Lobby">
+        <i data-lucide="disc" id="bgmIcon"></i>
+        <span class="hud-btn-text" id="bgmText">BGM: ON</span>
+        <div class="eq-bars" id="eqBars" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+      </button>
+
+      <!-- Botão de Efeitos Sonoros Gamer -->
+      <button id="soundToggleBtn" class="hud-icon-btn" title="Ativar/Desativar Sons Gamer" aria-label="Efeitos sonoros">
+        <i data-lucide="volume-2" id="soundIcon"></i>
+        <span class="hud-btn-text">SFX: ON</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Container Principal estilo Bio / Mobile-First -->
+  <main class="tree-container">
+
+    <!-- Profile Header / Identidade da Copa -->
+    <section class="profile-card">
+      <div class="logo-wrapper">
+        <div class="logo-ring"></div>
+        <img src="assets/logo.jpg" alt="QNT CUP Logo" class="profile-logo" id="logoImg">
+        <span class="badge-verified" title="Oficial QNT CUP">
+          <i data-lucide="check" class="w-3.5 h-3.5"></i>
+        </span>
+      </div>
+
+      <div class="profile-info">
+        <h1 class="brand-title">QNT <span class="text-red">CUP</span></h1>
+        <p class="brand-subtitle">TORNEIO DE VALORANT // ORGANIZAÇÃO</p>
+        
+        <div class="instagram-handle-tag">
+          <a class="badge-slots org-badge sound-click" href="https://instagram.com/quintela13_" target="_blank" rel="noopener noreferrer">Caique Quintela</a>
+          <a class="badge-slots org-badge sound-click" href="https://instagram.com/ojaelsonquintela" target="_blank" rel="noopener noreferrer">Jaelson Quintela</a>
+        </div>
+      </div>
+
+      <!-- Quick Ticker Badges -->
+      <div class="stats-ribbon">
+        <div class="ribbon-item">
+          <i data-lucide="calendar"></i>
+          <div>
+            <span class="lbl">DATA</span>
+            <span class="val">14 e 15/11</span>
+          </div>
+        </div>
+        <div class="ribbon-sep">/</div>
+        <div class="ribbon-item">
+          <i data-lucide="users"></i>
+          <div>
+            <span class="lbl">FORMATO</span>
+            <span class="val">4 Equipes</span>
+          </div>
+        </div>
+        <div class="ribbon-sep">/</div>
+        <div class="ribbon-item highlight-yellow">
+          <i data-lucide="trophy"></i>
+          <div>
+            <span class="lbl">PRÊMIO</span>
+            <span class="val">VP + PIX</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1. COUNTDOWN TÁTICO ATÉ O INÍCIO -->
+      <div class="countdown-hud" id="countdownHud">
+        <div class="countdown-header">
+          <span class="countdown-pulse-icon"></span>
+          <span class="countdown-title">INÍCIO DO TORNEIO EM:</span>
+        </div>
+        <div class="countdown-timer-grid">
+          <div class="timer-box">
+            <span class="timer-num" id="cdDays">00</span>
+            <span class="timer-label">DIAS</span>
+          </div>
+          <div class="timer-sep">:</div>
+          <div class="timer-box">
+            <span class="timer-num" id="cdHours">00</span>
+            <span class="timer-label">HORAS</span>
+          </div>
+          <div class="timer-sep">:</div>
+          <div class="timer-box">
+            <span class="timer-num" id="cdMinutes">00</span>
+            <span class="timer-label">MIN</span>
+          </div>
+          <div class="timer-sep">:</div>
+          <div class="timer-box">
+            <span class="timer-num" id="cdSeconds">00</span>
+            <span class="timer-label">SEG</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. RASTREADOR DE VAGAS (SLOT TRACKER) -->
+      <div class="slot-tracker-card">
+        <div class="slot-tracker-header">
+          <div class="slot-tracker-info">
+            <i data-lucide="shield-check" class="text-neon-red"></i>
+            <span class="slot-tracker-title">VAGAS OFICIAIS // 4 TIMES</span>
+          </div>
+          <span class="slot-counter-badge" id="slotAvailableCount">3 VAGAS RESTANTES</span>
+        </div>
+        <div class="slots-grid">
+          <!-- Vaga 1: Confirmada - SNM -->
+          <div class="slot-item slot-confirmed">
+            <div class="slot-icon"><i data-lucide="check"></i></div>
+            <div class="slot-details">
+              <span class="slot-id">VAGA #01 // CONFIRMADA</span>
+              <span class="slot-team-name text-gold">SNM</span>
+            </div>
+            <span class="slot-status-tag locked-tag">LOCKED</span>
+          </div>
+
+          <!-- Vaga 2: Aberta -->
+          <div class="slot-item slot-open sound-click" onclick="document.getElementById('btnInscricao').click()">
+            <div class="slot-icon"><i data-lucide="user-plus"></i></div>
+            <div class="slot-details">
+              <span class="slot-id">VAGA #02</span>
+              <span class="slot-team-name text-neon-red">VAGA DISPONÍVEL</span>
+            </div>
+            <span class="slot-status-tag open-tag">GARANTIR</span>
+          </div>
+
+          <!-- Vaga 3: Aberta -->
+          <div class="slot-item slot-open sound-click" onclick="document.getElementById('btnInscricao').click()">
+            <div class="slot-icon"><i data-lucide="user-plus"></i></div>
+            <div class="slot-details">
+              <span class="slot-id">VAGA #03</span>
+              <span class="slot-team-name text-neon-red">VAGA DISPONÍVEL</span>
+            </div>
+            <span class="slot-status-tag open-tag">GARANTIR</span>
+          </div>
+
+          <!-- Vaga 4: Aberta -->
+          <div class="slot-item slot-open sound-click" onclick="document.getElementById('btnInscricao').click()">
+            <div class="slot-icon"><i data-lucide="user-plus"></i></div>
+            <div class="slot-details">
+              <span class="slot-id">VAGA #04</span>
+              <span class="slot-team-name text-neon-red">VAGA DISPONÍVEL</span>
+            </div>
+            <span class="slot-status-tag open-tag">GARANTIR</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BANNER PREVIEW MODAL TRIGGER -->
+    <section class="banner-highlight sound-click" id="openBannerBtn">
+      <div class="banner-preview-img-wrap">
+        <img src="assets/banner.jpg" alt="Banner Oficial QNT CUP">
+        <div class="banner-overlay-action">
+          <i data-lucide="maximize-2"></i>
+          <span>VER BANNER OFICIAL COMPLETO</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALL TO ACTION PRINCIPAL - BOTÃO DE INSCRIÇÃO -->
+    <section class="cta-section">
+      <a href="https://wa.me/5582994091676?text=Ol%C3%A1!%20Quero%20inscrever%20minha%20equipe%20na%20QNT%20CUP%20de%20Valorant!" 
+         target="_blank" 
+         rel="noopener noreferrer" 
+         class="btn-cyber-primary sound-click cta-pulse"
+         id="btnInscricao">
+        <div class="cyber-btn-bg"></div>
+        <div class="cyber-btn-border"></div>
+        <div class="cyber-btn-content">
+          <div class="cta-icon-box">
+            <i data-lucide="flame"></i>
+          </div>
+          <div class="cta-texts">
+            <span class="cta-subtitle">APENAS 4 EQUIPES // R$ 75 POR TIME</span>
+            <span class="cta-title">GARANTIR VAGA NO TORNEIO</span>
+          </div>
+          <i data-lucide="chevron-right" class="cta-arrow"></i>
+        </div>
+      </a>
+      <p class="cta-note"><i data-lucide="shield-alert"></i> Corra! As vagas são limitadas e preenchidas por ordem de confirmação.</p>
+    </section>
+
+    <!-- NAVEGAÇÃO DE AÇÕES RÁPIDAS (BOTOES INTERATIVOS ESTILO GAMER) -->
+    <section class="links-stack">
+
+      <!-- Botão: Sistema de Map Veto (NOVO) -->
+      <button class="tactical-link-btn sound-click highlight-mapveto" id="btnMapVetoModal">
+        <div class="corner-cut"></div>
+        <div class="btn-left-indicator orange-glow"></div>
+        <div class="btn-inner">
+          <div class="btn-icon orange"><i data-lucide="crosshair"></i></div>
+          <div class="btn-info">
+            <span class="title">Map Veto // Ban de Mapas</span>
+            <span class="sub">Sistema oficial MD1 & MD3 (Final) para capitães</span>
+          </div>
+          <div class="btn-action-icon"><i data-lucide="sliders-horizontal"></i></div>
+        </div>
+      </button>
+
+      <!-- Botão: Chaveamento / Bracket Oficial (NOVO) -->
+      <button class="tactical-link-btn sound-click" id="btnBracketModal">
+        <div class="corner-cut"></div>
+        <div class="btn-left-indicator cyan-glow"></div>
+        <div class="btn-inner">
+          <div class="btn-icon cyan"><i data-lucide="git-merge"></i></div>
+          <div class="btn-info">
+            <span class="title">Chaveamento & Confrontos</span>
+            <span class="sub">Árvore do torneio (Semis, Repescagem e Final)</span>
+          </div>
+          <div class="btn-action-icon"><i data-lucide="chevron-right"></i></div>
+        </div>
+      </button>
+
+      <!-- Botão: Gerador de Story para Instagram (NOVO) -->
+      <button class="tactical-link-btn sound-click" id="btnStoryModal">
+        <div class="corner-cut"></div>
+        <div class="btn-left-indicator purple-glow"></div>
+        <div class="btn-inner">
+          <div class="btn-icon purple"><i data-lucide="sparkles"></i></div>
+          <div class="btn-info">
+            <span class="title">Gerador de Story Oficial</span>
+            <span class="sub">Crie o card do seu time confirmado para o Instagram</span>
+          </div>
+          <div class="btn-action-icon"><i data-lucide="download"></i></div>
+        </div>
+      </button>
+
+      <!-- Botão: Tabela de Premiação -->
+      <button class="tactical-link-btn sound-click" id="btnPremiacaoModal">
+        <div class="corner-cut"></div>
+        <div class="btn-left-indicator gold-glow"></div>
+        <div class="btn-inner">
+          <div class="btn-icon gold"><i data-lucide="award"></i></div>
+          <div class="btn-info">
+            <span class="title">Premiação e MVPs</span>
+            <span class="sub">1.000 VP por jogador + Pix + MVP Bônus</span>
+          </div>
+          <div class="btn-action-icon"><i data-lucide="chevron-right"></i></div>
+        </div>
+      </button>
+
+      <!-- Botão: Regulamento e Formato -->
+      <button class="tactical-link-btn sound-click" id="btnRegrasModal">
+        <div class="corner-cut"></div>
+        <div class="btn-left-indicator red-glow"></div>
+        <div class="btn-inner">
+          <div class="btn-icon red"><i data-lucide="scroll-text"></i></div>
+          <div class="btn-info">
+            <span class="title">Regulamento & Estrutura</span>
+            <span class="sub">Datas, horários, regras e mapas</span>
+          </div>
+          <div class="btn-action-icon"><i data-lucide="chevron-right"></i></div>
+        </div>
+      </button>
+
+      <!-- Botão: Pagamento / Chave Pix de 1-Clique -->
+      <button class="tactical-link-btn sound-click" id="btnPixModal">
+        <div class="corner-cut"></div>
+        <div class="btn-left-indicator cyan-glow"></div>
+        <div class="btn-inner">
+          <div class="btn-icon cyan"><i data-lucide="qr-code"></i></div>
+          <div class="btn-info">
+            <span class="title">Chave Pix de Inscrição</span>
+            <span class="sub">R$ 75,00 por equipe (Copiar chave rápida)</span>
+          </div>
+          <div class="btn-action-icon"><i data-lucide="copy"></i></div>
+        </div>
+      </button>
+
+      <!-- Botão: Transmissão / Live -->
+      <a href="https://www.youtube.com/@QuintelaGamer" target="_blank" rel="noopener noreferrer" class="tactical-link-btn sound-click">
+        <div class="corner-cut"></div>
+        <div class="btn-left-indicator purple-glow"></div>
+        <div class="btn-inner">
+          <div class="btn-icon purple"><i data-lucide="tv"></i></div>
+          <div class="btn-info">
+            <span class="title">Transmissão Ao Vivo</span>
+            <span class="sub">Assista aos jogos com narração</span>
+          </div>
+          <div class="btn-action-icon"><i data-lucide="radio"></i></div>
+        </div>
+      </a>
+
+    </section>
+
+    <!-- SEÇÃO EXCLUSIVA DE PATROCINADORES -->
+    <section class="sponsors-wrapper">
+      <div class="section-title-bar">
+        <div class="title-line"></div>
+        <h2 class="section-title"><i data-lucide="crown"></i> PATROCINADORES</h2>
+        <div class="title-line"></div>
+      </div>
+      <p class="section-desc">Grandes marcas que tornam a QNT CUP possível</p>
+
+      <!-- Patrocinadores MASTER (Destaque Ouro/Rubi) -->
+      <div class="sponsors-group">
+        <div class="sponsor-tier-badge master-tier">
+          <i data-lucide="star"></i> PATROCINADOR MASTER <i data-lucide="star"></i>
+        </div>
+
+        <div class="master-cards-grid">
+          <!-- Patrocinador 1: NamoGrafic -->
+          <a href="https://www.instagram.com/namograficassistencia/" target="_blank" rel="noopener noreferrer" class="sponsor-card master-card sound-click" title="Visitar Instagram @namograficassistencia">
+            <div class="sponsor-img-frame">
+              <img src="assets/sponsor_namografic.png" alt="NamoGrafic - Papelaria, Gráfica, Celular" class="sponsor-img">
+            </div>
+            <div class="sponsor-card-footer">
+              <span class="sponsor-name">NamoGrafic</span>
+              <span class="sponsor-handle">@namograficassistencia</span>
+              <span class="sponsor-tags">Papelaria • Gráfica • Celular</span>
+              <span class="sponsor-btn-link"><i data-lucide="instagram"></i> Ver no Instagram</span>
+            </div>
+          </a>
+
+          <!-- Patrocinador 2: Monteiro's Pet -->
+          <a href="https://www.instagram.com/monteiros.pet/" target="_blank" rel="noopener noreferrer" class="sponsor-card master-card sound-click" title="Visitar Instagram @monteiros.pet">
+            <div class="sponsor-img-frame">
+              <img src="assets/sponsor_monteiro.png" alt="Monteiro's Pet - Estética Animal" class="sponsor-img">
+            </div>
+            <div class="sponsor-card-footer">
+              <span class="sponsor-name">Monteiro's Pet</span>
+              <span class="sponsor-handle">@monteiros.pet</span>
+              <span class="sponsor-tags">Estética Animal & Pet Care</span>
+              <span class="sponsor-btn-link"><i data-lucide="instagram"></i> Ver no Instagram</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Patrocinadores OFICIAIS -->
+      <div class="sponsors-group official-sponsors-section">
+        <div class="sponsor-tier-badge official-tier">
+          PATROCINADORES OFICIAIS
+        </div>
+
+        <div class="official-cards-grid">
+          <!-- Patrocinador 3: D. Alves 3D -->
+          <a href="https://www.instagram.com/d.alves3d/" target="_blank" rel="noopener noreferrer" class="sponsor-card official-card sound-click" title="Visitar Instagram @d.alves3d">
+            <div class="sponsor-img-frame-circle">
+              <img src="assets/sponsor_dalves.png" alt="D. Alves 3D - Impressão 3D" class="sponsor-img-contain">
+            </div>
+            <div class="sponsor-card-footer">
+              <span class="sponsor-name">D. Alves 3D</span>
+              <span class="sponsor-handle">@d.alves3d</span>
+              <span class="sponsor-tags">Impressão 3D & Criações</span>
+              <span class="sponsor-btn-link"><i data-lucide="instagram"></i> Ver no Instagram</span>
+            </div>
+          </a>
+
+          <!-- Patrocinador 4: Trajano Sports -->
+          <a href="https://www.instagram.com/trajano_sports/" target="_blank" rel="noopener noreferrer" class="sponsor-card official-card sound-click" title="Visitar Instagram @trajano_sports">
+            <div class="sponsor-img-frame-circle">
+              <img src="assets/sponsor_trajano.png" alt="Trajano Sports - Loja Virtual" class="sponsor-img-contain">
+            </div>
+            <div class="sponsor-card-footer">
+              <span class="sponsor-name">Trajano.Sports</span>
+              <span class="sponsor-handle">@trajano_sports</span>
+              <span class="sponsor-tags">Loja Virtual Esportiva</span>
+              <span class="sponsor-btn-link"><i data-lucide="instagram"></i> Ver no Instagram</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO: HALL DA FAMA // HISTÓRICO DE CAMPEÕES -->
+    <section class="hall-of-fame-section">
+      <div class="section-title-bar">
+        <div class="title-line"></div>
+        <h2 class="section-title text-gold"><i data-lucide="trophy"></i> HALL DA FAMA</h2>
+        <div class="title-line"></div>
+      </div>
+      <p class="section-desc">Eternizando os campeões e lendas da QNT CUP</p>
+
+      <div class="hall-fame-card">
+        <div class="hall-edition-header">
+          <div class="hall-edition-badge">
+            <i data-lucide="crown"></i> EDIÇÃO #01
+          </div>
+          <span class="hall-status-tag pulse-tag">DISPUTA EM ABERTO</span>
+        </div>
+
+        <div class="hall-trophy-display">
+          <div class="trophy-glow-circle">
+            <i data-lucide="trophy" class="trophy-main-icon"></i>
+          </div>
+          <div class="trophy-caption">
+            <span class="trophy-title">TROFÉU DA 1ª EDIÇÃO</span>
+            <span class="trophy-sub">Quem levantará a taça no dia 15/11?</span>
+          </div>
+        </div>
+
+        <!-- Pódios da Edição (Facilmente editável após os jogos) -->
+        <div class="hall-podium-list">
+          
+          <!-- Campeão -->
+          <div class="podium-row champion-row">
+            <div class="podium-place gold-place">1º</div>
+            <div class="podium-info">
+              <span class="podium-label">CAMPEÃO DA COPA</span>
+              <!-- EDITE AQUI APÓS A FINAL: substitua o texto pelo nome da equipe campeã -->
+              <span class="podium-team-name text-gold">A DEFINIR NA FINAL (15/11)</span>
+              <span class="podium-reward">1.000 VP por jogador + Troféu Oficial</span>
+            </div>
+            <div class="podium-medal text-gold"><i data-lucide="award"></i></div>
+          </div>
+
+          <!-- Vice-Campeão -->
+          <div class="podium-row vice-row">
+            <div class="podium-place silver-place">2º</div>
+            <div class="podium-info">
+              <span class="podium-label">VICE-CAMPEÃO</span>
+              <!-- EDITE AQUI APÓS A FINAL: substitua o texto pelo nome do vice -->
+              <span class="podium-team-name text-cyan">A DEFINIR NA FINAL (15/11)</span>
+              <span class="podium-reward">R$ 40,00 via Pix direto</span>
+            </div>
+            <div class="podium-medal text-cyan"><i data-lucide="shield"></i></div>
+          </div>
+
+          <!-- MVP da Grande Final -->
+          <div class="podium-row mvp-row-hall">
+            <div class="podium-place mvp-place"><i data-lucide="zap"></i></div>
+            <div class="podium-info">
+              <span class="podium-label">MVP DA GRANDE DECISÃO</span>
+              <!-- EDITE AQUI APÓS A FINAL: substitua o texto pelo nick do jogador MVP -->
+              <span class="podium-team-name text-neon-red">A DEFINIR (15/11)</span>
+              <span class="podium-reward">1.000 VP de bônus individual</span>
+            </div>
+            <div class="podium-medal text-neon-red"><i data-lucide="star"></i></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO DE FAQ TÁTICO (DÚVIDAS FREQUENTES) -->
+    <section class="faq-section">
+      <div class="section-title-bar">
+        <div class="title-line"></div>
+        <h2 class="section-title"><i data-lucide="help-circle"></i> DÚVIDAS FREQUENTES</h2>
+        <div class="title-line"></div>
+      </div>
+      <p class="section-desc">Tire suas dúvidas rápidas antes de inscrever seu time</p>
+
+      <div class="faq-accordion-list">
+        
+        <!-- Pergunta 1 -->
+        <div class="faq-item">
+          <button class="faq-question sound-click">
+            <span class="faq-q-title"><i data-lucide="chevron-right" class="faq-arrow"></i> Qualquer elo pode participar do torneio?</span>
+          </button>
+          <div class="faq-answer">
+            <p><strong>Sim!</strong> A QNT CUP é um torneio comunitário aberto para jogadores de todos os elos e níveis de habilidade. O objetivo é a competição saudável e a experiência de jogar um campeonato oficial!</p>
+          </div>
+        </div>
+
+        <!-- Pergunta 2 -->
+        <div class="faq-item">
+          <button class="faq-question sound-click">
+            <span class="faq-q-title"><i data-lucide="chevron-right" class="faq-arrow"></i> Quantos jogadores por equipe?</span>
+          </button>
+          <div class="faq-answer">
+            <p>Cada equipe deve registrar <strong>5 jogadores titulares</strong> e pode registrar opcionalmente <strong>até 1 jogador reserva</strong>.</p>
+          </div>
+        </div>
+
+        <!-- Pergunta 3 -->
+        <div class="faq-item">
+          <button class="faq-question sound-click">
+            <span class="faq-q-title"><i data-lucide="chevron-right" class="faq-arrow"></i> Como e quando são entregues os VPs e prêmios?</span>
+          </button>
+          <div class="faq-answer">
+            <p>Os <strong>Valorant Points (VP)</strong> são entregues através de códigos digitais oficiais da Riot Games diretamente aos capitães logo após o término da Grande Final. A premiação em dinheiro do vice-campeão é transferida via Pix imediatamente.</p>
+          </div>
+        </div>
+
+        <!-- Pergunta 4 -->
+        <div class="faq-item">
+          <button class="faq-question sound-click">
+            <span class="faq-q-title"><i data-lucide="chevron-right" class="faq-arrow"></i> As partidas serão transmitidas ao vivo?</span>
+          </button>
+          <div class="faq-answer">
+            <p><strong>Com certeza!</strong> Todas as fases da competição serão transmitidas com narração, comentários e replay na Twitch oficial da QNT CUP.</p>
+          </div>
+        </div>
+
+        <!-- Pergunta 5 -->
+        <div class="faq-item">
+          <button class="faq-question sound-click">
+            <span class="faq-q-title"><i data-lucide="chevron-right" class="faq-arrow"></i> O que garante a vaga da minha equipe?</span>
+          </button>
+          <div class="faq-answer">
+            <p>Como são <strong>apenas 4 equipes</strong>, as vagas são garantidas por ordem estrita de confirmação do pagamento da taxa de R$ 75 por time e envio da lista dos 5 jogadores no WhatsApp da organização.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FOOTER TÁTICO -->
+    <footer class="tree-footer">
+      <div class="footer-divider"></div>
+      
+      <div class="footer-social-icons">
+        <a href="https://instagram.com/qntcupoficial" target="_blank" rel="noopener noreferrer" class="social-circle sound-click" title="Instagram @qntcupoficial">
+          <i data-lucide="camera"></i>
+        </a>
+        <a href="https://www.youtube.com/@QuintelaGamer" target="_blank" rel="noopener noreferrer" class="social-circle sound-click" title="Twitch Live">
+          <i data-lucide="tv"></i>
+        </a>
+        <a href="mailto:contato.qntcup@gmail.com" class="social-circle sound-click" title="E-mail de Contato">
+          <i data-lucide="mail"></i>
+        </a>
+      </div>
+
+      <p class="copyright-txt">
+        © 2026 QNT CUP • Todos os direitos reservados.<br>
+        Torneio independente comunitário de Valorant.
+      </p>
+      
+      <div class="credits-tag">
+        <i data-lucide="terminal"></i> DESIGN GAMER PRO • @qntcupoficial
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- ================= MODAIS INTERATIVOS ================= -->
+
+  <!-- NOVO MODAL: SISTEMA DE MAP VETO (BANIMENTO DE MAPAS) -->
+  <div class="cyber-modal" id="modalMapVeto" role="dialog" aria-hidden="true">
+    <div class="modal-backdrop" data-close="modal"></div>
+    <div class="modal-dialog modal-dialog-large">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="crosshair" class="text-neon-red"></i>
+          <h3>SISTEMA DE MAP VETO // VALORANT</h3>
+        </div>
+        <button class="modal-close-btn sound-click" data-close="modal">&times;</button>
+      </div>
+      <div class="modal-body mapveto-body">
+        
+        <!-- Controles de Configuração do Confronto -->
+        <div class="veto-config-bar">
+          <div class="veto-mode-switch">
+            <button class="mode-tab-btn active sound-click" id="modeMd1Btn" data-mode="MD1">
+              <i data-lucide="zap"></i> MD1 (Semifinais)
+            </button>
+            <button class="mode-tab-btn sound-click" id="modeMd3Btn" data-mode="MD3">
+              <i data-lucide="flame"></i> MD3 (Grande Final)
+            </button>
+          </div>
+
+          <div class="veto-teams-inputs">
+            <div class="veto-team-box team-a-box">
+              <label>TIME A</label>
+              <input type="text" id="teamANameInput" value="Equipe Alpha" placeholder="Nome Time A" class="veto-input">
+            </div>
+            <div class="veto-vs-badge">VS</div>
+            <div class="veto-team-box team-b-box">
+              <label>TIME B</label>
+              <input type="text" id="teamBNameInput" value="Equipe Omega" placeholder="Nome Time B" class="veto-input">
+            </div>
+          </div>
+        </div>
+
+        <!-- Banner de Instrução do Turno Atual -->
+        <div class="veto-turn-alert" id="vetoTurnBanner">
+          <div class="turn-pulse-indicator"></div>
+          <div class="turn-info">
+            <span class="turn-sub" id="vetoPhaseLabel">FASE DE BANIMENTO</span>
+            <span class="turn-main" id="vetoInstruction">Vez de <strong class="text-neon-red" id="currentTeamTurn">Equipe Alpha</strong> BANIR um mapa</span>
+          </div>
+          <button class="btn-reset-veto sound-click" id="btnResetVeto" title="Reiniciar Banimento">
+            <i data-lucide="rotate-ccw"></i> Reset
+          </button>
+        </div>
+
+        <!-- Grid dos 7 Mapas de Valorant -->
+        <div class="veto-maps-grid" id="vetoMapsContainer">
+          <!-- Gerado dinamicamente via JS com Ascent, Bind, Breeze, Fracture, Haven, Icebox, Sunset -->
+        </div>
+
+        <!-- Resumo dos Mapas Selecionados / Resultado -->
+        <div class="veto-summary-card" id="vetoSummaryCard">
+          <div class="summary-header">
+            <i data-lucide="check-circle" class="text-tactical-green"></i>
+            <span>RESUMO DO MAP VETO</span>
+          </div>
+          <div class="summary-content" id="vetoSummaryText">
+            Realize o banimento para definir os mapas do confronto.
+          </div>
+          <button class="btn-copy-veto sound-click" id="btnCopyVetoResult" style="display: none;">
+            <i data-lucide="copy"></i> Copiar Resumo para WhatsApp dos Capitães
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- NOVO MODAL: CHAVEAMENTO OFICIAL / BRACKET -->
+  <div class="cyber-modal" id="modalBracket" role="dialog" aria-hidden="true">
+    <div class="modal-backdrop" data-close="modal"></div>
+    <div class="modal-dialog modal-dialog-large">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="git-merge" class="text-cyan"></i>
+          <h3>CHAVEAMENTO OFICIAL // 4 EQUIPES</h3>
+        </div>
+        <button class="modal-close-btn sound-click" data-close="modal">&times;</button>
+      </div>
+      <div class="modal-body bracket-modal-body">
+        
+        <p class="bracket-intro">
+          Estrutura do torneio com 4 equipes, fase eliminatória, repescagem de 3º lugar e Grande Decisão MD3.
+        </p>
+
+        <div class="bracket-tree-wrapper">
+          
+          <!-- Coluna 1: Semifinais (14/11 Sábado) -->
+          <div class="bracket-col">
+            <div class="bracket-col-header">
+              <span class="bracket-day">14/11 (SÁBADO)</span>
+              <span class="bracket-phase-title">SEMIFINAIS (MD1)</span>
+            </div>
+
+            <!-- Jogo 1 -->
+            <div class="match-box">
+              <span class="match-label">JOGO #01</span>
+              <div class="match-team team-top winner-slot">
+                <span class="team-seed">#1</span>
+                <span class="team-name text-gold">SNM</span>
+                <span class="team-score">-</span>
+              </div>
+              <div class="match-team team-bottom">
+                <span class="team-seed">#4</span>
+                <span class="team-name">Equipe Vaga 4</span>
+                <span class="team-score">-</span>
+              </div>
+            </div>
+
+            <!-- Jogo 2 -->
+            <div class="match-box">
+              <span class="match-label">JOGO #02</span>
+              <div class="match-team team-top">
+                <span class="team-seed">#2</span>
+                <span class="team-name">Equipe Vaga 2</span>
+                <span class="team-score">-</span>
+              </div>
+              <div class="match-team team-bottom winner-slot">
+                <span class="team-seed">#3</span>
+                <span class="team-name">Equipe Vaga 3</span>
+                <span class="team-score">-</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Coluna 2: Finais e Repescagem (15/11 Domingo) -->
+          <div class="bracket-col">
+            <div class="bracket-col-header">
+              <span class="bracket-day highlight-gold">15/11 (DOMINGO)</span>
+              <span class="bracket-phase-title">GRANDE FINAL (MD3)</span>
+            </div>
+
+            <!-- Grande Decisão -->
+            <div class="match-box grand-final-box">
+              <div class="grand-final-trophy-badge">
+                <i data-lucide="crown"></i> DISPUTA DO TÍTULO (1.000 VP/PLAYER)
+              </div>
+              <div class="match-team team-top gold-highlight">
+                <span class="team-seed"><i data-lucide="star"></i></span>
+                <span class="team-name">Vencedor Jogo #01</span>
+                <span class="team-score">-</span>
+              </div>
+              <div class="match-team team-bottom gold-highlight">
+                <span class="team-seed"><i data-lucide="star"></i></span>
+                <span class="team-name">Vencedor Jogo #02</span>
+                <span class="team-score">-</span>
+              </div>
+            </div>
+
+            <!-- Repescagem / 3º Lugar -->
+            <div class="match-box loser-match-box">
+              <span class="match-label text-cyan">REPESCAGEM // 3º LUGAR (MD1)</span>
+              <div class="match-team team-top">
+                <span class="team-seed">-</span>
+                <span class="team-name">Perdedor Jogo #01</span>
+                <span class="team-score">-</span>
+              </div>
+              <div class="match-team team-bottom">
+                <span class="team-seed">-</span>
+                <span class="team-name">Perdedor Jogo #02</span>
+                <span class="team-score">-</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- NOVO MODAL: GERADOR DE STORY PARA INSTAGRAM -->
+  <div class="cyber-modal" id="modalStory" role="dialog" aria-hidden="true">
+    <div class="modal-backdrop" data-close="modal"></div>
+    <div class="modal-dialog modal-dialog-large">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="sparkles" class="text-neon-purple"></i>
+          <h3>GERADOR DE STORY // INSTAGRAM</h3>
+        </div>
+        <button class="modal-close-btn sound-click" data-close="modal">&times;</button>
+      </div>
+      <div class="modal-body story-gen-body">
+        
+        <p class="story-intro">
+          Preencha os dados da sua equipe para gerar uma imagem oficial em alta definição (1080x1920) pronta para postar no Story marcando <strong>@qntcupoficial</strong>!
+        </p>
+
+        <div class="story-form-grid">
+          <div class="story-field">
+            <label><i data-lucide="shield"></i> NOME DA EQUIPE</label>
+            <input type="text" id="storyTeamName" value="FURIOUS ESPORTS" class="story-input">
+          </div>
+
+          <div class="story-players-group">
+            <label><i data-lucide="users"></i> ROSTER DE JOGADORES (5 TITULARES)</label>
+            <div class="players-inputs-grid">
+              <input type="text" id="storyPlayer1" value="Jogador 1 (Capitão)" class="story-input player-input">
+              <input type="text" id="storyPlayer2" value="Jogador 2" class="story-input player-input">
+              <input type="text" id="storyPlayer3" value="Jogador 3" class="story-input player-input">
+              <input type="text" id="storyPlayer4" value="Jogador 4" class="story-input player-input">
+              <input type="text" id="storyPlayer5" value="Jogador 5" class="story-input player-input">
+              <input type="text" id="storyPlayerSub" placeholder="Reserva (Opcional)" class="story-input player-input">
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas de Preview do Story -->
+        <div class="story-preview-container">
+          <canvas id="storyCanvas" width="1080" height="1920"></canvas>
+          <div class="story-preview-badge">PREVIEW STORY 9:16</div>
+        </div>
+
+        <button class="btn-cyber-primary sound-click w-full mt-2" id="btnDownloadStory">
+          <div class="cyber-btn-content justify-center">
+            <i data-lucide="download"></i>
+            <span>BAIXAR CARD OFICIAL DO STORY (PNG)</span>
+          </div>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. Modal: Banner Oficial Zoom -->
+  <div class="cyber-modal" id="modalBanner" role="dialog" aria-hidden="true">
+    <div class="modal-backdrop" data-close="modal"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="image"></i>
+          <h3>BANNER OFICIAL // QNT CUP</h3>
+        </div>
+        <button class="modal-close-btn sound-click" data-close="modal">&times;</button>
+      </div>
+      <div class="modal-body banner-modal-body">
+        <img src="assets/banner.jpg" alt="Banner Oficial Detalhado" class="modal-img-full">
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Modal: Premiações Detalhadas -->
+  <div class="cyber-modal" id="modalPremiacao" role="dialog" aria-hidden="true">
+    <div class="modal-backdrop" data-close="modal"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="trophy" class="text-gold"></i>
+          <h3>TABELA DE PREMIAÇÕES</h3>
+        </div>
+        <button class="modal-close-btn sound-click" data-close="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        
+        <!-- Bloco Campeão -->
+        <div class="reward-box champion-box">
+          <div class="reward-tag champion-tag">CAMPEÃO DA COPA</div>
+          <div class="reward-value-group">
+            <span class="reward-num">1.000 VP</span>
+            <span class="reward-desc">POR JOGADOR TITULAR (5.000 VP TOTAL)</span>
+          </div>
+          <div class="reward-extra">
+            <i data-lucide="crown"></i> Troféu Digital + Destaque Permanente no Feed
+          </div>
+        </div>
+
+        <!-- Bloco Vice -->
+        <div class="reward-box vice-box">
+          <div class="reward-tag vice-tag">VICE-CAMPEÃO</div>
+          <div class="reward-value-group">
+            <span class="reward-num">R$ 40,00</span>
+            <span class="reward-desc">POR EQUIPE (PIX DIRETO)</span>
+          </div>
+        </div>
+
+        <!-- Bloco MVPs -->
+        <div class="reward-box mvp-box">
+          <div class="reward-tag mvp-tag"><i data-lucide="zap"></i> PREMIAÇÃO DE MVP</div>
+          
+          <div class="mvp-row">
+            <div class="mvp-item">
+              <span class="mvp-title">MVP POR PARTIDA</span>
+              <span class="mvp-val">400 VP</span>
+              <span class="mvp-obs">(1ª rodada, repescagem e semifinais)</span>
+            </div>
+            <div class="mvp-divider"></div>
+            <div class="mvp-item highlight-mvp">
+              <span class="mvp-title">MVP DA FINAL</span>
+              <span class="mvp-val">1.000 VP</span>
+              <span class="mvp-obs">(O melhor jogador da grande decisão)</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-cyber-primary sound-click w-full mt-3" data-close="modal" onclick="document.getElementById('btnInscricao').click()">
+          <div class="cyber-btn-content justify-center">
+            <span>QUERO ESSA PREMIAÇÃO • INSCREVER</span>
+          </div>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Modal: Regulamento e Formato -->
+  <div class="cyber-modal" id="modalRegras" role="dialog" aria-hidden="true">
+    <div class="modal-backdrop" data-close="modal"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="file-text" class="text-red"></i>
+          <h3>REGULAMENTO & ESTRUTURA</h3>
+        </div>
+        <button class="modal-close-btn sound-click" data-close="modal">&times;</button>
+      </div>
+      <div class="modal-body rules-content">
+        
+        <div class="rule-block">
+          <h4><i data-lucide="calendar-check"></i> CRONOGRAMA</h4>
+          <ul>
+            <li><strong>14/11 (Sábado):</strong> Início do Torneio (Fase Eliminatória e Repescagem).</li>
+            <li><strong>15/11 (Domingo):</strong> Semifinais e Grande Final.</li>
+          </ul>
+        </div>
+
+        <div class="rule-block">
+          <h4><i data-lucide="crosshair"></i> FORMATO DA DISPUTA</h4>
+          <ul>
+            <li><strong>Capacidade:</strong> Exclusivo para 4 equipes (bracket enxuto e competitivo).</li>
+            <li><strong>Rosters:</strong> 5 jogadores titulares + até 1 jogador reserva (opcional).</li>
+            <li><strong>Modo:</strong> Partida Personalizada Competitiva padrão de Valorant (Cheats desligados, Pausas táticas permitidas).</li>
+            <li><strong>Servidor:</strong> São Paulo (Brasil).</li>
+          </ul>
+        </div>
+
+        <div class="rule-block">
+          <h4><i data-lucide="alert-octagon"></i> CONDUTA & FAIR PLAY</h4>
+          <ul>
+            <li>Tolerância de atraso de 10 minutos após o chamado do lobby.</li>
+            <li>Comportamento antidesportivo, ofensas graves ou uso de cheats/exploits resultará em desclassificação imediata sem reembolso.</li>
+            <li>Comunicação oficial realizada via grupo do WhatsApp dos capitães.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Modal: Chave PIX Rápida -->
+  <div class="cyber-modal" id="modalPix" role="dialog" aria-hidden="true">
+    <div class="modal-backdrop" data-close="modal"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="qr-code" class="text-cyan"></i>
+          <h3>PAGAMENTO VIA PIX</h3>
+        </div>
+        <button class="modal-close-btn sound-click" data-close="modal">&times;</button>
+      </div>
+      <div class="modal-body text-center">
+        
+        <p class="pix-instruction">
+          Valor da Inscrição: <strong>R$ 75,00 por equipe</strong>.<br>
+          Após efetuar a transferência, envie o comprovante no WhatsApp com o nome do seu time!
+        </p>
+
+        <div class="pix-key-box">
+          <span class="pix-label">CHAVE PIX (ALEATÓRIA / E-MAIL / TELEFONE)</span>
+          <div class="pix-value-row">
+            <input type="text" readonly id="pixKeyInput" value="contato.qntcup@gmail.com" class="pix-input">
+            <button class="btn-copy-pix sound-click" id="btnCopyPix">
+              <i data-lucide="copy"></i> Copiar
+            </button>
+          </div>
+        </div>
+
+        <div class="pix-steps">
+          <div class="step-num">1</div>
+          <span>Copie a chave e faça o PIX de R$ 75,00.</span>
+        </div>
+        <div class="pix-steps">
+          <div class="step-num">2</div>
+          <span>Envie o comprovante junto com a lista dos 5 jogadores no WhatsApp da organização.</span>
+        </div>
+
+        <a href="https://wa.me/5582994091676?text=Ol%C3%A1!%20Acabei%20de%20fazer%20o%20PIX%20da%20inscri%C3%A7%C3%A3o%20da%20minha%20equipe%20na%20QNT%20CUP!" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="btn-cyber-primary sound-click mt-4 w-full">
+          <div class="cyber-btn-content justify-center">
+            <i data-lucide="send"></i>
+            <span>ENVIAR COMPROVANTE VIA WHATSAPP</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="toast-notification">
+    <i data-lucide="check-circle" class="toast-icon"></i>
+    <span id="toastMessage">Texto copiado com sucesso!</span>
+  </div>
+
+  <!-- Custom Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>
