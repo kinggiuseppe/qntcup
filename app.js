@@ -1206,6 +1206,22 @@ document.addEventListener('DOMContentLoaded', () => {
         { nick: 'Titular 5', role: 'Flex', isCaptain: false, agent: 'Breach' }
       ],
       sub: 'Reserva a confirmar pelo capitão'
+    },
+    ragnarok: {
+      name: 'Ragnarök',
+      tag: 'RAG',
+      seed: 'SEED #3 // CONFIRMADO',
+      logo: 'assets/team_ragnarok.png',
+      theme: 'theme-cyan',
+      motto: '"O crepúsculo dos deuses. A queda dos adversários."',
+      players: [
+        { nick: 'Titular 1', role: 'Capitão / Duelista', isCaptain: true, agent: 'Breach' },
+        { nick: 'Titular 2', role: 'Iniciador', isCaptain: false, agent: 'Sova' },
+        { nick: 'Titular 3', role: 'Controlador', isCaptain: false, agent: 'Omen' },
+        { nick: 'Titular 4', role: 'Sentinela', isCaptain: false, agent: 'Cypher' },
+        { nick: 'Titular 5', role: 'Flex', isCaptain: false, agent: 'Gekko' }
+      ],
+      sub: 'Reserva a confirmar pelo capitão'
     }
   };
 
@@ -1303,10 +1319,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Imagens cacheadas para os times no Canvas
   const teamLogosCache = {
     snm: new Image(),
-    katarrentos: new Image()
+    katarrentos: new Image(),
+    ragnarok: new Image()
   };
   teamLogosCache.snm.src = 'assets/team_snm.png';
   teamLogosCache.katarrentos.src = 'assets/team_katarrentos.png';
+  teamLogosCache.ragnarok.src = 'assets/team_ragnarok.png';
 
   function renderMatchDayCanvas() {
     if (!matchDayCanvas) return;
@@ -1393,8 +1411,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const teamAVal = matchTeamASelect?.value || 'snm';
     const teamBVal = matchTeamBSelect?.value || 'katarrentos';
 
-    const teamAName = teamAVal === 'snm' ? 'SÓ NA MANHA' : (teamAVal === 'katarrentos' ? 'KATARRENTOS' : 'EQUIPE VAGA 3');
-    const teamBName = teamBVal === 'katarrentos' ? 'KATARRENTOS' : (teamBVal === 'snm' ? 'SÓ NA MANHA' : 'EQUIPE VAGA 4');
+    function getMatchTeamName(val) {
+      if (val === 'snm') return 'SÓ NA MANHA';
+      if (val === 'katarrentos') return 'KATARRENTOS';
+      if (val === 'ragnarok') return 'RAGNARÖK';
+      return 'EQUIPE VAGA 4';
+    }
+    function getMatchTeamColor(val) {
+      if (val === 'snm') return '#ffd700';
+      if (val === 'katarrentos') return '#c084fc';
+      if (val === 'ragnarok') return '#00f0ff';
+      return '#ff4655';
+    }
+    const teamAName = getMatchTeamName(teamAVal);
+    const teamBName = getMatchTeamName(teamBVal);
+    const colorA = getMatchTeamColor(teamAVal);
+    const colorB = getMatchTeamColor(teamBVal);
 
     // Box Time A
     const boxAY = 700;
@@ -1405,13 +1437,13 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.save();
     ctx.fillStyle = 'rgba(20, 28, 38, 0.85)';
     ctx.fillRect(boxAX, boxAY, boxSize, boxSize);
-    ctx.strokeStyle = '#ffd700';
+    ctx.strokeStyle = colorA;
     ctx.lineWidth = 4;
     ctx.strokeRect(boxAX, boxAY, boxSize, boxSize);
 
     const imgA = teamLogosCache[teamAVal];
     if (imgA && imgA.complete && imgA.naturalWidth > 0) {
-      ctx.shadowColor = '#ffd700';
+      ctx.shadowColor = colorA;
       ctx.shadowBlur = 20;
       ctx.drawImage(imgA, boxAX + 25, boxAY + 25, boxSize - 50, boxSize - 50);
     } else {
@@ -1424,7 +1456,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Nome Time A
     ctx.textAlign = 'center';
-    ctx.fillStyle = '#ffd700';
+    ctx.fillStyle = colorA;
     ctx.font = 'bold 50px "Teko", sans-serif';
     ctx.fillText(teamAName, boxAX + boxSize / 2, boxAY + boxSize + 60);
 
@@ -1452,13 +1484,13 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.save();
     ctx.fillStyle = 'rgba(20, 28, 38, 0.85)';
     ctx.fillRect(boxBX, boxAY, boxSize, boxSize);
-    ctx.strokeStyle = '#c084fc';
+    ctx.strokeStyle = colorB;
     ctx.lineWidth = 4;
     ctx.strokeRect(boxBX, boxAY, boxSize, boxSize);
 
     const imgB = teamLogosCache[teamBVal];
     if (imgB && imgB.complete && imgB.naturalWidth > 0) {
-      ctx.shadowColor = '#c084fc';
+      ctx.shadowColor = colorB;
       ctx.shadowBlur = 20;
       ctx.drawImage(imgB, boxBX + 25, boxAY + 25, boxSize - 50, boxSize - 50);
     } else {
@@ -1471,7 +1503,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Nome Time B
     ctx.textAlign = 'center';
-    ctx.fillStyle = '#c084fc';
+    ctx.fillStyle = colorB;
     ctx.font = 'bold 50px "Teko", sans-serif';
     ctx.fillText(teamBName, boxBX + boxSize / 2, boxAY + boxSize + 60);
 

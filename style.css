@@ -2849,6 +2849,12 @@ body.spike-armed-mode .brand-title {
   background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(10, 14, 20, 0.8) 100%);
 }
 
+.slot-team-emblem.emblem-ragnarok {
+  border-color: rgba(0, 240, 255, 0.55);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, rgba(10, 14, 20, 0.8) 100%);
+}
+
 .slot-item:hover .slot-team-emblem {
   transform: scale(1.08);
 }
@@ -2994,6 +3000,31 @@ body.spike-armed-mode .brand-title {
 .team-profile-hero.theme-purple::after {
   background: #c084fc;
   box-shadow: 0 0 10px #c084fc;
+}
+
+.team-profile-hero.theme-cyan::after {
+  background: #00f0ff;
+  box-shadow: 0 0 10px #00f0ff;
+}
+
+.text-cyan {
+  color: #00f0ff !important;
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+}
+
+.highlight-last-slot {
+  border-color: rgba(255, 70, 85, 0.6) !important;
+  background: rgba(255, 70, 85, 0.08) !important;
+  box-shadow: 0 0 15px rgba(255, 70, 85, 0.25);
+}
+
+.pulse-fast {
+  animation: pulseTag 1s infinite alternate ease-in-out;
+}
+
+@keyframes pulseTag {
+  0% { transform: scale(1); box-shadow: 0 0 4px rgba(255, 70, 85, 0.4); }
+  100% { transform: scale(1.08); box-shadow: 0 0 14px rgba(255, 70, 85, 0.9); }
 }
 
 .team-hero-logo-wrap {
