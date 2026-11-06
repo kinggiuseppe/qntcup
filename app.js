@@ -515,7 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getTeamName(teamKey) {
     if (teamKey === 'A') return teamAInput?.value.trim() || 'Só Na Manha';
-    return teamBInput?.value.trim() || 'Katarreiros';
+    return teamBInput?.value.trim() || 'Katarrentos';
   }
 
   function resetVeto() {

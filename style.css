@@ -2810,3 +2810,100 @@ body.spike-armed-mode .brand-title {
   width: 18px;
   height: 18px;
 }
+
+/* ==========================================================================
+   ESTILOS DOS EMBLEMAS E LOGOS OFICIAIS DOS TIMES
+   ========================================================================== */
+.slot-team-emblem {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: rgba(10, 14, 20, 0.7);
+  border: 1px solid var(--border-subtle);
+  padding: 3px;
+  box-sizing: border-box;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slot-team-emblem img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.6));
+}
+
+.slot-team-emblem.emblem-snm {
+  border-color: rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.2);
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.12) 0%, rgba(10, 14, 20, 0.8) 100%);
+}
+
+.slot-team-emblem.emblem-katarrentos {
+  border-color: rgba(168, 85, 247, 0.55);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.25);
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(10, 14, 20, 0.8) 100%);
+}
+
+.slot-item:hover .slot-team-emblem {
+  transform: scale(1.08);
+}
+
+.slot-team-emblem.emblem-open {
+  border: 1px dashed rgba(255, 70, 85, 0.4);
+  color: var(--valorant-red);
+  background: rgba(255, 70, 85, 0.05);
+}
+
+.slot-team-emblem.emblem-open i {
+  width: 18px;
+  height: 18px;
+}
+
+.bracket-team-logo {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  margin-right: 6px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
+}
+
+.bracket-team-placeholder {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 6px;
+  color: var(--text-subtle);
+  flex-shrink: 0;
+}
+
+.bracket-team-placeholder i {
+  width: 14px;
+  height: 14px;
+}
+
+.veto-team-header-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.veto-team-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.text-purple {
+  color: #c084fc !important;
+  text-shadow: 0 0 8px rgba(192, 132, 252, 0.35);
+}

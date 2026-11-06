@@ -173,7 +173,9 @@
         <div class="slots-grid">
           <!-- Vaga 1: Confirmada - Só Na Manha -->
           <div class="slot-item slot-confirmed">
-            <div class="slot-icon"><i data-lucide="check"></i></div>
+            <div class="slot-team-emblem emblem-snm">
+              <img src="assets/team_snm.png" alt="Só Na Manha">
+            </div>
             <div class="slot-details">
               <span class="slot-id">VAGA #01 // CONFIRMADA</span>
               <span class="slot-team-name text-gold">Só Na Manha (SNM)</span>
@@ -183,17 +185,21 @@
 
           <!-- Vaga 2: Confirmada - Katarrentos -->
           <div class="slot-item slot-confirmed">
-            <div class="slot-icon"><i data-lucide="check"></i></div>
+            <div class="slot-team-emblem emblem-katarrentos">
+              <img src="assets/team_katarrentos.png" alt="Katarrentos">
+            </div>
             <div class="slot-details">
               <span class="slot-id">VAGA #02 // CONFIRMADA</span>
-              <span class="slot-team-name text-gold">Katarrentos</span>
+              <span class="slot-team-name text-purple">Katarrentos</span>
             </div>
             <span class="slot-status-tag locked-tag">LOCKED</span>
           </div>
 
           <!-- Vaga 3: Aberta -->
           <div class="slot-item slot-open sound-click" onclick="document.getElementById('btnInscricao').click()">
-            <div class="slot-icon"><i data-lucide="user-plus"></i></div>
+            <div class="slot-team-emblem emblem-open">
+              <i data-lucide="shield-plus"></i>
+            </div>
             <div class="slot-details">
               <span class="slot-id">VAGA #03</span>
               <span class="slot-team-name text-neon-red">VAGA DISPONÍVEL</span>
@@ -203,7 +209,9 @@
 
           <!-- Vaga 4: Aberta -->
           <div class="slot-item slot-open sound-click" onclick="document.getElementById('btnInscricao').click()">
-            <div class="slot-icon"><i data-lucide="user-plus"></i></div>
+            <div class="slot-team-emblem emblem-open">
+              <i data-lucide="shield-plus"></i>
+            </div>
             <div class="slot-details">
               <span class="slot-id">VAGA #04</span>
               <span class="slot-team-name text-neon-red">VAGA DISPONÍVEL</span>
@@ -621,12 +629,18 @@
 
           <div class="veto-teams-inputs">
             <div class="veto-team-box team-a-box">
-              <label>TIME A</label>
+              <div class="veto-team-header-info">
+                <img src="assets/team_snm.png" alt="Só Na Manha" class="veto-team-logo">
+                <label>TIME A</label>
+              </div>
               <input type="text" id="teamANameInput" value="Só Na Manha" placeholder="Ex: Só Na Manha" class="veto-input">
             </div>
             <div class="veto-vs-badge">VS</div>
             <div class="veto-team-box team-b-box">
-              <label>TIME B</label>
+              <div class="veto-team-header-info">
+                <img src="assets/team_katarrentos.png" alt="Katarrentos" class="veto-team-logo">
+                <label>TIME B</label>
+              </div>
               <input type="text" id="teamBNameInput" value="Katarrentos" placeholder="Ex: Katarrentos" class="veto-input">
             </div>
           </div>
@@ -698,11 +712,13 @@
               <span class="match-label">JOGO #01</span>
               <div class="match-team team-top winner-slot">
                 <span class="team-seed">#1</span>
+                <img src="assets/team_snm.png" alt="SNM" class="bracket-team-logo">
                 <span class="team-name text-gold">Só Na Manha (SNM)</span>
                 <span class="team-score">-</span>
               </div>
               <div class="match-team team-bottom">
                 <span class="team-seed">#4</span>
+                <div class="bracket-team-placeholder"><i data-lucide="shield"></i></div>
                 <span class="team-name">Equipe Vaga 4</span>
                 <span class="team-score">-</span>
               </div>
@@ -713,11 +729,13 @@
               <span class="match-label">JOGO #02</span>
               <div class="match-team team-top winner-slot">
                 <span class="team-seed">#2</span>
-                <span class="team-name text-gold">Katarrentos</span>
+                <img src="assets/team_katarrentos.png" alt="Katarrentos" class="bracket-team-logo">
+                <span class="team-name text-purple">Katarrentos</span>
                 <span class="team-score">-</span>
               </div>
               <div class="match-team team-bottom">
                 <span class="team-seed">#3</span>
+                <div class="bracket-team-placeholder"><i data-lucide="shield"></i></div>
                 <span class="team-name">Equipe Vaga 3</span>
                 <span class="team-score">-</span>
               </div>
