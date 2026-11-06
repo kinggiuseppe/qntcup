@@ -61,7 +61,7 @@
   <header class="hud-topbar">
     <div class="hud-status">
       <span class="pulse-dot"></span>
-      <span class="hud-status-text">STATUS: <strong class="text-neon-red">INSCRIÇÕES ABERTAS</strong></span>
+      <span class="hud-status-text">STATUS: <strong class="text-gold">CHAVEAMENTO COMPLETO (4/4 TIMES)</strong></span>
     </div>
     
     <div class="hud-controls">
@@ -168,7 +168,7 @@
             <i data-lucide="shield-check" class="text-neon-red"></i>
             <span class="slot-tracker-title">VAGAS OFICIAIS // 4 TIMES</span>
           </div>
-          <span class="slot-counter-badge" id="slotAvailableCount">ÚLTIMA VAGA RESTANTE!</span>
+          <span class="slot-counter-badge sold-out-badge" id="slotAvailableCount"><i data-lucide="check-check"></i> 4/4 EQUIPES CONFIRMADAS</span>
         </div>
         <div class="slots-grid">
           <!-- Vaga 1: Confirmada - Só Na Manha -->
@@ -216,16 +216,19 @@
             </div>
           </div>
 
-          <!-- Vaga 4: Aberta - ÚLTIMA VAGA -->
-          <div class="slot-item slot-open sound-click highlight-last-slot" onclick="document.getElementById('btnInscricao').click()">
-            <div class="slot-team-emblem emblem-open">
-              <i data-lucide="flame"></i>
+          <!-- Vaga 4: Confirmada - Se Ganhar é Lucro -->
+          <div class="slot-item slot-confirmed slot-interactive sound-click" data-team-id="sgl" title="Clique para ver a Lineup da Se Ganhar é Lucro">
+            <div class="slot-team-emblem emblem-sgl">
+              <img src="assets/team_sgl.png" alt="Se Ganhar é Lucro">
             </div>
             <div class="slot-details">
-              <span class="slot-id text-neon-red">VAGA #04 // ÚLTIMA VAGA!</span>
-              <span class="slot-team-name text-neon-red">DISPONÍVEL AGORA</span>
+              <span class="slot-id">VAGA #04 // CONFIRMADA</span>
+              <span class="slot-team-name text-neon-red">Se Ganhar é Lucro (SGL)</span>
             </div>
-            <span class="slot-status-tag open-tag pulse-fast">GARANTIR</span>
+            <div class="slot-action-tag">
+              <span class="slot-status-tag locked-tag">LOCKED</span>
+              <span class="slot-roster-hint"><i data-lucide="eye"></i> LINEUP</span>
+            </div>
           </div>
         </div>
       </div>
@@ -242,9 +245,9 @@
       </div>
     </section>
 
-    <!-- CALL TO ACTION PRINCIPAL - BOTÃO DE INSCRIÇÃO -->
+    <!-- CALL TO ACTION PRINCIPAL - CHAVEAMENTO COMPLETO & LISTA DE ESPERA -->
     <section class="cta-section">
-      <a href="https://wa.me/5582994091676?text=Ol%C3%A1!%20Quero%20inscrever%20minha%20equipe%20na%20QNT%20CUP%20de%20Valorant!" 
+      <a href="https://wa.me/5582994091676?text=Ol%C3%A1!%20Vi%20que%20as%204%20vagas%20da%20QNT%20CUP%20est%C3%A3o%20preenchidas.%20Gostaria%20de%20entrar%20na%20lista%20de%20espera%20para%20as%20pr%C3%B3ximas%20edi%C3%A7%C3%B5es!" 
          target="_blank" 
          rel="noopener noreferrer" 
          class="btn-cyber-primary sound-click cta-pulse"
@@ -253,16 +256,16 @@
         <div class="cyber-btn-border"></div>
         <div class="cyber-btn-content">
           <div class="cta-icon-box">
-            <i data-lucide="flame"></i>
+            <i data-lucide="trophy"></i>
           </div>
           <div class="cta-texts">
-            <span class="cta-subtitle">APENAS 4 EQUIPES // R$ 75 POR TIME</span>
-            <span class="cta-title">GARANTIR VAGA NO TORNEIO</span>
+            <span class="cta-subtitle">TORNEIO 100% FECHADO // 4/4 EQUIPES</span>
+            <span class="cta-title">FALAR COM ORGANIZAÇÃO // LISTA DE ESPERA</span>
           </div>
           <i data-lucide="chevron-right" class="cta-arrow"></i>
         </div>
       </a>
-      <p class="cta-note"><i data-lucide="shield-alert"></i> ATENÇÃO: Resta apenas 1 ÚLTIMA VAGA disponível (75% do torneio preenchido)!</p>
+      <p class="cta-note"><i data-lucide="check-check"></i> Inscrições encerradas! Todas as 4 vagas foram preenchidas. Fale com a organização para lista de espera.</p>
     </section>
 
     <!-- NAVEGAÇÃO DE AÇÕES RÁPIDAS (BOTOES INTERATIVOS ESTILO GAMER) -->
@@ -739,10 +742,10 @@
                 <span class="team-name text-gold">Só Na Manha (SNM)</span>
                 <span class="team-score">-</span>
               </div>
-              <div class="match-team team-bottom">
+              <div class="match-team team-bottom winner-slot">
                 <span class="team-seed">#4</span>
-                <div class="bracket-team-placeholder"><i data-lucide="shield"></i></div>
-                <span class="team-name">Equipe Vaga 4</span>
+                <img src="assets/team_sgl.png" alt="SGL" class="bracket-team-logo">
+                <span class="team-name text-neon-red">Se Ganhar é Lucro (SGL)</span>
                 <span class="team-score">-</span>
               </div>
             </div>
@@ -1122,7 +1125,7 @@
                 <option value="snm">Só Na Manha (SNM)</option>
                 <option value="katarrentos">Katarrentos</option>
                 <option value="ragnarok">Ragnarök</option>
-                <option value="vaga4">Equipe Vaga 4</option>
+                <option value="sgl">Se Ganhar é Lucro (SGL)</option>
               </select>
             </div>
 
@@ -1131,10 +1134,10 @@
             <div class="story-field">
               <label><i data-lucide="shield"></i> TIME 2 (DIREITA)</label>
               <select id="matchTeamBSelect" class="story-input">
+                <option value="sgl">Se Ganhar é Lucro (SGL)</option>
                 <option value="ragnarok">Ragnarök</option>
                 <option value="katarrentos">Katarrentos</option>
                 <option value="snm">Só Na Manha (SNM)</option>
-                <option value="vaga4">Equipe Vaga 4</option>
               </select>
             </div>
           </div>

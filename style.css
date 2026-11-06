@@ -2855,6 +2855,19 @@ body.spike-armed-mode .brand-title {
   background: radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, rgba(10, 14, 20, 0.8) 100%);
 }
 
+.slot-team-emblem.emblem-sgl {
+  border-color: rgba(255, 70, 85, 0.65);
+  box-shadow: 0 0 12px rgba(255, 70, 85, 0.35);
+  background: radial-gradient(circle, rgba(255, 70, 85, 0.15) 0%, rgba(10, 14, 20, 0.8) 100%);
+}
+
+.sold-out-badge {
+  background: rgba(0, 230, 118, 0.15) !important;
+  border-color: rgba(0, 230, 118, 0.45) !important;
+  color: var(--tactical-green) !important;
+  box-shadow: 0 0 10px rgba(0, 230, 118, 0.3);
+}
+
 .slot-item:hover .slot-team-emblem {
   transform: scale(1.08);
 }
@@ -3005,6 +3018,11 @@ body.spike-armed-mode .brand-title {
 .team-profile-hero.theme-cyan::after {
   background: #00f0ff;
   box-shadow: 0 0 10px #00f0ff;
+}
+
+.team-profile-hero.theme-red::after {
+  background: var(--valorant-red);
+  box-shadow: 0 0 12px var(--valorant-red);
 }
 
 .text-cyan {

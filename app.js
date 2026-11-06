@@ -1222,6 +1222,22 @@ document.addEventListener('DOMContentLoaded', () => {
         { nick: 'Titular 5', role: 'Flex', isCaptain: false, agent: 'Gekko' }
       ],
       sub: 'Reserva a confirmar pelo capitão'
+    },
+    sgl: {
+      name: 'Se Ganhar é Lucro',
+      tag: 'SGL',
+      seed: 'SEED #4 // CONFIRMADO',
+      logo: 'assets/team_sgl.png',
+      theme: 'theme-red',
+      motto: '"Sem pressão, na bala e o que vier é lucro."',
+      players: [
+        { nick: 'Titular 1', role: 'Capitão / Duelista', isCaptain: true, agent: 'Phoenix' },
+        { nick: 'Titular 2', role: 'Iniciador', isCaptain: false, agent: 'Fade' },
+        { nick: 'Titular 3', role: 'Controlador', isCaptain: false, agent: 'Brimstone' },
+        { nick: 'Titular 4', role: 'Sentinela', isCaptain: false, agent: 'Killjoy' },
+        { nick: 'Titular 5', role: 'Flex', isCaptain: false, agent: 'Clove' }
+      ],
+      sub: 'Reserva a confirmar pelo capitão'
     }
   };
 
@@ -1320,11 +1336,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const teamLogosCache = {
     snm: new Image(),
     katarrentos: new Image(),
-    ragnarok: new Image()
+    ragnarok: new Image(),
+    sgl: new Image()
   };
   teamLogosCache.snm.src = 'assets/team_snm.png';
   teamLogosCache.katarrentos.src = 'assets/team_katarrentos.png';
   teamLogosCache.ragnarok.src = 'assets/team_ragnarok.png';
+  teamLogosCache.sgl.src = 'assets/team_sgl.png';
 
   function renderMatchDayCanvas() {
     if (!matchDayCanvas) return;
@@ -1415,12 +1433,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (val === 'snm') return 'SÓ NA MANHA';
       if (val === 'katarrentos') return 'KATARRENTOS';
       if (val === 'ragnarok') return 'RAGNARÖK';
-      return 'EQUIPE VAGA 4';
+      if (val === 'sgl') return 'SE GANHAR É LUCRO';
+      return 'EQUIPE VAGA';
     }
     function getMatchTeamColor(val) {
       if (val === 'snm') return '#ffd700';
       if (val === 'katarrentos') return '#c084fc';
       if (val === 'ragnarok') return '#00f0ff';
+      if (val === 'sgl') return '#ff4655';
       return '#ff4655';
     }
     const teamAName = getMatchTeamName(teamAVal);
