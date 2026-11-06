@@ -168,7 +168,7 @@
             <i data-lucide="shield-check" class="text-neon-red"></i>
             <span class="slot-tracker-title">VAGAS OFICIAIS // 4 TIMES</span>
           </div>
-          <span class="slot-counter-badge sold-out-badge" id="slotAvailableCount"><i data-lucide="check-check"></i> 4/4 EQUIPES CONFIRMADAS</span>
+          <span class="slot-counter-badge sold-out-badge" id="slotAvailableCount"><i data-lucide="check-circle-2"></i> 4/4 EQUIPES CONFIRMADAS</span>
         </div>
         <div class="slots-grid">
           <!-- Vaga 1: Confirmada - Só Na Manha -->
@@ -955,18 +955,29 @@
 
         <div class="story-form-grid">
           <div class="story-field">
-            <label><i data-lucide="shield"></i> NOME DA EQUIPE</label>
-            <input type="text" id="storyTeamName" value="FURIOUS ESPORTS" class="story-input">
+            <label><i data-lucide="shield-check"></i> SELECIONAR EQUIPE CONFIRMADA</label>
+            <select id="storyTeamSelect" class="story-input">
+              <option value="snm" selected>Só Na Manha (SNM)</option>
+              <option value="katarrentos">Katarrentos</option>
+              <option value="ragnarok">Ragnarök</option>
+              <option value="sgl">Se Ganhar é Lucro (SGL)</option>
+              <option value="custom">-- Personalizado / Digitar Manualmente --</option>
+            </select>
+          </div>
+
+          <div class="story-field">
+            <label><i data-lucide="shield"></i> NOME DA EQUIPE NO STORY</label>
+            <input type="text" id="storyTeamName" value="SÓ NA MANHA" class="story-input">
           </div>
 
           <div class="story-players-group">
             <label><i data-lucide="users"></i> ROSTER DE JOGADORES (5 TITULARES)</label>
             <div class="players-inputs-grid">
-              <input type="text" id="storyPlayer1" value="Jogador 1 (Capitão)" class="story-input player-input">
-              <input type="text" id="storyPlayer2" value="Jogador 2" class="story-input player-input">
-              <input type="text" id="storyPlayer3" value="Jogador 3" class="story-input player-input">
-              <input type="text" id="storyPlayer4" value="Jogador 4" class="story-input player-input">
-              <input type="text" id="storyPlayer5" value="Jogador 5" class="story-input player-input">
+              <input type="text" id="storyPlayer1" value="GXM3S (Capitão)" class="story-input player-input">
+              <input type="text" id="storyPlayer2" value="NEVOEIRO" class="story-input player-input">
+              <input type="text" id="storyPlayer3" value="Rato molhado" class="story-input player-input">
+              <input type="text" id="storyPlayer4" value="H0GGYBR11" class="story-input player-input">
+              <input type="text" id="storyPlayer5" value="unknown" class="story-input player-input">
               <input type="text" id="storyPlayerSub" placeholder="Reserva (Opcional)" class="story-input player-input">
             </div>
           </div>
