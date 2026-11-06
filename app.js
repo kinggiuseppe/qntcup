@@ -514,8 +514,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnResetVeto = document.getElementById('btnResetVeto');
 
   function getTeamName(teamKey) {
-    if (teamKey === 'A') return teamAInput?.value.trim() || 'Equipe Alpha';
-    return teamBInput?.value.trim() || 'Equipe Omega';
+    if (teamKey === 'A') return teamAInput?.value.trim() || 'Só Na Manha';
+    return teamBInput?.value.trim() || 'Katarreiros';
   }
 
   function resetVeto() {

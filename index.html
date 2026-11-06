@@ -168,27 +168,27 @@
             <i data-lucide="shield-check" class="text-neon-red"></i>
             <span class="slot-tracker-title">VAGAS OFICIAIS // 4 TIMES</span>
           </div>
-          <span class="slot-counter-badge" id="slotAvailableCount">3 VAGAS RESTANTES</span>
+          <span class="slot-counter-badge" id="slotAvailableCount">2 VAGAS RESTANTES</span>
         </div>
         <div class="slots-grid">
-          <!-- Vaga 1: Confirmada - SNM -->
+          <!-- Vaga 1: Confirmada - Só Na Manha -->
           <div class="slot-item slot-confirmed">
             <div class="slot-icon"><i data-lucide="check"></i></div>
             <div class="slot-details">
               <span class="slot-id">VAGA #01 // CONFIRMADA</span>
-              <span class="slot-team-name text-gold">SNM</span>
+              <span class="slot-team-name text-gold">Só Na Manha (SNM)</span>
             </div>
             <span class="slot-status-tag locked-tag">LOCKED</span>
           </div>
 
-          <!-- Vaga 2: Aberta -->
-          <div class="slot-item slot-open sound-click" onclick="document.getElementById('btnInscricao').click()">
-            <div class="slot-icon"><i data-lucide="user-plus"></i></div>
+          <!-- Vaga 2: Confirmada - Katarreiros -->
+          <div class="slot-item slot-confirmed">
+            <div class="slot-icon"><i data-lucide="check"></i></div>
             <div class="slot-details">
-              <span class="slot-id">VAGA #02</span>
-              <span class="slot-team-name text-neon-red">VAGA DISPONÍVEL</span>
+              <span class="slot-id">VAGA #02 // CONFIRMADA</span>
+              <span class="slot-team-name text-gold">Katarreiros</span>
             </div>
-            <span class="slot-status-tag open-tag">GARANTIR</span>
+            <span class="slot-status-tag locked-tag">LOCKED</span>
           </div>
 
           <!-- Vaga 3: Aberta -->
@@ -245,7 +245,7 @@
           <i data-lucide="chevron-right" class="cta-arrow"></i>
         </div>
       </a>
-      <p class="cta-note"><i data-lucide="shield-alert"></i> Corra! As vagas são limitadas e preenchidas por ordem de confirmação.</p>
+      <p class="cta-note"><i data-lucide="shield-alert"></i> Corra! Restam apenas 2 vagas disponíveis (50% do torneio preenchido).</p>
     </section>
 
     <!-- NAVEGAÇÃO DE AÇÕES RÁPIDAS (BOTOES INTERATIVOS ESTILO GAMER) -->
@@ -622,12 +622,12 @@
           <div class="veto-teams-inputs">
             <div class="veto-team-box team-a-box">
               <label>TIME A</label>
-              <input type="text" id="teamANameInput" value="Equipe Alpha" placeholder="Nome Time A" class="veto-input">
+              <input type="text" id="teamANameInput" value="Só Na Manha" placeholder="Ex: Só Na Manha" class="veto-input">
             </div>
             <div class="veto-vs-badge">VS</div>
             <div class="veto-team-box team-b-box">
               <label>TIME B</label>
-              <input type="text" id="teamBNameInput" value="Equipe Omega" placeholder="Nome Time B" class="veto-input">
+              <input type="text" id="teamBNameInput" value="Katarreiros" placeholder="Ex: Katarreiros" class="veto-input">
             </div>
           </div>
         </div>
@@ -698,7 +698,7 @@
               <span class="match-label">JOGO #01</span>
               <div class="match-team team-top winner-slot">
                 <span class="team-seed">#1</span>
-                <span class="team-name text-gold">SNM</span>
+                <span class="team-name text-gold">Só Na Manha (SNM)</span>
                 <span class="team-score">-</span>
               </div>
               <div class="match-team team-bottom">
@@ -711,12 +711,12 @@
             <!-- Jogo 2 -->
             <div class="match-box">
               <span class="match-label">JOGO #02</span>
-              <div class="match-team team-top">
+              <div class="match-team team-top winner-slot">
                 <span class="team-seed">#2</span>
-                <span class="team-name">Equipe Vaga 2</span>
+                <span class="team-name text-gold">Katarreiros</span>
                 <span class="team-score">-</span>
               </div>
-              <div class="match-team team-bottom winner-slot">
+              <div class="match-team team-bottom">
                 <span class="team-seed">#3</span>
                 <span class="team-name">Equipe Vaga 3</span>
                 <span class="team-score">-</span>
