@@ -2907,3 +2907,321 @@ body.spike-armed-mode .brand-title {
   color: #c084fc !important;
   text-shadow: 0 0 8px rgba(192, 132, 252, 0.35);
 }
+
+/* ==========================================================================
+   ESTILOS: PERFIL E LINEUP DA EQUIPE & MATCH DAY GENERATOR
+   ========================================================================== */
+
+/* Slot Tracker Interativo */
+.slot-interactive {
+  cursor: pointer;
+  position: relative;
+}
+
+.slot-interactive:hover {
+  transform: translateX(4px);
+  border-color: rgba(255, 215, 0, 0.5);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.slot-action-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.slot-roster-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  color: #00f0ff;
+  font-family: var(--font-tactical);
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 3px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+}
+
+.slot-interactive:hover .slot-roster-hint {
+  background: #00f0ff;
+  color: #000000;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+}
+
+.slot-roster-hint i {
+  width: 11px;
+  height: 11px;
+}
+
+/* Modal: Perfil da Equipe */
+.team-profile-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.team-profile-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(20, 28, 38, 0.9), rgba(10, 14, 20, 0.95));
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.team-profile-hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--valorant-red);
+}
+
+.team-profile-hero.theme-gold::after {
+  background: #ffd700;
+  box-shadow: 0 0 10px #ffd700;
+}
+
+.team-profile-hero.theme-purple::after {
+  background: #c084fc;
+  box-shadow: 0 0 10px #c084fc;
+}
+
+.team-hero-logo-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  flex-shrink: 0;
+}
+
+.team-hero-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+}
+
+.team-hero-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.team-hero-seed-badge {
+  font-family: var(--font-tactical);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.8px;
+}
+
+.team-hero-name {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  line-height: 1;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.team-hero-motto {
+  font-size: 0.75rem;
+  color: var(--text-subtle);
+  font-style: italic;
+  margin: 0;
+}
+
+/* Roster */
+.team-roster-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.roster-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-tactical);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.8px;
+}
+
+.roster-players-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.player-roster-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+}
+
+.player-roster-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.player-card-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.player-num {
+  font-family: var(--font-tactical);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.player-nick {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.player-card-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.player-role-badge {
+  font-family: var(--font-tactical);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-subtle);
+}
+
+.player-role-badge.captain {
+  background: rgba(255, 215, 0, 0.15);
+  color: #ffd700;
+  border: 1px solid rgba(255, 215, 0, 0.35);
+}
+
+.player-agent-tag {
+  font-family: var(--font-tactical);
+  font-size: 0.62rem;
+  color: var(--text-muted);
+}
+
+.roster-sub-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+.roster-sub-box .sub-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-tactical);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.roster-sub-box .sub-name {
+  font-size: 0.78rem;
+  color: var(--text-subtle);
+}
+
+/* Modal Match Day */
+.matchday-gen-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.matchday-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.matchday-teams-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.matchday-vs-divider {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--valorant-red);
+  text-shadow: 0 0 10px rgba(255, 70, 85, 0.5);
+  padding: 0 4px;
+  margin-top: 14px;
+  text-align: center;
+}
+
+.matchday-details-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .matchday-teams-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .matchday-vs-divider {
+    text-align: center;
+    margin: 2px 0;
+  }
+  .matchday-details-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.highlight-matchday .btn-icon.neon-red {
+  background: rgba(255, 70, 85, 0.15);
+  color: var(--valorant-red);
+}
+
+.highlight-matchday:hover .btn-icon.neon-red {
+  background: var(--valorant-red);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(255, 70, 85, 0.6);
+}
+
+.neon-red-glow {
+  background: var(--valorant-red);
+  box-shadow: 0 0 8px rgba(255, 70, 85, 0.6);
+}

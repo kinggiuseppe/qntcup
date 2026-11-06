@@ -172,7 +172,7 @@
         </div>
         <div class="slots-grid">
           <!-- Vaga 1: Confirmada - Só Na Manha -->
-          <div class="slot-item slot-confirmed">
+          <div class="slot-item slot-confirmed slot-interactive sound-click" data-team-id="snm" title="Clique para ver a Lineup da Só Na Manha">
             <div class="slot-team-emblem emblem-snm">
               <img src="assets/team_snm.png" alt="Só Na Manha">
             </div>
@@ -180,11 +180,14 @@
               <span class="slot-id">VAGA #01 // CONFIRMADA</span>
               <span class="slot-team-name text-gold">Só Na Manha (SNM)</span>
             </div>
-            <span class="slot-status-tag locked-tag">LOCKED</span>
+            <div class="slot-action-tag">
+              <span class="slot-status-tag locked-tag">LOCKED</span>
+              <span class="slot-roster-hint"><i data-lucide="eye"></i> LINEUP</span>
+            </div>
           </div>
 
           <!-- Vaga 2: Confirmada - Katarrentos -->
-          <div class="slot-item slot-confirmed">
+          <div class="slot-item slot-confirmed slot-interactive sound-click" data-team-id="katarrentos" title="Clique para ver a Lineup da Katarrentos">
             <div class="slot-team-emblem emblem-katarrentos">
               <img src="assets/team_katarrentos.png" alt="Katarrentos">
             </div>
@@ -192,7 +195,10 @@
               <span class="slot-id">VAGA #02 // CONFIRMADA</span>
               <span class="slot-team-name text-purple">Katarrentos</span>
             </div>
-            <span class="slot-status-tag locked-tag">LOCKED</span>
+            <div class="slot-action-tag">
+              <span class="slot-status-tag locked-tag">LOCKED</span>
+              <span class="slot-roster-hint"><i data-lucide="eye"></i> LINEUP</span>
+            </div>
           </div>
 
           <!-- Vaga 3: Aberta -->
@@ -296,6 +302,20 @@
           <div class="btn-info">
             <span class="title">Gerador de Story Oficial</span>
             <span class="sub">Crie o card do seu time confirmado para o Instagram</span>
+          </div>
+          <div class="btn-action-icon"><i data-lucide="download"></i></div>
+        </div>
+      </button>
+
+      <!-- Botão: Gerador de Card Match Day (NOVO) -->
+      <button class="tactical-link-btn sound-click highlight-matchday" id="btnMatchDayModal">
+        <div class="corner-cut"></div>
+        <div class="btn-left-indicator neon-red-glow"></div>
+        <div class="btn-inner">
+          <div class="btn-icon neon-red"><i data-lucide="swords"></i></div>
+          <div class="btn-info">
+            <span class="title">Gerador Match Day // Stories 9:16</span>
+            <span class="sub">Crie cards oficiais de confronto (Time A vs Time B)</span>
           </div>
           <div class="btn-action-icon"><i data-lucide="download"></i></div>
         </div>
@@ -1012,6 +1032,140 @@
             <span>ENVIAR COMPROVANTE VIA WHATSAPP</span>
           </div>
         </a>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Modal: Perfil e Lineup do Time -->
+  <div class="cyber-modal" id="modalTeamProfile" role="dialog" aria-hidden="true">
+    <div class="modal-backdrop" data-close="modal"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="shield" class="text-neon-red"></i>
+          <h3 id="teamModalTitle">PERFIL DA EQUIPE</h3>
+        </div>
+        <button class="modal-close-btn sound-click" data-close="modal">&times;</button>
+      </div>
+      <div class="modal-body team-profile-body">
+        
+        <!-- Header do Time com Logo Grande e Glow -->
+        <div class="team-profile-hero" id="teamHeroCard">
+          <div class="team-hero-logo-wrap" id="teamHeroLogoWrap">
+            <img src="assets/team_snm.png" alt="Logo" id="teamHeroLogo" class="team-hero-logo">
+          </div>
+          <div class="team-hero-info">
+            <div class="team-hero-seed-badge" id="teamHeroSeed">SEED #1 // CONFIRMADO</div>
+            <h2 class="team-hero-name" id="teamHeroName">SÓ NA MANHA</h2>
+            <p class="team-hero-motto" id="teamHeroMotto">"Na calma, no round e na mira."</p>
+          </div>
+        </div>
+
+        <!-- Seção de Roster (5 Titulares + 1 Reserva) -->
+        <div class="team-roster-section">
+          <div class="roster-header">
+            <i data-lucide="users" class="text-tactical-green"></i>
+            <span>ROSTER OFICIAL // 5 TITULARES</span>
+          </div>
+
+          <div class="roster-players-list" id="teamRosterList">
+            <!-- Gerado dinamicamente via JS -->
+          </div>
+
+          <!-- Reserva -->
+          <div class="roster-sub-box" id="teamSubBox">
+            <div class="sub-badge"><i data-lucide="user-check"></i> RESERVA</div>
+            <span class="sub-name" id="teamSubName">A definir pelo capitão</span>
+          </div>
+        </div>
+
+        <!-- Ações do Modal -->
+        <div class="team-profile-actions">
+          <button class="btn-cyber-primary sound-click w-full" id="btnChallengeInVeto">
+            <div class="cyber-btn-content justify-center">
+              <i data-lucide="crosshair"></i>
+              <span>TESTAR CONFRONTO NO MAP VETO</span>
+            </div>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Modal: Gerador Match Day (Stories 9:16) -->
+  <div class="cyber-modal" id="modalMatchDay" role="dialog" aria-hidden="true">
+    <div class="modal-backdrop" data-close="modal"></div>
+    <div class="modal-dialog modal-dialog-large">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="swords" class="text-neon-red"></i>
+          <h3>GERADOR MATCH DAY // STORIES 9:16</h3>
+        </div>
+        <button class="modal-close-btn sound-click" data-close="modal">&times;</button>
+      </div>
+      <div class="modal-body matchday-gen-body">
+        
+        <p class="story-intro">
+          Crie artes épicas de confronto para os Stories do Instagram da <strong>@qntcup</strong> em alta definição (1080x1920) prontas para postar!
+        </p>
+
+        <div class="matchday-form-grid">
+          <div class="matchday-teams-row">
+            <div class="story-field">
+              <label><i data-lucide="shield"></i> TIME 1 (ESQUERDA)</label>
+              <select id="matchTeamASelect" class="story-input">
+                <option value="snm">Só Na Manha (SNM)</option>
+                <option value="katarrentos">Katarrentos</option>
+                <option value="vaga3">Equipe Vaga 3</option>
+                <option value="vaga4">Equipe Vaga 4</option>
+              </select>
+            </div>
+
+            <div class="matchday-vs-divider">VS</div>
+
+            <div class="story-field">
+              <label><i data-lucide="shield"></i> TIME 2 (DIREITA)</label>
+              <select id="matchTeamBSelect" class="story-input">
+                <option value="katarrentos">Katarrentos</option>
+                <option value="snm">Só Na Manha (SNM)</option>
+                <option value="vaga3">Equipe Vaga 3</option>
+                <option value="vaga4">Equipe Vaga 4</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="matchday-details-row">
+            <div class="story-field">
+              <label><i data-lucide="award"></i> FASE DO CONFRONTO</label>
+              <select id="matchPhaseSelect" class="story-input">
+                <option value="SEMIFINAL #01 // MD1">SEMIFINAL #01 // MD1</option>
+                <option value="SEMIFINAL #02 // MD1">SEMIFINAL #02 // MD1</option>
+                <option value="DISPUTA DE 3º LUGAR // MD1">DISPUTA DE 3º LUGAR // MD1</option>
+                <option value="GRANDE FINAL // MD3">GRANDE FINAL // MD3</option>
+              </select>
+            </div>
+
+            <div class="story-field">
+              <label><i data-lucide="clock"></i> DATA & HORÁRIO</label>
+              <input type="text" id="matchDateInput" value="14 DE NOVEMBRO • 13:00 BRT" class="story-input">
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas Preview -->
+        <div class="canvas-preview-container">
+          <span class="preview-badge"><i data-lucide="sparkles"></i> PREVIEW 9:16 (INSTAGRAM STORY)</span>
+          <canvas id="matchDayCanvas" width="1080" height="1920"></canvas>
+        </div>
+
+        <button class="btn-cyber-primary sound-click w-full" id="btnDownloadMatchDay">
+          <div class="cyber-btn-content justify-center">
+            <i data-lucide="download"></i>
+            <span>BAIXAR CARD MATCH DAY (PNG)</span>
+          </div>
+        </button>
 
       </div>
     </div>

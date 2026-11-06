@@ -335,7 +335,9 @@ document.addEventListener('DOMContentLoaded', () => {
     pix: document.getElementById('modalPix'),
     mapveto: document.getElementById('modalMapVeto'),
     bracket: document.getElementById('modalBracket'),
-    story: document.getElementById('modalStory')
+    story: document.getElementById('modalStory'),
+    teamProfile: document.getElementById('modalTeamProfile'),
+    matchDay: document.getElementById('modalMatchDay')
   };
 
   function openModal(modal) {
@@ -1168,6 +1170,382 @@ document.addEventListener('DOMContentLoaded', () => {
       el.addEventListener('mouseleave', () => crosshair.classList.remove('hovering'));
     });
   }
+
+  // =========================================================================
+  // 14. DADOS E MODAL DE LINEUP / PERFIL DA EQUIPE
+  // =========================================================================
+  const TEAMS_DATA = {
+    snm: {
+      name: 'Só Na Manha',
+      tag: 'SNM',
+      seed: 'SEED #1 // CONFIRMADO',
+      logo: 'assets/team_snm.png',
+      theme: 'theme-gold',
+      motto: '"Na calma, no round e na mira."',
+      players: [
+        { nick: 'Titular 1', role: 'Capitão / Duelista', isCaptain: true, agent: 'Jett' },
+        { nick: 'Titular 2', role: 'Iniciador', isCaptain: false, agent: 'Sova' },
+        { nick: 'Titular 3', role: 'Controlador', isCaptain: false, agent: 'Omen' },
+        { nick: 'Titular 4', role: 'Sentinela', isCaptain: false, agent: 'Killjoy' },
+        { nick: 'Titular 5', role: 'Flex', isCaptain: false, agent: 'KAY/O' }
+      ],
+      sub: 'Reserva a confirmar pelo capitão'
+    },
+    katarrentos: {
+      name: 'Katarrentos',
+      tag: 'KAT',
+      seed: 'SEED #2 // CONFIRMADO',
+      logo: 'assets/team_katarrentos.png',
+      theme: 'theme-purple',
+      motto: '"O veneno tá armado. Sem piedade no clutch."',
+      players: [
+        { nick: 'Titular 1', role: 'Capitão / Duelista', isCaptain: true, agent: 'Reyna' },
+        { nick: 'Titular 2', role: 'Iniciador', isCaptain: false, agent: 'Fade' },
+        { nick: 'Titular 3', role: 'Controlador', isCaptain: false, agent: 'Viper' },
+        { nick: 'Titular 4', role: 'Sentinela', isCaptain: false, agent: 'Cypher' },
+        { nick: 'Titular 5', role: 'Flex', isCaptain: false, agent: 'Breach' }
+      ],
+      sub: 'Reserva a confirmar pelo capitão'
+    }
+  };
+
+  let activeProfileTeamId = 'snm';
+
+  function openTeamProfile(teamId) {
+    const data = TEAMS_DATA[teamId];
+    if (!data) return;
+
+    activeProfileTeamId = teamId;
+
+    const modalTitle = document.getElementById('teamModalTitle');
+    const heroCard = document.getElementById('teamHeroCard');
+    const heroLogo = document.getElementById('teamHeroLogo');
+    const heroSeed = document.getElementById('teamHeroSeed');
+    const heroName = document.getElementById('teamHeroName');
+    const heroMotto = document.getElementById('teamHeroMotto');
+    const rosterList = document.getElementById('teamRosterList');
+    const subName = document.getElementById('teamSubName');
+
+    if (modalTitle) modalTitle.textContent = `PERFIL DA EQUIPE // ${data.tag}`;
+    if (heroCard) heroCard.className = `team-profile-hero ${data.theme}`;
+    if (heroLogo) {
+      heroLogo.src = data.logo;
+      heroLogo.alt = data.name;
+    }
+    if (heroSeed) heroSeed.textContent = data.seed;
+    if (heroName) heroName.textContent = data.name.toUpperCase();
+    if (heroMotto) heroMotto.textContent = data.motto;
+    if (subName) subName.textContent = data.sub;
+
+    if (rosterList) {
+      rosterList.innerHTML = '';
+      data.players.forEach((p, idx) => {
+        const item = document.createElement('div');
+        item.className = 'player-roster-card';
+        item.innerHTML = `
+          <div class="player-card-left">
+            <span class="player-num">#0${idx + 1}</span>
+            <span class="player-nick">${p.nick.toUpperCase()}</span>
+          </div>
+          <div class="player-card-right">
+            <span class="player-role-badge ${p.isCaptain ? 'captain' : ''}">${p.role}</span>
+            <span class="player-agent-tag">${p.agent}</span>
+          </div>
+        `;
+        rosterList.appendChild(item);
+      });
+    }
+
+    if (window.lucide) window.lucide.createIcons();
+    openModal(modals.teamProfile);
+  }
+
+  // Click nos slots confirmados para abrir o perfil
+  document.querySelectorAll('.slot-interactive').forEach((slot) => {
+    slot.addEventListener('click', () => {
+      const teamId = slot.getAttribute('data-team-id');
+      if (teamId) {
+        playTacticalClick(720, 0.08);
+        openTeamProfile(teamId);
+      }
+    });
+  });
+
+  // Botão "Testar Confronto no Map Veto" dentro do modal de perfil
+  document.getElementById('btnChallengeInVeto')?.addEventListener('click', () => {
+    closeModal(modals.teamProfile);
+    setTimeout(() => {
+      openModal(modals.mapveto);
+      const teamAInput = document.getElementById('teamANameInput');
+      if (teamAInput) {
+        teamAInput.value = TEAMS_DATA[activeProfileTeamId]?.name || 'Só Na Manha';
+      }
+      playTacticalClick(800, 0.08);
+    }, 200);
+  });
+
+  // =========================================================================
+  // 15. GERADOR MATCH DAY // STORIES 9:16
+  // =========================================================================
+  const matchDayCanvas = document.getElementById('matchDayCanvas');
+  const btnMatchDayModal = document.getElementById('btnMatchDayModal');
+  const btnDownloadMatchDay = document.getElementById('btnDownloadMatchDay');
+  const matchTeamASelect = document.getElementById('matchTeamASelect');
+  const matchTeamBSelect = document.getElementById('matchTeamBSelect');
+  const matchPhaseSelect = document.getElementById('matchPhaseSelect');
+  const matchDateInput = document.getElementById('matchDateInput');
+
+  btnMatchDayModal?.addEventListener('click', () => {
+    openModal(modals.matchDay);
+    renderMatchDayCanvas();
+  });
+
+  // Imagens cacheadas para os times no Canvas
+  const teamLogosCache = {
+    snm: new Image(),
+    katarrentos: new Image()
+  };
+  teamLogosCache.snm.src = 'assets/team_snm.png';
+  teamLogosCache.katarrentos.src = 'assets/team_katarrentos.png';
+
+  function renderMatchDayCanvas() {
+    if (!matchDayCanvas) return;
+    const ctx = matchDayCanvas.getContext('2d');
+    const w = 1080;
+    const h = 1920;
+
+    // 1. Fundo Gradiente Tático Gamer
+    const bgGrad = ctx.createLinearGradient(0, 0, w, h);
+    bgGrad.addColorStop(0, '#0a0d14');
+    bgGrad.addColorStop(0.3, '#101721');
+    bgGrad.addColorStop(0.7, '#151324');
+    bgGrad.addColorStop(1, '#06070a');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, w, h);
+
+    // Efeitos de Luzes Neon nas Laterais
+    const glowLeft = ctx.createRadialGradient(180, 850, 50, 180, 850, 450);
+    glowLeft.addColorStop(0, 'rgba(255, 215, 0, 0.18)');
+    glowLeft.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = glowLeft;
+    ctx.fillRect(0, 400, w, 900);
+
+    const glowRight = ctx.createRadialGradient(900, 850, 50, 900, 850, 450);
+    glowRight.addColorStop(0, 'rgba(168, 85, 247, 0.22)');
+    glowRight.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = glowRight;
+    ctx.fillRect(0, 400, w, 900);
+
+    // Scanlines sutis
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+    ctx.lineWidth = 2;
+    for (let y = 0; y < h; y += 30) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
+    }
+
+    // Moldura Cyberpunk Externa com cortes de canto
+    ctx.strokeStyle = 'rgba(255, 70, 85, 0.35)';
+    ctx.lineWidth = 6;
+    ctx.strokeRect(40, 40, w - 80, h - 80);
+
+    // 2. Topo: Logo Oficial QNT CUP
+    if (logoImage.complete && logoImage.naturalWidth > 0) {
+      ctx.save();
+      const logoSize = 200;
+      const logoX = (w - logoSize) / 2;
+      const logoY = 90;
+      ctx.shadowColor = '#ff4655';
+      ctx.shadowBlur = 35;
+      ctx.drawImage(logoImage, logoX, logoY, logoSize, logoSize);
+      ctx.restore();
+    }
+
+    // Título Superior
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#ff4655';
+    ctx.font = 'bold 34px "Chakra Petch", sans-serif';
+    ctx.fillText('CAMPEONATO DE VALORANT // 1ª EDIÇÃO', w / 2, 340);
+
+    // 3. Faixa de MATCH DAY
+    ctx.fillStyle = '#ff4655';
+    ctx.fillRect((w - 480) / 2, 380, 480, 70);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 44px "Teko", sans-serif';
+    ctx.fillText('⚔️ MATCH DAY // CONFRONTO ⚔️', w / 2, 428);
+
+    // Fase do jogo
+    const phaseText = matchPhaseSelect?.value || 'SEMIFINAL #01 // MD1';
+    ctx.fillStyle = '#ffd700';
+    ctx.font = 'bold 36px "Chakra Petch", sans-serif';
+    ctx.fillText(phaseText, w / 2, 510);
+
+    // Data e Horário
+    const dateText = matchDateInput?.value || '14 DE NOVEMBRO • 13:00 BRT';
+    ctx.fillStyle = '#ece8e1';
+    ctx.font = '28px "Chakra Petch", sans-serif';
+    ctx.fillText(`🕒 ${dateText}`, w / 2, 560);
+
+    // 4. ARENA DO CONFRONTO: TIME A (Esquerda) vs TIME B (Direita)
+    const teamAVal = matchTeamASelect?.value || 'snm';
+    const teamBVal = matchTeamBSelect?.value || 'katarrentos';
+
+    const teamAName = teamAVal === 'snm' ? 'SÓ NA MANHA' : (teamAVal === 'katarrentos' ? 'KATARRENTOS' : 'EQUIPE VAGA 3');
+    const teamBName = teamBVal === 'katarrentos' ? 'KATARRENTOS' : (teamBVal === 'snm' ? 'SÓ NA MANHA' : 'EQUIPE VAGA 4');
+
+    // Box Time A
+    const boxAY = 700;
+    const boxAX = 140;
+    const boxSize = 280;
+
+    // Emblema Time A
+    ctx.save();
+    ctx.fillStyle = 'rgba(20, 28, 38, 0.85)';
+    ctx.fillRect(boxAX, boxAY, boxSize, boxSize);
+    ctx.strokeStyle = '#ffd700';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(boxAX, boxAY, boxSize, boxSize);
+
+    const imgA = teamLogosCache[teamAVal];
+    if (imgA && imgA.complete && imgA.naturalWidth > 0) {
+      ctx.shadowColor = '#ffd700';
+      ctx.shadowBlur = 20;
+      ctx.drawImage(imgA, boxAX + 25, boxAY + 25, boxSize - 50, boxSize - 50);
+    } else {
+      ctx.fillStyle = '#ffd700';
+      ctx.font = 'bold 60px "Teko", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(teamAVal.toUpperCase(), boxAX + boxSize / 2, boxAY + boxSize / 2 + 20);
+    }
+    ctx.restore();
+
+    // Nome Time A
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#ffd700';
+    ctx.font = 'bold 50px "Teko", sans-serif';
+    ctx.fillText(teamAName, boxAX + boxSize / 2, boxAY + boxSize + 60);
+
+    // Central VS Badge
+    const vsY = boxAY + boxSize / 2;
+    ctx.save();
+    ctx.fillStyle = '#05070a';
+    ctx.beginPath();
+    ctx.arc(w / 2, vsY, 70, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#ff4655';
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 65px "Teko", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.shadowColor = '#ff4655';
+    ctx.shadowBlur = 20;
+    ctx.fillText('VS', w / 2, vsY + 22);
+    ctx.restore();
+
+    // Box Time B
+    const boxBX = w - 140 - boxSize;
+    ctx.save();
+    ctx.fillStyle = 'rgba(20, 28, 38, 0.85)';
+    ctx.fillRect(boxBX, boxAY, boxSize, boxSize);
+    ctx.strokeStyle = '#c084fc';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(boxBX, boxAY, boxSize, boxSize);
+
+    const imgB = teamLogosCache[teamBVal];
+    if (imgB && imgB.complete && imgB.naturalWidth > 0) {
+      ctx.shadowColor = '#c084fc';
+      ctx.shadowBlur = 20;
+      ctx.drawImage(imgB, boxBX + 25, boxAY + 25, boxSize - 50, boxSize - 50);
+    } else {
+      ctx.fillStyle = '#c084fc';
+      ctx.font = 'bold 60px "Teko", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(teamBVal.toUpperCase(), boxBX + boxSize / 2, boxAY + boxSize / 2 + 20);
+    }
+    ctx.restore();
+
+    // Nome Time B
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#c084fc';
+    ctx.font = 'bold 50px "Teko", sans-serif';
+    ctx.fillText(teamBName, boxBX + boxSize / 2, boxAY + boxSize + 60);
+
+    // 5. Chamada de Premiação e Transmissão
+    ctx.fillStyle = 'rgba(0, 240, 255, 0.1)';
+    ctx.fillRect(160, 1200, w - 320, 90);
+    ctx.strokeStyle = 'rgba(0, 240, 255, 0.4)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(160, 1200, w - 320, 90);
+
+    ctx.fillStyle = '#00f0ff';
+    ctx.font = 'bold 36px "Chakra Petch", sans-serif';
+    ctx.fillText('🔴 TRANSMISSÃO AO VIVO NA TWITCH', w / 2, 1256);
+
+    ctx.fillStyle = '#ece8e1';
+    ctx.font = 'bold 30px "Chakra Petch", sans-serif';
+    ctx.fillText('VALENDO 1.000 VP POR JOGADOR CAMPEÃO + R$ 40 PIX', w / 2, 1340);
+
+    // 6. Rodapé: Patrocinadores Oficiais
+    ctx.fillStyle = '#ffd700';
+    ctx.font = 'bold 26px "Chakra Petch", sans-serif';
+    ctx.fillText('PATROCÍNIO MASTER: NaMoGrafic • Monteiro\'s Pet', w / 2, 1660);
+
+    ctx.fillStyle = '#8b97a2';
+    ctx.font = '24px "Chakra Petch", sans-serif';
+    ctx.fillText('PATROCINADORES: D. Alves 3D • Trajano.Sports', w / 2, 1705);
+
+    ctx.fillStyle = '#ff4655';
+    ctx.font = 'bold 36px "Teko", sans-serif';
+    ctx.fillText('ORGANIZAÇÃO & INFORMAÇÕES: @QNTCUP', w / 2, 1800);
+  }
+
+  [matchTeamASelect, matchTeamBSelect, matchPhaseSelect, matchDateInput].forEach((input) => {
+    input?.addEventListener('change', renderMatchDayCanvas);
+    input?.addEventListener('input', renderMatchDayCanvas);
+  });
+
+  // Download do Card Match Day
+  btnDownloadMatchDay?.addEventListener('click', () => {
+    if (!matchDayCanvas) return;
+    playTacticalClick(900, 0.08);
+
+    try {
+      matchDayCanvas.toBlob((blob) => {
+        if (!blob) {
+          const dataUrl = matchDayCanvas.toDataURL('image/png');
+          triggerMatchDayDownload(dataUrl);
+          return;
+        }
+        const blobUrl = URL.createObjectURL(blob);
+        triggerMatchDayDownload(blobUrl);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+      }, 'image/png');
+    } catch (e) {
+      try {
+        const dataUrl = matchDayCanvas.toDataURL('image/png');
+        triggerMatchDayDownload(dataUrl);
+      } catch (err) {
+        showToast('Erro ao exportar card');
+      }
+    }
+  });
+
+  function triggerMatchDayDownload(href) {
+    const link = document.createElement('a');
+    link.download = 'qntcup-matchday-confronto.png';
+    link.href = href;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    playSuccessTone();
+    showToast('📸 Card Match Day baixado com sucesso!');
+  }
+
 
   // Tap Ripple no Celular
   document.addEventListener('touchstart', (e) => {
