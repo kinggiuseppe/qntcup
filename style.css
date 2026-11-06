@@ -3173,9 +3173,19 @@ body.spike-armed-mode .brand-title {
 }
 
 .player-role-badge.captain {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   background: rgba(255, 215, 0, 0.15);
   color: #ffd700;
   border: 1px solid rgba(255, 215, 0, 0.35);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.player-role-badge.captain svg {
+  width: 12px;
+  height: 12px;
 }
 
 .player-agent-tag {

@@ -1183,11 +1183,11 @@ document.addEventListener('DOMContentLoaded', () => {
       theme: 'theme-gold',
       motto: '"Na calma, no round e na mira."',
       players: [
-        { nick: 'Titular 1', role: 'Capitão / Duelista', isCaptain: true, agent: 'Jett' },
-        { nick: 'Titular 2', role: 'Iniciador', isCaptain: false, agent: 'Sova' },
-        { nick: 'Titular 3', role: 'Controlador', isCaptain: false, agent: 'Omen' },
-        { nick: 'Titular 4', role: 'Sentinela', isCaptain: false, agent: 'Killjoy' },
-        { nick: 'Titular 5', role: 'Flex', isCaptain: false, agent: 'KAY/O' }
+        { nick: 'GXM3S', isCaptain: true },
+        { nick: 'NEVOEIRO', isCaptain: false },
+        { nick: 'Rato molhado', isCaptain: false },
+        { nick: 'H0GGYBR11', isCaptain: false },
+        { nick: 'unknown', isCaptain: false }
       ],
       sub: 'Reserva a confirmar pelo capitão'
     },
@@ -1199,11 +1199,11 @@ document.addEventListener('DOMContentLoaded', () => {
       theme: 'theme-purple',
       motto: '"O veneno tá armado. Sem piedade no clutch."',
       players: [
-        { nick: 'Titular 1', role: 'Capitão / Duelista', isCaptain: true, agent: 'Reyna' },
-        { nick: 'Titular 2', role: 'Iniciador', isCaptain: false, agent: 'Fade' },
-        { nick: 'Titular 3', role: 'Controlador', isCaptain: false, agent: 'Viper' },
-        { nick: 'Titular 4', role: 'Sentinela', isCaptain: false, agent: 'Cypher' },
-        { nick: 'Titular 5', role: 'Flex', isCaptain: false, agent: 'Breach' }
+        { nick: 'Titular 1', isCaptain: true },
+        { nick: 'Titular 2', isCaptain: false },
+        { nick: 'Titular 3', isCaptain: false },
+        { nick: 'Titular 4', isCaptain: false },
+        { nick: 'Titular 5', isCaptain: false }
       ],
       sub: 'Reserva a confirmar pelo capitão'
     },
@@ -1215,11 +1215,11 @@ document.addEventListener('DOMContentLoaded', () => {
       theme: 'theme-cyan',
       motto: '"O crepúsculo dos deuses. A queda dos adversários."',
       players: [
-        { nick: 'Titular 1', role: 'Capitão / Duelista', isCaptain: true, agent: 'Breach' },
-        { nick: 'Titular 2', role: 'Iniciador', isCaptain: false, agent: 'Sova' },
-        { nick: 'Titular 3', role: 'Controlador', isCaptain: false, agent: 'Omen' },
-        { nick: 'Titular 4', role: 'Sentinela', isCaptain: false, agent: 'Cypher' },
-        { nick: 'Titular 5', role: 'Flex', isCaptain: false, agent: 'Gekko' }
+        { nick: 'RayoVac', isCaptain: false },
+        { nick: 'Flash', isCaptain: false },
+        { nick: 'Nixt', isCaptain: false },
+        { nick: 'Reyca', isCaptain: false },
+        { nick: 'Lipexx', isCaptain: false }
       ],
       sub: 'Reserva a confirmar pelo capitão'
     },
@@ -1231,11 +1231,11 @@ document.addEventListener('DOMContentLoaded', () => {
       theme: 'theme-red',
       motto: '"Sem pressão, na bala e o que vier é lucro."',
       players: [
-        { nick: 'Titular 1', role: 'Capitão / Duelista', isCaptain: true, agent: 'Phoenix' },
-        { nick: 'Titular 2', role: 'Iniciador', isCaptain: false, agent: 'Fade' },
-        { nick: 'Titular 3', role: 'Controlador', isCaptain: false, agent: 'Brimstone' },
-        { nick: 'Titular 4', role: 'Sentinela', isCaptain: false, agent: 'Killjoy' },
-        { nick: 'Titular 5', role: 'Flex', isCaptain: false, agent: 'Clove' }
+        { nick: 'yse', isCaptain: true },
+        { nick: 'NuRmAgUmEdOv', isCaptain: false },
+        { nick: 'Lckz', isCaptain: false },
+        { nick: 'Arise', isCaptain: false },
+        { nick: 'crok', isCaptain: false }
       ],
       sub: 'Reserva a confirmar pelo capitão'
     }
@@ -1277,11 +1277,10 @@ document.addEventListener('DOMContentLoaded', () => {
         item.innerHTML = `
           <div class="player-card-left">
             <span class="player-num">#0${idx + 1}</span>
-            <span class="player-nick">${p.nick.toUpperCase()}</span>
+            <span class="player-nick">${p.nick}</span>
           </div>
           <div class="player-card-right">
-            <span class="player-role-badge ${p.isCaptain ? 'captain' : ''}">${p.role}</span>
-            <span class="player-agent-tag">${p.agent}</span>
+            ${p.isCaptain ? '<span class="player-role-badge captain"><i data-lucide="crown"></i> CAPITÃO</span>' : ''}
           </div>
         `;
         rosterList.appendChild(item);
