@@ -1656,7 +1656,7 @@ body {
 }
 
 .slot-team-name {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 700;
   font-family: var(--font-tactical);
   color: #fff;
@@ -1668,7 +1668,6 @@ body {
 
 .slot-team-name.text-gold {
   color: #ffd700;
-  font-size: 0.95rem;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
 }
 
