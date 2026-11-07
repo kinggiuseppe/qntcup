@@ -1229,11 +1229,11 @@ document.addEventListener('DOMContentLoaded', () => {
       theme: 'theme-purple',
       motto: '"O veneno tá armado. Sem piedade no clutch."',
       players: [
-        { nick: 'Titular 1', isCaptain: true },
-        { nick: 'Titular 2', isCaptain: false },
-        { nick: 'Titular 3', isCaptain: false },
-        { nick: 'Titular 4', isCaptain: false },
-        { nick: 'Titular 5', isCaptain: false }
+        { nick: 'KTDFATO', isCaptain: true },
+        { nick: 'drn', isCaptain: false },
+        { nick: 'lohan1213', isCaptain: false },
+        { nick: 'ymurilloxit', isCaptain: false },
+        { nick: 'LOUD Tkzin', isCaptain: false }
       ],
       sub: 'Reserva a confirmar pelo capitão'
     },
