@@ -1245,11 +1245,11 @@ document.addEventListener('DOMContentLoaded', () => {
       theme: 'theme-cyan',
       motto: '"O crepúsculo dos deuses. A queda dos adversários."',
       players: [
-        { nick: 'RayoVac', isCaptain: false },
+        { nick: 'RayoVac', isCaptain: true },
         { nick: 'Flash', isCaptain: false },
         { nick: 'Nixt', isCaptain: false },
         { nick: 'Reyca', isCaptain: false },
-        { nick: 'Lipexx', isCaptain: false }
+        { nick: 'Vai da não', isCaptain: false }
       ],
       sub: 'Reserva a confirmar pelo capitão'
     },
