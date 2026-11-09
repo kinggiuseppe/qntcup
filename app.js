@@ -575,11 +575,12 @@ document.addEventListener('DOMContentLoaded', () => {
       ];
       return sequence[step] || null;
     } else {
+      // MD3: 2 bans iniciais (1 cada time) -> 2 picks (o outro time escolhe o lado) -> 2 bans finais -> 1 decider
       const sequence = [
-        { team: 'A', teamName: teamA, action: 'pick', label: `Vez de ${teamA} ESCOLHER seu mapa (Mapa 1)` },
-        { team: 'B', teamName: teamB, action: 'pick', label: `Vez de ${teamB} ESCOLHER seu mapa (Mapa 2)` },
-        { team: 'A', teamName: teamA, action: 'ban', label: `Vez de ${teamA} BANIR um mapa` },
-        { team: 'B', teamName: teamB, action: 'ban', label: `Vez de ${teamB} BANIR um mapa` },
+        { team: 'A', teamName: teamA, action: 'ban', label: `Vez de ${teamA} BANIR um mapa (1º Ban)` },
+        { team: 'B', teamName: teamB, action: 'ban', label: `Vez de ${teamB} BANIR um mapa (2º Ban)` },
+        { team: 'A', teamName: teamA, action: 'pick', mapNum: 1, sideNote: `${teamB} escolhe o lado`, label: `Vez de ${teamA} ESCOLHER seu mapa (Mapa 1)` },
+        { team: 'B', teamName: teamB, action: 'pick', mapNum: 2, sideNote: `${teamA} escolhe o lado`, label: `Vez de ${teamB} ESCOLHER seu mapa (Mapa 2)` },
         { team: 'A', teamName: teamA, action: 'ban', label: `Vez de ${teamA} BANIR um mapa` },
         { team: 'B', teamName: teamB, action: 'ban', label: `Vez de ${teamB} BANIR um mapa` }
       ];
@@ -597,7 +598,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (vetoInstruction) {
         const actionWord = stepInfo.action === 'pick' ? 'ESCOLHER' : 'BANIR';
         const colorClass = stepInfo.action === 'pick' ? 'text-gold' : 'text-neon-red';
-        vetoInstruction.innerHTML = `Vez de <strong class="${colorClass}">${stepInfo.teamName}</strong> ${actionWord} um mapa`;
+        const sideInfo = stepInfo.sideNote ? `<span style="display:block; font-size:0.72rem; color:var(--neon-cyan); margin-top:3px;"><i data-lucide="shield"></i> (${stepInfo.sideNote})</span>` : '';
+        vetoInstruction.innerHTML = `Vez de <strong class="${colorClass}">${stepInfo.teamName}</strong> ${actionWord} um mapa${sideInfo}`;
+        if (window.lucide) window.lucide.createIcons();
       }
     } else {
       if (vetoPhaseLabel) vetoPhaseLabel.textContent = 'MAP VETO CONCLUÍDO';
@@ -617,16 +620,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const stepInfo = getStepInfo(vetoStep);
     if (!stepInfo) return;
 
+    const teamA = getTeamName('A');
+    const teamB = getTeamName('B');
+
     if (stepInfo.action === 'ban') {
       map.status = 'banned';
       map.by = stepInfo.teamName;
       playBanSound();
-      vetoHistory.push(`🚫 ${stepInfo.teamName} BANIU ${mapId.toUpperCase()}`);
+      vetoHistory.push(`🚫 ${stepInfo.teamName} BANIU ${map.name ? map.name.toUpperCase() : mapId.toUpperCase()}`);
     } else if (stepInfo.action === 'pick') {
       map.status = 'picked';
       map.by = stepInfo.teamName;
+      map.sideBy = stepInfo.team === 'A' ? teamB : teamA;
       playPickSound();
-      vetoHistory.push(`⭐ ${stepInfo.teamName} ESCOLHEU ${mapId.toUpperCase()}`);
+      const sideText = stepInfo.sideNote ? ` (${stepInfo.sideNote})` : '';
+      vetoHistory.push(`⭐ Mapa ${stepInfo.mapNum || ''}: ${map.name ? map.name.toUpperCase() : mapId.toUpperCase()} (Pick de ${stepInfo.teamName}${sideText})`);
     }
 
     vetoStep++;
@@ -697,10 +705,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const decider = OFFICIAL_MAPS.find((m) => mapsState[m.id].status === 'decider');
 
       picks.forEach((p, idx) => {
-        summary += `• Mapa ${idx + 1}: ${p.name.toUpperCase()} (Pick de ${mapsState[p.id].by})\n`;
+        const pickingTeam = mapsState[p.id].by;
+        const sideTeam = mapsState[p.id].sideBy || (pickingTeam === teamA ? teamB : teamA);
+        summary += `• Mapa ${idx + 1}: ${p.name.toUpperCase()} (Pick de ${pickingTeam} | ${sideTeam} escolhe o lado)\n`;
       });
       if (decider) {
-        summary += `• Mapa 3 (Decider): ${decider.name.toUpperCase()}\n\n`;
+        summary += `• Mapa 3 (Decider): ${decider.name.toUpperCase()} (Lado por faca/sorteio)\n\n`;
       }
     }
 
