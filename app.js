@@ -489,17 +489,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // =========================================================================
   // 8. SISTEMA DE MAP VETO (BANIMENTO DE MAPAS VALORANT)
-  // Mapas oficiais: Ascent, Bind, Breeze, Fracture, Haven, Icebox, Sunset
+  // Mapas oficiais: Lotus, Summit, Sunset, Bind, Abyss, Corrode, Haven
   // =========================================================================
 
   const OFFICIAL_MAPS = [
-    { id: 'ascent', name: 'Ascent', gradient: 'linear-gradient(135deg, #1b4965, #0077b6)' },
+    { id: 'lotus', name: 'Lotus', gradient: 'linear-gradient(135deg, #7b2cbf, #9d4edd)' },
+    { id: 'summit', name: 'Summit', gradient: 'linear-gradient(135deg, #1d3557, #457b9d)' },
+    { id: 'sunset', name: 'Sunset', gradient: 'linear-gradient(135deg, #b5179e, #7209b7)' },
     { id: 'bind', name: 'Bind', gradient: 'linear-gradient(135deg, #7f4f24, #936639)' },
-    { id: 'breeze', name: 'Breeze', gradient: 'linear-gradient(135deg, #0077b6, #0096c7)' },
-    { id: 'fracture', name: 'Fracture', gradient: 'linear-gradient(135deg, #588157, #3a5a40)' },
-    { id: 'haven', name: 'Haven', gradient: 'linear-gradient(135deg, #9b2226, #ae2012)' },
-    { id: 'icebox', name: 'Icebox', gradient: 'linear-gradient(135deg, #023e8a, #0077b6)' },
-    { id: 'sunset', name: 'Sunset', gradient: 'linear-gradient(135deg, #b5179e, #7209b7)' }
+    { id: 'abyss', name: 'Abyss', gradient: 'linear-gradient(135deg, #03045e, #0284c7)' },
+    { id: 'corrode', name: 'Corrode', gradient: 'linear-gradient(135deg, #b45309, #78350f)' },
+    { id: 'haven', name: 'Haven', gradient: 'linear-gradient(135deg, #9b2226, #ae2012)' }
   ];
 
   let currentVetoMode = 'MD1';
