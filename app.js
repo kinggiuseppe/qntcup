@@ -542,7 +542,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function updateTeamSelection(teamKey, teamId) {
+  function applyVetoTeam(teamKey, teamId) {
     const isTeamA = teamKey === 'A';
     const select = isTeamA ? vetoTeamASelect : vetoTeamBSelect;
     const input = isTeamA ? teamAInput : teamBInput;
@@ -570,37 +570,65 @@ document.addEventListener('DOMContentLoaded', () => {
         logo.style.display = 'none';
       }
     }
+  }
 
+  function setVetoMatchup(teamAId, teamBId, presetNum = 0) {
+    if (presetNum === 1) {
+      presetMatch1?.classList.add('active');
+      presetMatch2?.classList.remove('active');
+    } else if (presetNum === 2) {
+      presetMatch2?.classList.add('active');
+      presetMatch1?.classList.remove('active');
+    } else {
+      presetMatch1?.classList.remove('active');
+      presetMatch2?.classList.remove('active');
+    }
+
+    applyVetoTeam('A', teamAId);
+    applyVetoTeam('B', teamBId);
+    resetVeto();
+  }
+
+  function updateTeamSelection(teamKey, teamId) {
+    applyVetoTeam(teamKey, teamId);
     resetVeto();
   }
 
   vetoTeamASelect?.addEventListener('change', (e) => {
-    updateTeamSelection('A', e.target.value);
-    presetMatch1?.classList.remove('active');
-    presetMatch2?.classList.remove('active');
+    const val = e.target.value;
+    if (val === 'sgl') {
+      setVetoMatchup('sgl', 'snm', 2);
+    } else if (val === 'snm') {
+      setVetoMatchup('snm', 'sgl', 2);
+    } else if (val === 'ragnarok') {
+      setVetoMatchup('ragnarok', 'katarrentos', 1);
+    } else if (val === 'katarrentos') {
+      setVetoMatchup('katarrentos', 'ragnarok', 1);
+    } else {
+      applyVetoTeam('A', val);
+      presetMatch1?.classList.remove('active');
+      presetMatch2?.classList.remove('active');
+      resetVeto();
+    }
     playTacticalClick(720, 0.06);
   });
 
   vetoTeamBSelect?.addEventListener('change', (e) => {
-    updateTeamSelection('B', e.target.value);
+    const val = e.target.value;
+    applyVetoTeam('B', val);
     presetMatch1?.classList.remove('active');
     presetMatch2?.classList.remove('active');
+    resetVeto();
     playTacticalClick(720, 0.06);
   });
 
   presetMatch1?.addEventListener('click', () => {
-    presetMatch1.classList.add('active');
-    presetMatch2?.classList.remove('active');
-    updateTeamSelection('A', 'ragnarok');
-    updateTeamSelection('B', 'katarrentos');
+    setVetoMatchup('ragnarok', 'katarrentos', 1);
     playTacticalClick(800, 0.08);
   });
 
   presetMatch2?.addEventListener('click', () => {
-    presetMatch2.classList.add('active');
-    presetMatch1?.classList.remove('active');
-    updateTeamSelection('A', 'sgl');
-    updateTeamSelection('B', 'snm');
+    setVetoMatchup('sgl', 'snm', 2);
     playTacticalClick(800, 0.08);
   });
 
@@ -974,7 +1002,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fillText('PATROCÍNIO MASTER: NamoGrafic • Monteiro\'s Pet', w / 2, 1670);
     ctx.fillStyle = '#8b97a2';
     ctx.font = '24px "Chakra Petch", sans-serif';
-    ctx.fillText('PATROCINADORES: D. Alves 3D • Trajano.Sports', w / 2, 1715);
+    ctx.fillText('PATROCINADORES: D. Alves 3D • Trajano • Kōri Gelo • Banca Osasco', w / 2, 1715);
 
     ctx.fillStyle = '#ff4655';
     ctx.font = 'bold 34px "Teko", sans-serif';
@@ -1664,14 +1692,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ctx.fillStyle = '#8b97a2';
     ctx.font = '24px "Chakra Petch", sans-serif';
-    ctx.fillText('PATROCINADORES: D. Alves 3D • Trajano.Sports', w / 2, 1705);
+    ctx.fillText('PATROCINADORES: D. Alves 3D • Trajano • Kōri Gelo • Banca Osasco', w / 2, 1705);
 
     ctx.fillStyle = '#ff4655';
     ctx.font = 'bold 36px "Teko", sans-serif';
     ctx.fillText('ORGANIZAÇÃO & INFORMAÇÕES: @QNTCUP', w / 2, 1800);
   }
 
-  [matchTeamASelect, matchTeamBSelect, matchPhaseSelect, matchDateInput].forEach((input) => {
+  const matchdayPreset1 = document.getElementById('matchdayPreset1');
+  const matchdayPreset2 = document.getElementById('matchdayPreset2');
+
+  function setMatchDayMatchup(teamAId, teamBId, presetNum = 0) {
+    if (presetNum === 1) {
+      matchdayPreset1?.classList.add('active');
+      matchdayPreset2?.classList.remove('active');
+    } else if (presetNum === 2) {
+      matchdayPreset2?.classList.add('active');
+      matchdayPreset1?.classList.remove('active');
+    } else {
+      matchdayPreset1?.classList.remove('active');
+      matchdayPreset2?.classList.remove('active');
+    }
+    if (matchTeamASelect) matchTeamASelect.value = teamAId;
+    if (matchTeamBSelect) matchTeamBSelect.value = teamBId;
+    renderMatchDayCanvas();
+    playTacticalClick(800, 0.08);
+  }
+
+  matchdayPreset1?.addEventListener('click', () => {
+    setMatchDayMatchup('ragnarok', 'katarrentos', 1);
+  });
+
+  matchdayPreset2?.addEventListener('click', () => {
+    setMatchDayMatchup('sgl', 'snm', 2);
+  });
+
+  matchTeamASelect?.addEventListener('change', (e) => {
+    const val = e.target.value;
+    if (val === 'sgl') {
+      setMatchDayMatchup('sgl', 'snm', 2);
+    } else if (val === 'snm') {
+      setMatchDayMatchup('snm', 'sgl', 2);
+    } else if (val === 'ragnarok') {
+      setMatchDayMatchup('ragnarok', 'katarrentos', 1);
+    } else if (val === 'katarrentos') {
+      setMatchDayMatchup('katarrentos', 'ragnarok', 1);
+    } else {
+      matchdayPreset1?.classList.remove('active');
+      matchdayPreset2?.classList.remove('active');
+      renderMatchDayCanvas();
+    }
+  });
+
+  [matchTeamBSelect, matchPhaseSelect, matchDateInput].forEach((input) => {
     input?.addEventListener('change', renderMatchDayCanvas);
     input?.addEventListener('input', renderMatchDayCanvas);
   });
