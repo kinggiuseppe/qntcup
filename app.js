@@ -9,6 +9,76 @@ document.addEventListener('DOMContentLoaded', () => {
     window.lucide.createIcons();
   }
 
+  // =========================================================================
+  // DADOS OFICIAIS DAS EQUIPES (DEFINIDO NO TOPO PARA EVITAR TDZ)
+  // =========================================================================
+  const TEAMS_DATA = {
+    snm: {
+      name: 'Só Na Manha',
+      tag: 'SNM',
+      seed: 'SEED #1 // CONFIRMADO',
+      logo: 'assets/team_snm.png',
+      theme: 'theme-gold',
+      motto: '"Na calma, no round e na mira."',
+      players: [
+        { nick: 'GXM3S', isCaptain: true },
+        { nick: 'NEVOEIRO', isCaptain: false },
+        { nick: 'Rato molhado', isCaptain: false },
+        { nick: 'H0GGYBR11', isCaptain: false },
+        { nick: 'unknown', isCaptain: false }
+      ],
+      sub: 'Reserva a confirmar pelo capitão'
+    },
+    katarrentos: {
+      name: 'Katarrentos',
+      tag: 'KAT',
+      seed: 'SEED #2 // CONFIRMADO',
+      logo: 'assets/team_katarrentos.png',
+      theme: 'theme-purple',
+      motto: '"O veneno tá armado. Sem piedade no clutch."',
+      players: [
+        { nick: 'KTDFATO', isCaptain: true },
+        { nick: 'drn', isCaptain: false },
+        { nick: 'lohan1213', isCaptain: false },
+        { nick: 'ymurilloxit', isCaptain: false },
+        { nick: 'LOUD Tkzin', isCaptain: false }
+      ],
+      sub: 'Reserva a confirmar pelo capitão'
+    },
+    ragnarok: {
+      name: 'Ragnarök',
+      tag: 'RAG',
+      seed: 'SEED #3 // CONFIRMADO',
+      logo: 'assets/team_ragnarok.png',
+      theme: 'theme-cyan',
+      motto: '"O crepúsculo dos deuses. A queda dos adversários."',
+      players: [
+        { nick: 'RayoVac', isCaptain: true },
+        { nick: 'Flash', isCaptain: false },
+        { nick: 'Nixt', isCaptain: false },
+        { nick: 'Reyca', isCaptain: false },
+        { nick: 'Lipexx', isCaptain: false }
+      ],
+      sub: 'Reserva a confirmar pelo capitão'
+    },
+    sgl: {
+      name: 'Se Ganhar é Lucro',
+      tag: 'SGL',
+      seed: 'SEED #4 // CONFIRMADO',
+      logo: 'assets/team_sgl.png',
+      theme: 'theme-red',
+      motto: '"Sem pressão, na bala e o que vier é lucro."',
+      players: [
+        { nick: 'yse', isCaptain: true },
+        { nick: 'NuRmAgUmEdOv', isCaptain: false },
+        { nick: 'Lckz', isCaptain: false },
+        { nick: 'Arise', isCaptain: false },
+        { nick: 'crok', isCaptain: false }
+      ],
+      sub: 'Reserva a confirmar pelo capitão'
+    }
+  };
+
   // 2. Sistema de Áudio Tático & BGM Engine (Web Audio API)
   let audioCtx = null;
   let soundEnabled = true;
@@ -1321,72 +1391,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // =========================================================================
   // 14. DADOS E MODAL DE LINEUP / PERFIL DA EQUIPE
   // =========================================================================
-  const TEAMS_DATA = {
-    snm: {
-      name: 'Só Na Manha',
-      tag: 'SNM',
-      seed: 'SEED #1 // CONFIRMADO',
-      logo: 'assets/team_snm.png',
-      theme: 'theme-gold',
-      motto: '"Na calma, no round e na mira."',
-      players: [
-        { nick: 'GXM3S', isCaptain: true },
-        { nick: 'NEVOEIRO', isCaptain: false },
-        { nick: 'Rato molhado', isCaptain: false },
-        { nick: 'H0GGYBR11', isCaptain: false },
-        { nick: 'unknown', isCaptain: false }
-      ],
-      sub: 'Reserva a confirmar pelo capitão'
-    },
-    katarrentos: {
-      name: 'Katarrentos',
-      tag: 'KAT',
-      seed: 'SEED #2 // CONFIRMADO',
-      logo: 'assets/team_katarrentos.png',
-      theme: 'theme-purple',
-      motto: '"O veneno tá armado. Sem piedade no clutch."',
-      players: [
-        { nick: 'KTDFATO', isCaptain: true },
-        { nick: 'drn', isCaptain: false },
-        { nick: 'lohan1213', isCaptain: false },
-        { nick: 'ymurilloxit', isCaptain: false },
-        { nick: 'LOUD Tkzin', isCaptain: false }
-      ],
-      sub: 'Reserva a confirmar pelo capitão'
-    },
-    ragnarok: {
-      name: 'Ragnarök',
-      tag: 'RAG',
-      seed: 'SEED #3 // CONFIRMADO',
-      logo: 'assets/team_ragnarok.png',
-      theme: 'theme-cyan',
-      motto: '"O crepúsculo dos deuses. A queda dos adversários."',
-      players: [
-        { nick: 'RayoVac', isCaptain: true },
-        { nick: 'Flash', isCaptain: false },
-        { nick: 'Nixt', isCaptain: false },
-        { nick: 'Reyca', isCaptain: false },
-        { nick: 'Vai da não', isCaptain: false }
-      ],
-      sub: 'Reserva a confirmar pelo capitão'
-    },
-    sgl: {
-      name: 'Se Ganhar é Lucro',
-      tag: 'SGL',
-      seed: 'SEED #4 // CONFIRMADO',
-      logo: 'assets/team_sgl.png',
-      theme: 'theme-red',
-      motto: '"Sem pressão, na bala e o que vier é lucro."',
-      players: [
-        { nick: 'yse', isCaptain: true },
-        { nick: 'NuRmAgUmEdOv', isCaptain: false },
-        { nick: 'Lckz', isCaptain: false },
-        { nick: 'Arise', isCaptain: false },
-        { nick: 'crok', isCaptain: false }
-      ],
-      sub: 'Reserva a confirmar pelo capitão'
-    }
-  };
+  // (Nota: TEAMS_DATA está declarado no topo do escopo para acesso global imediato)
 
   let activeProfileTeamId = 'snm';
 
