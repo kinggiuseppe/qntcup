@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { nick: 'H0GGYBR11', isCaptain: false },
         { nick: 'unknown', isCaptain: false }
       ],
-      sub: 'Reserva a confirmar pelo capitão'
+      sub: 'Hamada'
     },
     katarrentos: {
       name: 'Katarrentos',
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { nick: 'Reyca', isCaptain: false },
         { nick: 'Lipexx', isCaptain: false }
       ],
-      sub: 'Reserva a confirmar pelo capitão'
+      sub: 'bubble'
     },
     sgl: {
       name: 'Se Ganhar é Lucro',
