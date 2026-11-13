@@ -653,21 +653,44 @@
             </button>
           </div>
 
+          <!-- Presets de Confrontos Confirmados -->
+          <div class="veto-match-presets">
+            <span class="preset-label"><i data-lucide="zap"></i> CONFRONTOS CONFIRMADOS:</span>
+            <div class="preset-buttons">
+              <button type="button" class="preset-btn active sound-click" id="presetMatch1">JOGO 1: RAG x KAT</button>
+              <button type="button" class="preset-btn sound-click" id="presetMatch2">JOGO 2: SGL x SNM</button>
+            </div>
+          </div>
+
           <div class="veto-teams-inputs">
             <div class="veto-team-box team-a-box">
               <div class="veto-team-header-info">
-                <img src="assets/team_snm.png" alt="Só Na Manha" class="veto-team-logo">
+                <img src="assets/team_ragnarok.png" alt="Ragnarök" class="veto-team-logo" id="vetoTeamALogo">
                 <label>TIME A</label>
               </div>
-              <input type="text" id="teamANameInput" value="Só Na Manha" placeholder="Ex: Só Na Manha" class="veto-input">
+              <select id="vetoTeamASelect" class="veto-select">
+                <option value="ragnarok" selected>Ragnarök</option>
+                <option value="katarrentos">Katarrentos</option>
+                <option value="sgl">Se Ganhar é Lucro (SGL)</option>
+                <option value="snm">Só Na Manha (SNM)</option>
+                <option value="custom">-- Digitar Manualmente --</option>
+              </select>
+              <input type="text" id="teamANameInput" value="Ragnarök" placeholder="Nome Time A" class="veto-input" style="display: none; margin-top: 4px;">
             </div>
             <div class="veto-vs-badge">VS</div>
             <div class="veto-team-box team-b-box">
               <div class="veto-team-header-info">
-                <img src="assets/team_katarrentos.png" alt="Katarrentos" class="veto-team-logo">
+                <img src="assets/team_katarrentos.png" alt="Katarrentos" class="veto-team-logo" id="vetoTeamBLogo">
                 <label>TIME B</label>
               </div>
-              <input type="text" id="teamBNameInput" value="Katarrentos" placeholder="Ex: Katarrentos" class="veto-input">
+              <select id="vetoTeamBSelect" class="veto-select">
+                <option value="katarrentos" selected>Katarrentos</option>
+                <option value="ragnarok">Ragnarök</option>
+                <option value="sgl">Se Ganhar é Lucro (SGL)</option>
+                <option value="snm">Só Na Manha (SNM)</option>
+                <option value="custom">-- Digitar Manualmente --</option>
+              </select>
+              <input type="text" id="teamBNameInput" value="Katarrentos" placeholder="Nome Time B" class="veto-input" style="display: none; margin-top: 4px;">
             </div>
           </div>
         </div>
@@ -720,31 +743,31 @@
       </div>
       <div class="modal-body bracket-modal-body">
         
-        <!-- Pote de Sorteio e Equipes Confirmadas -->
-        <div class="bracket-draw-alert">
+        <!-- Confrontos Confirmados da Primeira Rodada -->
+        <div class="bracket-draw-alert confirmed-alert">
           <div class="draw-alert-header">
-            <span class="draw-tag"><i data-lucide="shuffle"></i> SORTEIO AO VIVO</span>
-            <span class="draw-date">CHAVES EM BREVE</span>
+            <span class="draw-tag confirmed-tag"><i data-lucide="check-circle-2"></i> CONFRONTOS CONFIRMADOS</span>
+            <span class="draw-date">1ª RODADA // 14/11</span>
           </div>
           <p class="draw-alert-desc">
-            Os confrontos da <strong>Primeira Rodada</strong> serão definidos via sorteio com as 4 equipes confirmadas:
+            Sorteio realizado! Os confrontos oficiais de abertura da QNT CUP estão definidos:
           </p>
-          <div class="draw-teams-pills">
-            <div class="draw-team-pill">
-              <img src="assets/team_snm.png" alt="SNM" class="pill-team-logo">
-              <span>Só Na Manha</span>
+          <div class="draw-matches-preview">
+            <div class="draw-match-item">
+              <span class="draw-match-tag">JOGO #01</span>
+              <div class="draw-match-teams">
+                <span class="text-cyan"><img src="assets/team_ragnarok.png" alt="RAG" class="pill-team-logo"> Ragnarök</span>
+                <span class="match-vs-micro">VS</span>
+                <span class="text-purple"><img src="assets/team_katarrentos.png" alt="KAT" class="pill-team-logo"> Katarrentos</span>
+              </div>
             </div>
-            <div class="draw-team-pill">
-              <img src="assets/team_katarrentos.png" alt="KAT" class="pill-team-logo">
-              <span>Katarrentos</span>
-            </div>
-            <div class="draw-team-pill">
-              <img src="assets/team_ragnarok.png" alt="RAG" class="pill-team-logo">
-              <span>Ragnarök</span>
-            </div>
-            <div class="draw-team-pill">
-              <img src="assets/team_sgl.png" alt="SGL" class="pill-team-logo">
-              <span>Se Ganhar é Lucro</span>
+            <div class="draw-match-item">
+              <span class="draw-match-tag">JOGO #02</span>
+              <div class="draw-match-teams">
+                <span class="text-neon-red"><img src="assets/team_sgl.png" alt="SGL" class="pill-team-logo"> SGL</span>
+                <span class="match-vs-micro">VS</span>
+                <span class="text-gold"><img src="assets/team_snm.png" alt="SNM" class="pill-team-logo"> Só Na Manha</span>
+              </div>
             </div>
           </div>
         </div>
@@ -762,48 +785,48 @@
             </div>
 
             <div class="stage-matches-grid">
-              <!-- Jogo 1 -->
+              <!-- Jogo 1: Ragnarök vs Katarrentos -->
               <div class="match-box">
                 <div class="match-box-header">
                   <span class="match-label">JOGO #01 // MD1</span>
-                  <span class="match-status-tag">SORTEIO</span>
+                  <span class="match-status-tag" style="background: rgba(0, 230, 118, 0.15); color: var(--tactical-green);">CONFIRMADO</span>
                 </div>
-                <div class="match-team team-slot-drawn">
-                  <span class="team-seed"><i data-lucide="help-circle"></i></span>
-                  <span class="team-name">Equipe A <small>(A definir no sorteio)</small></span>
+                <div class="match-team team-top winner-slot">
+                  <span class="team-seed"><img src="assets/team_ragnarok.png" alt="Ragnarök" class="bracket-team-logo"></span>
+                  <span class="team-name text-cyan">Ragnarök</span>
                   <span class="team-score">-</span>
                 </div>
                 <div class="match-vs-divider"><span>VS</span></div>
-                <div class="match-team team-slot-drawn">
-                  <span class="team-seed"><i data-lucide="help-circle"></i></span>
-                  <span class="team-name">Equipe B <small>(A definir no sorteio)</small></span>
+                <div class="match-team team-bottom winner-slot">
+                  <span class="team-seed"><img src="assets/team_katarrentos.png" alt="Katarrentos" class="bracket-team-logo"></span>
+                  <span class="team-name text-purple">Katarrentos</span>
                   <span class="team-score">-</span>
                 </div>
                 <div class="match-destiny-footer">
-                  <span class="destiny-win"><i data-lucide="arrow-up-right"></i> Vencedor: Semifinal</span>
+                  <span class="destiny-win"><i data-lucide="arrow-up-right"></i> Vencedor: Semifinal A</span>
                   <span class="destiny-lose"><i data-lucide="corner-down-right"></i> Perdedor: Repescagem</span>
                 </div>
               </div>
 
-              <!-- Jogo 2 -->
+              <!-- Jogo 2: SGL vs Só Na Manha -->
               <div class="match-box">
                 <div class="match-box-header">
                   <span class="match-label">JOGO #02 // MD1</span>
-                  <span class="match-status-tag">SORTEIO</span>
+                  <span class="match-status-tag" style="background: rgba(0, 230, 118, 0.15); color: var(--tactical-green);">CONFIRMADO</span>
                 </div>
-                <div class="match-team team-slot-drawn">
-                  <span class="team-seed"><i data-lucide="help-circle"></i></span>
-                  <span class="team-name">Equipe C <small>(A definir no sorteio)</small></span>
+                <div class="match-team team-top winner-slot">
+                  <span class="team-seed"><img src="assets/team_sgl.png" alt="SGL" class="bracket-team-logo"></span>
+                  <span class="team-name text-neon-red">Se Ganhar é Lucro (SGL)</span>
                   <span class="team-score">-</span>
                 </div>
                 <div class="match-vs-divider"><span>VS</span></div>
-                <div class="match-team team-slot-drawn">
-                  <span class="team-seed"><i data-lucide="help-circle"></i></span>
-                  <span class="team-name">Equipe D <small>(A definir no sorteio)</small></span>
+                <div class="match-team team-bottom winner-slot">
+                  <span class="team-seed"><img src="assets/team_snm.png" alt="SNM" class="bracket-team-logo"></span>
+                  <span class="team-name text-gold">Só Na Manha (SNM)</span>
                   <span class="team-score">-</span>
                 </div>
                 <div class="match-destiny-footer">
-                  <span class="destiny-win"><i data-lucide="arrow-up-right"></i> Vencedor: Semifinal</span>
+                  <span class="destiny-win"><i data-lucide="arrow-up-right"></i> Vencedor: Semifinal A</span>
                   <span class="destiny-lose"><i data-lucide="corner-down-right"></i> Perdedor: Repescagem</span>
                 </div>
               </div>
@@ -826,17 +849,17 @@
               </div>
               <div class="match-team team-top">
                 <span class="team-seed"><i data-lucide="shield-alert"></i></span>
-                <span class="team-name">Perdedor do Jogo #01</span>
+                <span class="team-name">Perdedor: Ragnarök / Katarrentos</span>
                 <span class="team-score">-</span>
               </div>
               <div class="match-vs-divider"><span>VS</span></div>
               <div class="match-team team-bottom">
                 <span class="team-seed"><i data-lucide="shield-alert"></i></span>
-                <span class="team-name">Perdedor do Jogo #02</span>
+                <span class="team-name">Perdedor: SGL / Só Na Manha</span>
                 <span class="team-score">-</span>
               </div>
               <div class="match-destiny-footer">
-                <span class="destiny-win"><i data-lucide="arrow-up-right"></i> Vencedor: Semifinal</span>
+                <span class="destiny-win"><i data-lucide="arrow-up-right"></i> Vencedor: Semifinal B</span>
                 <span class="destiny-eliminated"><i data-lucide="x-circle"></i> Perdedor: ELIMINADO ❌</span>
               </div>
             </div>
@@ -859,18 +882,18 @@
                 </div>
                 <div class="match-team team-top winner-slot">
                   <span class="team-seed"><i data-lucide="zap"></i></span>
-                  <span class="team-name">Vencedor Jogo #01</span>
+                  <span class="team-name">Vencedor: Ragnarök / Katarrentos</span>
                   <span class="team-score">-</span>
                 </div>
                 <div class="match-vs-divider"><span>VS</span></div>
                 <div class="match-team team-bottom winner-slot">
                   <span class="team-seed"><i data-lucide="zap"></i></span>
-                  <span class="team-name">Vencedor Jogo #02</span>
+                  <span class="team-name">Vencedor: SGL / Só Na Manha</span>
                   <span class="team-score">-</span>
                 </div>
                 <div class="match-destiny-footer">
                   <span class="destiny-win"><i data-lucide="trophy"></i> Vencedor: Vaga na Grande Final! 🏆</span>
-                  <span class="destiny-lose"><i data-lucide="corner-down-right"></i> Perdedor: Semifinal Decisiva</span>
+                  <span class="destiny-lose"><i data-lucide="corner-down-right"></i> Perdedor: Semifinal B (Decisiva)</span>
                 </div>
               </div>
 
@@ -1105,7 +1128,7 @@
         <div class="rule-block">
           <h4><i data-lucide="git-merge"></i> ESTRUTURA DOS CONFRONTOS</h4>
           <ul>
-            <li><strong>Primeira Rodada (MD1):</strong> Chaves definidas via sorteio ao vivo (Equipe A vs B e Equipe C vs D). Vencedor vai para Semifinal; perdedor vai para Repescagem.</li>
+            <li><strong>Primeira Rodada (MD1):</strong> Confrontos confirmados — <strong>Ragnarök vs Katarrentos</strong> (Jogo 1) e <strong>Se Ganhar é Lucro vs Só Na Manha</strong> (Jogo 2). Vencedores avançam para a Semifinal A; perdedores vão para a Repescagem.</li>
             <li><strong>Repescagem (MD1):</strong> Perdedor J1 vs Perdedor J2. Vencedor vai para Semifinal; perdedor é <strong>ELIMINADO ❌</strong>.</li>
             <li><strong>Semifinais (MD1):</strong> Vencedor J1 vs J2 garante vaga direta na Final; perdedor enfrenta o vencedor da Repescagem valendo a 2ª vaga na Final.</li>
             <li><strong>Grande Final (MD3):</strong> Disputa do título entre os 2 finalistas. 🥇 Campeão e 🥈 Vice-Campeão.</li>

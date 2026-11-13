@@ -507,8 +507,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let mapsState = {};
   let vetoHistory = [];
 
+  const vetoTeamASelect = document.getElementById('vetoTeamASelect');
+  const vetoTeamBSelect = document.getElementById('vetoTeamBSelect');
+  const vetoTeamALogo = document.getElementById('vetoTeamALogo');
+  const vetoTeamBLogo = document.getElementById('vetoTeamBLogo');
   const teamAInput = document.getElementById('teamANameInput');
   const teamBInput = document.getElementById('teamBNameInput');
+  const presetMatch1 = document.getElementById('presetMatch1');
+  const presetMatch2 = document.getElementById('presetMatch2');
   const modeMd1Btn = document.getElementById('modeMd1Btn');
   const modeMd3Btn = document.getElementById('modeMd3Btn');
   const vetoTurnBanner = document.getElementById('vetoTurnBanner');
@@ -521,9 +527,82 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnResetVeto = document.getElementById('btnResetVeto');
 
   function getTeamName(teamKey) {
-    if (teamKey === 'A') return teamAInput?.value.trim() || 'Só Na Manha';
-    return teamBInput?.value.trim() || 'Katarrentos';
+    if (teamKey === 'A') {
+      const selectVal = vetoTeamASelect?.value;
+      if (selectVal && selectVal !== 'custom' && TEAMS_DATA[selectVal]) {
+        return TEAMS_DATA[selectVal].name;
+      }
+      return teamAInput?.value.trim() || 'Ragnarök';
+    } else {
+      const selectVal = vetoTeamBSelect?.value;
+      if (selectVal && selectVal !== 'custom' && TEAMS_DATA[selectVal]) {
+        return TEAMS_DATA[selectVal].name;
+      }
+      return teamBInput?.value.trim() || 'Katarrentos';
+    }
   }
+
+  function updateTeamSelection(teamKey, teamId) {
+    const isTeamA = teamKey === 'A';
+    const select = isTeamA ? vetoTeamASelect : vetoTeamBSelect;
+    const input = isTeamA ? teamAInput : teamBInput;
+    const logo = isTeamA ? vetoTeamALogo : vetoTeamBLogo;
+
+    if (select) select.value = teamId;
+
+    if (teamId !== 'custom' && TEAMS_DATA[teamId]) {
+      const data = TEAMS_DATA[teamId];
+      if (input) {
+        input.value = data.name;
+        input.style.display = 'none';
+      }
+      if (logo) {
+        logo.src = data.logo;
+        logo.alt = data.name;
+        logo.style.display = 'block';
+      }
+    } else {
+      if (input) {
+        input.style.display = 'block';
+        input.focus();
+      }
+      if (logo) {
+        logo.style.display = 'none';
+      }
+    }
+
+    resetVeto();
+  }
+
+  vetoTeamASelect?.addEventListener('change', (e) => {
+    updateTeamSelection('A', e.target.value);
+    presetMatch1?.classList.remove('active');
+    presetMatch2?.classList.remove('active');
+    playTacticalClick(720, 0.06);
+  });
+
+  vetoTeamBSelect?.addEventListener('change', (e) => {
+    updateTeamSelection('B', e.target.value);
+    presetMatch1?.classList.remove('active');
+    presetMatch2?.classList.remove('active');
+    playTacticalClick(720, 0.06);
+  });
+
+  presetMatch1?.addEventListener('click', () => {
+    presetMatch1.classList.add('active');
+    presetMatch2?.classList.remove('active');
+    updateTeamSelection('A', 'ragnarok');
+    updateTeamSelection('B', 'katarrentos');
+    playTacticalClick(800, 0.08);
+  });
+
+  presetMatch2?.addEventListener('click', () => {
+    presetMatch2.classList.add('active');
+    presetMatch1?.classList.remove('active');
+    updateTeamSelection('A', 'sgl');
+    updateTeamSelection('B', 'snm');
+    playTacticalClick(800, 0.08);
+  });
 
   function resetVeto() {
     vetoStep = 0;
@@ -1347,10 +1426,7 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModal(modals.teamProfile);
     setTimeout(() => {
       openModal(modals.mapveto);
-      const teamAInput = document.getElementById('teamANameInput');
-      if (teamAInput) {
-        teamAInput.value = TEAMS_DATA[activeProfileTeamId]?.name || 'Só Na Manha';
-      }
+      updateTeamSelection('A', activeProfileTeamId);
       playTacticalClick(800, 0.08);
     }, 200);
   });
