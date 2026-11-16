@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>QNT CUP | Resgate de Premiação Oficial</title>
+  <title>QNT CUP | Unboxing de Premiação Oficial</title>
   <link rel="icon" type="image/x-icon" href="assets/banner.jpg">
 
   <!-- Google Fonts: Teko, Chakra Petch, Inter -->
@@ -16,8 +16,8 @@
 
   <style>
     :root {
-      --bg-primary: #070a0f;
-      --bg-card: rgba(15, 20, 28, 0.92);
+      --bg-primary: #05070a;
+      --bg-card: rgba(14, 18, 25, 0.94);
       --valorant-red: #ff4655;
       --gold: #ffd700;
       --cyan: #00f0ff;
@@ -25,6 +25,7 @@
       --purple: #c084fc;
       --text-main: #ece8e1;
       --text-muted: #8b97a2;
+      --text-subtle: #566472;
       --border-subtle: rgba(255, 255, 255, 0.1);
       --font-display: 'Teko', sans-serif;
       --font-tactical: 'Chakra Petch', sans-serif;
@@ -47,18 +48,23 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: 16px 12px;
       overflow-x: hidden;
       position: relative;
     }
 
-    /* Background Cyber Grid & Vignette */
+    /* Cinematic Deep Space Vignette & Scanlines */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at center, rgba(20, 28, 40, 0.5) 0%, #05070a 90%);
+      background: radial-gradient(circle at 50% 40%, rgba(30, 22, 10, 0.35) 0%, rgba(8, 11, 16, 0.85) 60%, #030407 100%);
       z-index: -2;
+      transition: background 0.8s ease;
+    }
+
+    body.theme-mvp::before {
+      background: radial-gradient(circle at 50% 40%, rgba(45, 12, 18, 0.45) 0%, rgba(12, 8, 12, 0.85) 60%, #030407 100%);
     }
 
     body::after {
@@ -68,49 +74,65 @@
       background-image: 
         linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 32px 32px;
+      background-size: 36px 36px;
       z-index: -1;
       pointer-events: none;
     }
 
-    /* Confetti Canvas */
+    /* Screen Flashbang Effect during Unbox */
+    #flashOverlay {
+      position: fixed;
+      inset: 0;
+      background: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 50;
+      transition: opacity 0.1s ease-out;
+    }
+
+    #flashOverlay.flash {
+      opacity: 0.95;
+      transition: opacity 0.05s ease-in;
+    }
+
+    /* Confetti / Particle Canvas */
     #fxCanvas {
       position: fixed;
       inset: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 10;
+      z-index: 20;
     }
 
-    .claim-container {
+    .main-wrap {
       width: 100%;
       max-width: 480px;
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
-      z-index: 5;
+      z-index: 10;
     }
 
-    /* Top Brand Nav */
+    /* Top Brand Navigation */
     .top-brand {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       text-decoration: none;
       color: var(--text-main);
       transition: transform 0.2s;
     }
 
     .top-brand:hover {
-      transform: scale(1.03);
+      transform: scale(1.02);
     }
 
     .top-logo-badge {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border-radius: 6px;
       border: 1px solid rgba(255, 70, 85, 0.4);
       object-fit: cover;
@@ -118,7 +140,7 @@
 
     .top-brand-text {
       font-family: var(--font-display);
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       letter-spacing: 1px;
     }
 
@@ -127,286 +149,330 @@
     }
 
     /* ===================================================
-       CRATE / LOOT BOX DISPLAY (STATE 1: UNOPENED)
+       ESTADO 1: O PACOTE LACRADO (FOIL BOOSTER PACK)
        =================================================== */
-    .crate-wrapper {
+    .pack-unboxing-stage {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 100%;
+      perspective: 1000px;
       transition: all 0.5s ease;
     }
 
-    .crate-stage-tag {
+    /* Stage Header Tag */
+    .pack-tag-pill {
       font-family: var(--font-tactical);
       font-size: 0.72rem;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 1px;
-      padding: 4px 12px;
+      padding: 5px 14px;
       border-radius: 20px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--border-subtle);
-      margin-bottom: 16px;
+      background: rgba(255, 215, 0, 0.15);
+      color: var(--gold);
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      margin-bottom: 14px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.15);
     }
 
-    .crate-box {
-      width: 220px;
-      height: 220px;
-      position: relative;
-      cursor: pointer;
+    body.theme-mvp .pack-tag-pill {
+      background: rgba(255, 70, 85, 0.15);
+      color: var(--valorant-red);
+      border-color: rgba(255, 70, 85, 0.4);
+      box-shadow: 0 0 15px rgba(255, 70, 85, 0.2);
+    }
+
+    /* 3D Floating Pack Container */
+    .pack-3d-scene {
+      width: 100%;
       display: flex;
-      align-items: center;
       justify-content: center;
-      transition: transform 0.2s ease;
-      margin: 15px 0 25px 0;
+      align-items: center;
+      position: relative;
+      margin: 10px 0 20px 0;
     }
 
-    .crate-box:hover {
-      transform: scale(1.04);
-    }
-
-    .crate-box:active {
-      transform: scale(0.97);
-    }
-
-    /* Ambient Pulsing Aura */
-    .crate-aura {
+    /* Ambient Spotlight Halo behind the pack */
+    .pack-halo {
       position: absolute;
-      inset: -20px;
+      width: 260px;
+      height: 380px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 215, 0, 0.25) 0%, transparent 70%);
-      animation: auraPulse 2.4s infinite ease-in-out;
+      background: radial-gradient(circle, rgba(255, 215, 0, 0.35) 0%, rgba(255, 140, 0, 0.15) 50%, transparent 75%);
+      filter: blur(25px);
+      animation: haloBreath 3s infinite alternate ease-in-out;
       pointer-events: none;
     }
 
-    .crate-wrapper.theme-mvp .crate-aura {
-      background: radial-gradient(circle, rgba(255, 70, 85, 0.3) 0%, transparent 70%);
+    body.theme-mvp .pack-halo {
+      background: radial-gradient(circle, rgba(255, 70, 85, 0.4) 0%, rgba(180, 20, 40, 0.2) 50%, transparent 75%);
     }
 
-    @keyframes auraPulse {
-      0% { transform: scale(0.85); opacity: 0.4; }
-      50% { transform: scale(1.15); opacity: 0.85; }
-      100% { transform: scale(0.85); opacity: 0.4; }
+    @keyframes haloBreath {
+      0% { transform: scale(0.9); opacity: 0.6; }
+      100% { transform: scale(1.15); opacity: 0.95; }
     }
 
-    /* Tactical Container 3D Body */
-    .crate-body {
-      width: 190px;
-      height: 190px;
-      border-radius: 18px;
-      background: linear-gradient(145deg, #182230 0%, #0d131c 100%);
-      border: 2px solid var(--gold);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 215, 0, 0.35);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .crate-wrapper.theme-mvp .crate-body {
-      border-color: var(--valorant-red);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 70, 85, 0.4);
-    }
-
-    /* Laser Seam Lines */
-    .crate-seam-h {
-      position: absolute;
-      width: 100%;
-      height: 2px;
-      background: rgba(255, 215, 0, 0.6);
-      top: 50%;
-      box-shadow: 0 0 8px #ffd700;
-    }
-
-    .crate-seam-v {
-      position: absolute;
-      height: 100%;
-      width: 2px;
-      background: rgba(255, 215, 0, 0.6);
-      left: 50%;
-      box-shadow: 0 0 8px #ffd700;
-    }
-
-    .crate-wrapper.theme-mvp .crate-seam-h,
-    .crate-wrapper.theme-mvp .crate-seam-v {
-      background: rgba(255, 70, 85, 0.7);
-      box-shadow: 0 0 8px #ff4655;
-    }
-
-    /* Center Emblem */
-    .crate-emblem {
-      width: 84px;
-      height: 84px;
+    /* Foil Booster Pack Physical Element */
+    .foil-pack {
+      width: 270px;
+      height: 385px;
       border-radius: 12px;
-      background: rgba(0, 0, 0, 0.65);
-      border: 1px solid rgba(255, 215, 0, 0.5);
+      position: relative;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+      animation: packFloat 4s infinite ease-in-out;
+      user-select: none;
+    }
+
+    @keyframes packFloat {
+      0% { transform: translateY(0px) rotateZ(0deg); }
+      50% { transform: translateY(-10px) rotateZ(0.5deg); }
+      100% { transform: translateY(0px) rotateZ(0deg); }
+    }
+
+    .foil-pack-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.85),
+        0 0 35px rgba(255, 215, 0, 0.35),
+        inset 0 0 15px rgba(255, 255, 255, 0.2);
+      display: block;
+      transition: filter 0.3s ease;
+    }
+
+    body.theme-mvp .foil-pack-img {
+      box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.85),
+        0 0 35px rgba(255, 70, 85, 0.45),
+        inset 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Specular Metallic Gloss Sheen Sweep */
+    .foil-pack::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      background: linear-gradient(
+        115deg,
+        transparent 35%,
+        rgba(255, 255, 255, 0.15) 42%,
+        rgba(255, 255, 255, 0.5) 48%,
+        rgba(255, 255, 255, 0.8) 50%,
+        rgba(255, 255, 255, 0.5) 52%,
+        rgba(255, 255, 255, 0.15) 58%,
+        transparent 65%
+      );
+      background-size: 250% 250%;
+      animation: glossSweep 4.5s infinite linear;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    @keyframes glossSweep {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Tear Guide Indicator (Rasgue Aqui) */
+    .tear-guide-line {
+      position: absolute;
+      top: 18px;
+      left: 10px;
+      right: 10px;
+      height: 2px;
+      background: repeating-linear-gradient(90deg, #ffd700 0, #ffd700 8px, transparent 8px, transparent 14px);
+      z-index: 5;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 2;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-      padding: 8px;
+      opacity: 0.85;
+      animation: tearGlow 1.8s infinite alternate ease-in-out;
     }
 
-    .crate-wrapper.theme-mvp .crate-emblem {
-      border-color: rgba(255, 70, 85, 0.6);
+    body.theme-mvp .tear-guide-line {
+      background: repeating-linear-gradient(90deg, #ff4655 0, #ff4655 8px, transparent 8px, transparent 14px);
     }
 
-    .crate-emblem img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+    @keyframes tearGlow {
+      0% { filter: drop-shadow(0 0 2px #ffd700); opacity: 0.6; }
+      100% { filter: drop-shadow(0 0 8px #ffd700); opacity: 1; }
     }
 
-    /* Unlocking Shake Animation */
-    .crate-box.shaking {
-      animation: crateShake 0.6s infinite ease-in-out;
+    .tear-label-tag {
+      background: rgba(5, 7, 10, 0.9);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: var(--font-tactical);
+      font-size: 0.58rem;
+      font-weight: 800;
+      padding: 1px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
-    @keyframes crateShake {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      20% { transform: translate(-3px, 2px) rotate(-2deg); }
-      40% { transform: translate(3px, -2px) rotate(2deg); }
-      60% { transform: translate(-3px, -1px) rotate(-1deg); }
-      80% { transform: translate(3px, 2px) rotate(1deg); }
-      100% { transform: translate(0, 0) rotate(0deg); }
+    body.theme-mvp .tear-label-tag {
+      border-color: var(--valorant-red);
+      color: var(--valorant-red);
     }
 
-    /* Opening Burst Effect */
-    .crate-box.opening .crate-body {
-      transform: scale(1.35);
-      opacity: 0;
-      filter: blur(10px);
-      transition: all 0.7s cubic-bezier(0.1, 0.9, 0.2, 1);
+    /* ===================================================
+       ANIMAÇÃO DE RASGO / ABERTURA (RIPPING SEQUENCE)
+       =================================================== */
+    .foil-pack.ripping {
+      animation: ripShake 0.65s ease-in-out infinite alternate !important;
     }
 
-    /* Action Trigger Button */
-    .btn-open-crate {
-      background: linear-gradient(135deg, var(--gold) 0%, #e6a100 100%);
+    @keyframes ripShake {
+      0% { transform: scale(1.04) translate(0, 0) rotate(0deg); filter: brightness(1.2); }
+      25% { transform: scale(1.06) translate(-4px, 3px) rotate(-1.5deg); }
+      50% { transform: scale(1.08) translate(4px, -3px) rotate(1.5deg); filter: brightness(1.5); }
+      75% { transform: scale(1.1) translate(-5px, -2px) rotate(-1deg); }
+      100% { transform: scale(1.12) translate(5px, 2px) rotate(1deg); filter: brightness(1.8); }
+    }
+
+    .foil-pack.ripped {
+      transform: scale(1.3) translateY(40px) !important;
+      opacity: 0 !important;
+      filter: blur(12px) brightness(2) !important;
+      transition: all 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) !important;
+    }
+
+    /* CTA Button to Open */
+    .btn-rip-pack {
+      background: linear-gradient(135deg, #ffd700 0%, #ff9100 100%);
       color: #05070a;
       border: none;
       font-family: var(--font-tactical);
-      font-size: 0.95rem;
+      font-size: 1rem;
       font-weight: 800;
-      padding: 14px 28px;
+      padding: 14px 32px;
       border-radius: 8px;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 10px;
-      letter-spacing: 0.8px;
-      box-shadow: 0 4px 20px rgba(255, 215, 0, 0.35);
+      letter-spacing: 1px;
+      box-shadow: 0 4px 25px rgba(255, 215, 0, 0.4);
       transition: all 0.25s ease;
-      animation: buttonPulse 2s infinite ease-in-out;
+      animation: btnPulseGlow 2.2s infinite ease-in-out;
     }
 
-    .crate-wrapper.theme-mvp .btn-open-crate {
+    body.theme-mvp .btn-rip-pack {
       background: linear-gradient(135deg, var(--valorant-red) 0%, #c01428 100%);
       color: #ffffff;
-      box-shadow: 0 4px 20px rgba(255, 70, 85, 0.4);
+      box-shadow: 0 4px 25px rgba(255, 70, 85, 0.45);
     }
 
-    @keyframes buttonPulse {
-      0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
-      50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.6); }
-      100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+    @keyframes btnPulseGlow {
+      0% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 215, 0, 0.35); }
+      50% { transform: scale(1.03); box-shadow: 0 0 30px rgba(255, 215, 0, 0.7); }
+      100% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 215, 0, 0.35); }
     }
 
-    .btn-open-crate:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.1);
+    .btn-rip-pack:hover {
+      transform: translateY(-2px) scale(1.02);
+      filter: brightness(1.12);
     }
 
-    .crate-hint {
+    .pack-hint-text {
       font-family: var(--font-tactical);
       font-size: 0.72rem;
       color: var(--text-muted);
-      margin-top: 12px;
+      margin-top: 10px;
       display: flex;
       align-items: center;
       gap: 5px;
     }
 
     /* ===================================================
-       REWARD CARD DISPLAY (STATE 2: OPENED / REVEALED)
+       ESTADO 2: RECOMPENSA REVELADA (PRESTIGE REWARD CARD)
        =================================================== */
     .reward-card {
       display: none;
       width: 100%;
       background: var(--bg-card);
-      border: 1px solid rgba(255, 215, 0, 0.4);
-      border-radius: 12px;
+      border: 1px solid rgba(255, 215, 0, 0.45);
+      border-radius: 14px;
       padding: 24px 20px;
       flex-direction: column;
       align-items: center;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), inset 0 0 30px rgba(255, 215, 0, 0.08);
-      animation: cardAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8), inset 0 0 35px rgba(255, 215, 0, 0.08);
+      animation: cardEmerge 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       position: relative;
       overflow: hidden;
     }
 
-    .reward-card.theme-mvp {
-      border-color: rgba(255, 70, 85, 0.45);
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), inset 0 0 30px rgba(255, 70, 85, 0.08);
+    body.theme-mvp .reward-card {
+      border-color: rgba(255, 70, 85, 0.5);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8), inset 0 0 35px rgba(255, 70, 85, 0.08);
     }
 
-    @keyframes cardAppear {
-      0% { opacity: 0; transform: translateY(40px) scale(0.9); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
+    @keyframes cardEmerge {
+      0% { opacity: 0; transform: translateY(60px) scale(0.85) rotateX(15deg); }
+      100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); }
     }
 
-    /* Header Badge inside card */
-    .reward-badge-pill {
-      font-family: var(--font-tactical);
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.8px;
-      padding: 4px 12px;
-      border-radius: 20px;
-      background: rgba(255, 215, 0, 0.15);
-      color: var(--gold);
-      border: 1px solid rgba(255, 215, 0, 0.4);
-      display: inline-flex;
+    /* Pack Mini Thumbnail on top of reward card */
+    .reward-pack-origin {
+      display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 4px 12px;
       margin-bottom: 12px;
     }
 
-    .reward-card.theme-mvp .reward-badge-pill {
-      background: rgba(255, 70, 85, 0.15);
-      color: var(--valorant-red);
-      border-color: rgba(255, 70, 85, 0.4);
+    .reward-pack-thumb {
+      width: 20px;
+      height: 28px;
+      border-radius: 3px;
+      object-fit: cover;
     }
 
-    /* Player Nick Title */
+    .reward-pack-origin-text {
+      font-family: var(--font-tactical);
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
     .reward-player-name {
       font-family: var(--font-display);
-      font-size: 2.8rem;
-      line-height: 1;
+      font-size: 3rem;
+      line-height: 0.95;
       color: #ffffff;
       text-transform: uppercase;
       letter-spacing: 1px;
       text-align: center;
       margin-bottom: 4px;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
     }
 
     .reward-conquest {
       font-family: var(--font-tactical);
-      font-size: 0.85rem;
-      font-weight: 700;
+      font-size: 0.9rem;
+      font-weight: 800;
       color: var(--gold);
       text-align: center;
-      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
     }
 
-    .reward-card.theme-mvp .reward-conquest {
+    body.theme-mvp .reward-conquest {
       color: var(--valorant-red);
     }
 
@@ -414,46 +480,57 @@
       font-size: 0.75rem;
       color: var(--text-muted);
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
-    /* Prize Value Big Emblem */
+    /* Prize Value Big Banner */
     .reward-amount-box {
       width: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 12px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 10px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      margin-bottom: 20px;
+      gap: 14px;
+      margin-bottom: 18px;
     }
 
-    .reward-vp-icon {
-      width: 38px;
-      height: 38px;
+    body.theme-mvp .reward-amount-box {
+      border-color: rgba(255, 70, 85, 0.3);
+    }
+
+    .reward-vp-emblem {
+      width: 44px;
+      height: 44px;
       border-radius: 8px;
-      background: radial-gradient(circle, rgba(245, 176, 65, 0.3) 0%, transparent 80%);
-      border: 1px solid rgba(245, 176, 65, 0.5);
+      background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 80%);
+      border: 1px solid var(--gold);
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-display);
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 800;
       color: var(--gold);
+      flex-shrink: 0;
     }
 
-    .reward-amount-text {
+    body.theme-mvp .reward-vp-emblem {
+      background: radial-gradient(circle, rgba(255, 70, 85, 0.3) 0%, transparent 80%);
+      border-color: var(--valorant-red);
+      color: var(--valorant-red);
+    }
+
+    .reward-amount-info {
       display: flex;
       flex-direction: column;
     }
 
     .reward-amount-val {
       font-family: var(--font-display);
-      font-size: 1.6rem;
+      font-size: 1.7rem;
       line-height: 1;
       color: #ffffff;
       font-weight: 700;
@@ -466,7 +543,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* Gift Card Code Box */
+    /* Code Card Box */
     .code-box-wrapper {
       width: 100%;
       margin-bottom: 18px;
@@ -485,7 +562,7 @@
 
     .code-box {
       width: 100%;
-      background: #05070a;
+      background: #040608;
       border: 1px dashed var(--gold);
       border-radius: 8px;
       padding: 12px 14px;
@@ -493,10 +570,9 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      position: relative;
     }
 
-    .reward-card.theme-mvp .code-box {
+    body.theme-mvp .code-box {
       border-color: var(--valorant-red);
     }
 
@@ -513,10 +589,10 @@
       background: rgba(255, 215, 0, 0.18);
       border: 1px solid var(--gold);
       color: var(--gold);
-      padding: 8px 12px;
+      padding: 8px 14px;
       border-radius: 6px;
       font-family: var(--font-tactical);
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       font-weight: 800;
       cursor: pointer;
       display: inline-flex;
@@ -526,7 +602,7 @@
       transition: all 0.2s ease;
     }
 
-    .reward-card.theme-mvp .btn-copy-code {
+    body.theme-mvp .btn-copy-code {
       background: rgba(255, 70, 85, 0.18);
       border-color: var(--valorant-red);
       color: var(--valorant-red);
@@ -537,7 +613,7 @@
       color: #05070a;
     }
 
-    .reward-card.theme-mvp .btn-copy-code:hover {
+    body.theme-mvp .btn-copy-code:hover {
       background: var(--valorant-red);
       color: #ffffff;
     }
@@ -548,14 +624,14 @@
       color: #05070a !important;
     }
 
-    /* Activation Guide Accordion */
+    /* Step-by-Step Activation Guide */
     .activation-guide {
       width: 100%;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.35);
       border: 1px solid var(--border-subtle);
       border-radius: 8px;
       padding: 12px 14px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .guide-title {
@@ -600,7 +676,7 @@
       margin-top: 1px;
     }
 
-    /* Actions Footer */
+    /* Actions */
     .reward-actions {
       display: flex;
       flex-direction: column;
@@ -611,7 +687,7 @@
     .btn-share-instagram {
       width: 100%;
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       color: #ffffff;
       font-family: var(--font-tactical);
       font-size: 0.78rem;
@@ -629,7 +705,7 @@
 
     .btn-share-instagram:hover {
       background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.35);
     }
 
     .btn-back-home {
@@ -651,7 +727,7 @@
     }
 
     /* ===================================================
-       ADMIN LINK GENERATOR (VISIBLE WHEN NO TOKEN IN URL)
+       ADMIN GENERATOR PANEL (SEM TOKEN NA URL)
        =================================================== */
     .admin-generator-card {
       display: none;
@@ -674,9 +750,53 @@
 
     .admin-header h2 {
       font-family: var(--font-display);
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       color: var(--gold);
       letter-spacing: 0.5px;
+    }
+
+    /* Pack Preview selector pills */
+    .admin-pack-choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .pack-choice-card {
+      border: 2px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .pack-choice-card img {
+      width: 70px;
+      height: 98px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .pack-choice-card span {
+      font-family: var(--font-tactical);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .pack-choice-card.selected {
+      border-color: var(--gold);
+      background: rgba(255, 215, 0, 0.1);
+    }
+
+    .pack-choice-card.selected span {
+      color: var(--gold);
     }
 
     .admin-form-group {
@@ -716,7 +836,7 @@
       color: #05070a;
       border: none;
       font-family: var(--font-tactical);
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       font-weight: 800;
       padding: 12px;
       border-radius: 6px;
@@ -825,41 +945,50 @@
 </head>
 <body>
 
+  <!-- Flashbang overlay on opening -->
+  <div id="flashOverlay"></div>
+
+  <!-- Particle / Confetti Canvas -->
   <canvas id="fxCanvas"></canvas>
 
-  <div class="claim-container">
+  <div class="main-wrap">
     
-    <!-- Header Brand -->
+    <!-- Top Brand -->
     <a href="index.html" class="top-brand">
       <img src="assets/banner.jpg" alt="QNT CUP" class="top-logo-badge">
-      <div class="top-brand-text">QNT <span>CUP</span> • RESGATE</div>
+      <div class="top-brand-text">QNT <span>CUP</span> • UNBOXING</div>
     </a>
 
     <!-- ==============================================
-         ESTADO 1: CÁPSULA / LOOT BOX LACRADA
+         ESTADO 1: O PACOTE DE CARTAS LACRADO
          ============================================== -->
-    <div class="crate-wrapper" id="crateWrapper">
-      <div class="crate-stage-tag" id="crateStageTag">
-        <i data-lucide="shield-check"></i> PACOTE DE SUPRIMENTOS OFICIAL
+    <div class="pack-unboxing-stage" id="packStage">
+      <div class="pack-tag-pill" id="packTagPill">
+        <i data-lucide="crown"></i> PACOTE EXCLUSIVO 1ª EDIÇÃO
       </div>
 
-      <div class="crate-box" id="crateBox">
-        <div class="crate-aura"></div>
-        <div class="crate-body">
-          <div class="crate-seam-h"></div>
-          <div class="crate-seam-v"></div>
-          <div class="crate-emblem" id="crateEmblem">
-            <img src="assets/team_sgl.png" alt="SGL" id="crateEmblemImg">
+      <!-- 3D Scene with Booster Pack -->
+      <div class="pack-3d-scene" id="packScene">
+        <div class="pack-halo" id="packHalo"></div>
+
+        <div class="foil-pack" id="foilPack">
+          <img src="assets/pack_campeao.jpg" alt="Pacote QNT CUP" class="foil-pack-img" id="foilPackImg">
+          
+          <!-- Linha de Rasgo Tática -->
+          <div class="tear-guide-line">
+            <span class="tear-label-tag">
+              <i data-lucide="scissors"></i> TOQUE P/ RASGAR
+            </span>
           </div>
         </div>
       </div>
 
-      <button type="button" class="btn-open-crate" id="btnOpenCrate">
-        <i data-lucide="unlock"></i> DESBLOQUEAR RECOMPENSA
+      <button type="button" class="btn-rip-pack" id="btnRipPack">
+        <i data-lucide="sparkles"></i> ABRIR PACOTE OFICIAL
       </button>
 
-      <span class="crate-hint">
-        <i data-lucide="sparkles"></i> Toque na caixa ou no botão para abrir
+      <span class="pack-hint-text">
+        <i data-lucide="touchpad"></i> Toque no pacote para abrir a premiação
       </span>
     </div>
 
@@ -867,28 +996,31 @@
          ESTADO 2: RECOMPENSA REVELADA (CARD FINAL)
          ============================================== -->
     <div class="reward-card" id="rewardCard">
-      <div class="reward-badge-pill" id="rewardBadgePill">
-        <i data-lucide="award"></i> <span id="rewardBadgeText">CONQUISTA OFICIAL</span>
+      
+      <!-- Miniatura do pacote de onde saiu o card -->
+      <div class="reward-pack-origin">
+        <img src="assets/pack_campeao.jpg" alt="Pacote" class="reward-pack-thumb" id="rewardPackThumb">
+        <span class="reward-pack-origin-text" id="rewardPackOriginText">PACOTE DO CAMPEÃO SGL</span>
       </div>
 
-      <h1 class="reward-player-name" id="rewardPlayerName">JOGADOR</h1>
-      <div class="reward-conquest" id="rewardConquest">CAMPEÃO DA QNT CUP 2026</div>
-      <p class="reward-subinfo" id="rewardSubinfo">Se Ganhar é Lucro • 1.000 VP por Jogador</p>
+      <h1 class="reward-player-name" id="rewardPlayerName">YSE</h1>
+      <div class="reward-conquest" id="rewardConquest">CAMPEÃO DA 1ª EDIÇÃO // QNT CUP</div>
+      <p class="reward-subinfo" id="rewardSubinfo">Se Ganhar é Lucro (SGL) • Premiação Oficial</p>
 
-      <!-- Box de Quantidade do Prêmio -->
+      <!-- Valor do Prêmio -->
       <div class="reward-amount-box">
-        <div class="reward-vp-icon">VP</div>
-        <div class="reward-amount-text">
+        <div class="reward-vp-emblem">VP</div>
+        <div class="reward-amount-info">
           <span class="reward-amount-val" id="rewardAmountVal">1.000 VP</span>
-          <span class="reward-amount-desc">VALORANT POINTS // CÓDIGO PRÉ-PAGO</span>
+          <span class="reward-amount-desc">VALORANT POINTS // CÓDIGO RIOT GAMES</span>
         </div>
       </div>
 
-      <!-- Card do Código -->
+      <!-- Box do Código com Copiar de 1 Clique -->
       <div class="code-box-wrapper">
         <div class="code-box-label">
-          <span>SEU CÓDIGO EXCLUSIVO RIOT GAMES:</span>
-          <span><i data-lucide="lock"></i> USO ÚNICO</span>
+          <span>SEU CÓDIGO DE RESGATE RIOT GAMES:</span>
+          <span><i data-lucide="shield-check"></i> 100% EXCLUSIVO</span>
         </div>
         <div class="code-box">
           <span class="code-text" id="codeText">XXXX-XXXX-XXXX-XXXX</span>
@@ -898,7 +1030,7 @@
         </div>
       </div>
 
-      <!-- Guia Passo a Passo de Ativação -->
+      <!-- Guia de Ativação no Valorant -->
       <div class="activation-guide">
         <div class="guide-title">
           <i data-lucide="help-circle"></i> COMO ATIVAR SEU CÓDIGO NO VALORANT:
@@ -910,11 +1042,11 @@
           </li>
           <li>
             <span class="step-num">2</span>
-            <span>Clique no ícone de <strong>Valorant Points (V)</strong> no canto superior direito.</span>
+            <span>Clique no ícone de <strong>Valorant Points (V)</strong> no topo à direita.</span>
           </li>
           <li>
             <span class="step-num">3</span>
-            <span>Escolha a opção de pagamento <strong>"Códigos pré-pagos"</strong>.</span>
+            <span>Selecione a opção <strong>"Códigos pré-pagos"</strong>.</span>
           </li>
           <li>
             <span class="step-num">4</span>
@@ -935,14 +1067,29 @@
     </div>
 
     <!-- ==============================================
-         PAINEL GERADOR DE LINKS (SE ACESSADO SEM TOKEN)
+         PAINEL GERADOR DE LINKS SEGUROS (ORGANIZADOR)
          ============================================== -->
     <div class="admin-generator-card" id="adminGeneratorCard">
       <div class="admin-header">
         <i data-lucide="key" class="text-gold"></i>
         <div>
-          <h2>GERADOR DE PACOTES DE PREMIAÇÃO</h2>
-          <span style="font-size:0.7rem; color:var(--text-muted); font-family:var(--font-tactical);">Painel exclusivo da organização para gerar links secretos</span>
+          <h2>PAINEL DE ENVIO DE PACOTES</h2>
+          <span style="font-size:0.72rem; color:var(--text-muted); font-family:var(--font-tactical);">Gere links secretos com unboxing cinematográfico</span>
+        </div>
+      </div>
+
+      <!-- Escolha Visual do Pacote -->
+      <div class="admin-form-group">
+        <label class="admin-label">ESCOLHA O PACOTE VISUAL:</label>
+        <div class="admin-pack-choice-grid">
+          <div class="pack-choice-card selected" id="choicePackChamp" data-pack="champ">
+            <img src="assets/pack_campeao.jpg" alt="Pacote Campeão">
+            <span>PACOTE CAMPEÃO</span>
+          </div>
+          <div class="pack-choice-card" id="choicePackMvp" data-pack="mvp">
+            <img src="assets/pack_mvp.jpg" alt="Pacote MVP">
+            <span>PACOTE MVP</span>
+          </div>
         </div>
       </div>
 
@@ -954,7 +1101,7 @@
           <option value="mvp_lohan">⭐ Lohan1213 - MVP da Repescagem & Semi B (1.000 VP)</option>
           <option value="mvp_acyer">⭐ Acyer - MVP da 1ª Rodada (1.000 VP)</option>
           <option value="mvp_nixt">⭐ Nixt - MVP da Final - Mapa 1 (1.000 VP)</option>
-          <option value="custom">✏️ Personalizado (Digitar Nome e Título)</option>
+          <option value="custom">✏️ Personalizado (Digitar Nick e Conquista)</option>
         </select>
       </div>
 
@@ -971,18 +1118,18 @@
       </div>
 
       <button type="button" class="btn-admin-generate" id="btnGenerateLink">
-        <i data-lucide="sparkles"></i> GERAR LINK SECRETO DE RESGATE
+        <i data-lucide="sparkles"></i> GERAR LINK EXCLUSIVO DE UNBOXING
       </button>
 
       <div class="admin-result-box" id="adminResultBox">
-        <div class="admin-result-title"><i data-lucide="check-circle-2"></i> LINK INDIVIDUAL PRONTO PARA ENVIAR:</div>
+        <div class="admin-result-title"><i data-lucide="check-circle-2"></i> LINK INDIVIDUAL PRONTO PARA ENVIAR NO PRIVADO:</div>
         <input type="text" id="adminGeneratedLink" readonly class="admin-link-input">
         <div class="admin-buttons-row">
           <button type="button" class="btn-admin-copy" id="btnCopyGenLink">
             <i data-lucide="copy"></i> COPIAR LINK P/ WHATSAPP
           </button>
           <a href="#" target="_blank" id="btnTestGenLink" class="btn-admin-test">
-            <i data-lucide="external-link"></i> Testar
+            <i data-lucide="external-link"></i> Testar Abertura
           </a>
         </div>
       </div>
@@ -999,13 +1146,12 @@
   </div>
 
   <script>
-    // Inicializar Ícones
     if (window.lucide) {
       window.lucide.createIcons();
     }
 
     // ==========================================
-    // SISTEMA DE ÁUDIO TÁTICO (WEB AUDIO API)
+    // ÁUDIO TÁTICO CINEMATOGRÁFICO (WEB AUDIO API)
     // ==========================================
     let audioCtx = null;
     function getAudioCtx() {
@@ -1016,7 +1162,8 @@
       return audioCtx;
     }
 
-    function playCrateClickSound() {
+    // 1. Som de carga e tensão (pré-rasgo)
+    function playChargeSound() {
       const ctx = getAudioCtx();
       if (!ctx) return;
       if (ctx.state === 'suspended') ctx.resume();
@@ -1024,55 +1171,94 @@
       const now = ctx.currentTime;
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(400, now);
-      osc.frequency.exponentialRampToValueAtTime(150, now + 0.1);
-      gain.gain.setValueAtTime(0.2, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(80, now);
+      osc.frequency.exponentialRampToValueAtTime(320, now + 0.4);
+
+      gain.gain.setValueAtTime(0.01, now);
+      gain.gain.linearRampToValueAtTime(0.25, now + 0.35);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.start();
-      osc.stop(now + 0.1);
+      osc.stop(now + 0.45);
     }
 
-    function playVictoryUnboxSound() {
+    // 2. Som de rasgo do pacote metálico (Foil Rip Synthesizer)
+    function playFoilRipSound() {
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      if (ctx.state === 'suspended') ctx.resume();
+
+      // Ruído branco filtrado para simular o papel alumínio rasgando
+      const bufferSize = ctx.sampleRate * 0.25;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(3500, ctx.currentTime);
+      filter.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.22);
+      filter.Q.value = 3.0;
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.4, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.24);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+
+      noise.start();
+    }
+
+    // 3. Som de fanfarra de vitória e impacto épico
+    function playEpicVictorySound() {
       const ctx = getAudioCtx();
       if (!ctx) return;
       if (ctx.state === 'suspended') ctx.resume();
 
       const now = ctx.currentTime;
 
-      // 1. Bass Drop / Mechanical Unlock
-      const subOsc = ctx.createOscillator();
+      // Bass Drop Impacto
+      const sub = ctx.createOscillator();
       const subGain = ctx.createGain();
-      subOsc.type = 'sine';
-      subOsc.frequency.setValueAtTime(140, now);
-      subOsc.frequency.exponentialRampToValueAtTime(35, now + 0.4);
-      subGain.gain.setValueAtTime(0.4, now);
-      subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
-      subOsc.connect(subGain);
+      sub.type = 'sine';
+      sub.frequency.setValueAtTime(160, now);
+      sub.frequency.exponentialRampToValueAtTime(32, now + 0.5);
+      subGain.gain.setValueAtTime(0.5, now);
+      subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+      sub.connect(subGain);
       subGain.connect(ctx.destination);
-      subOsc.start();
-      subOsc.stop(now + 0.45);
+      sub.start();
+      sub.stop(now + 0.6);
 
-      // 2. Victory Arpeggio (Gold Chime)
-      const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-      notes.forEach((freq, idx) => {
+      // Chords Dourados de Revelação (Esports Victory Fanfare)
+      const freqs = [392.00, 523.25, 659.25, 783.99, 1046.50]; // G4, C5, E5, G5, C6
+      freqs.forEach((freq, idx) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freq, now + 0.1 + idx * 0.08);
-        gain.gain.setValueAtTime(0.18, now + 0.1 + idx * 0.08);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5 + idx * 0.08);
+        osc.frequency.setValueAtTime(freq, now + 0.15 + idx * 0.07);
+        gain.gain.setValueAtTime(0.18, now + 0.15 + idx * 0.07);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7 + idx * 0.07);
         osc.connect(gain);
         gain.connect(ctx.destination);
-        osc.start(now + 0.1 + idx * 0.08);
-        osc.stop(now + 0.6 + idx * 0.08);
+        osc.start(now + 0.15 + idx * 0.07);
+        osc.stop(now + 0.8 + idx * 0.07);
       });
     }
 
     // ==========================================
-    // SISTEMA DE CONFETES / PARTÍCULAS
+    // SISTEMA DE CONFETES E MOEDAS
     // ==========================================
     const canvas = document.getElementById('fxCanvas');
     const ctx = canvas ? canvas.getContext('2d') : null;
@@ -1087,31 +1273,36 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    function triggerConfetti(themeColor = '#ffd700') {
+    function triggerEpicBurst(isMvp = false) {
       if (!canvas || !ctx) return;
       particles = [];
-      const colors = [themeColor, '#ffffff', '#00f0ff', '#ff4655', '#ffd700'];
+      const colors = isMvp 
+        ? ['#ff4655', '#ffffff', '#ffd700', '#ff8591', '#c01428']
+        : ['#ffd700', '#ffffff', '#ffa000', '#fff275', '#00f0ff'];
 
-      for (let i = 0; i < 90; i++) {
+      // Explosão de confetes e moedas douradas
+      for (let i = 0; i < 120; i++) {
+        const isCoin = Math.random() > 0.6;
         particles.push({
-          x: canvas.width / 2 + (Math.random() - 0.5) * 60,
-          y: canvas.height / 2 + (Math.random() - 0.5) * 60,
-          vx: (Math.random() - 0.5) * 16,
-          vy: -Math.random() * 14 - 3,
-          size: Math.random() * 7 + 3,
+          x: canvas.width / 2 + (Math.random() - 0.5) * 40,
+          y: canvas.height * 0.45 + (Math.random() - 0.5) * 40,
+          vx: (Math.random() - 0.5) * 18,
+          vy: -Math.random() * 16 - 5,
+          size: isCoin ? Math.random() * 8 + 6 : Math.random() * 7 + 3,
+          isCoin: isCoin,
           color: colors[Math.floor(Math.random() * colors.length)],
           gravity: 0.38,
           rotation: Math.random() * 360,
-          vRot: (Math.random() - 0.5) * 10,
+          vRot: (Math.random() - 0.5) * 12,
           opacity: 1
         });
       }
 
       if (animationId) cancelAnimationFrame(animationId);
-      animateParticles();
+      animateBurst();
     }
 
-    function animateParticles() {
+    function animateBurst() {
       if (!ctx || !canvas) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -1121,32 +1312,65 @@
         p.y += p.vy;
         p.vy += p.gravity;
         p.rotation += p.vRot;
-        p.opacity -= 0.009;
+        p.opacity -= 0.008;
 
-        if (p.opacity > 0 && p.y < canvas.height + 50) {
+        if (p.opacity > 0 && p.y < canvas.height + 60) {
           alive = true;
           ctx.save();
           ctx.translate(p.x, p.y);
           ctx.rotate((p.rotation * Math.PI) / 180);
           ctx.globalAlpha = Math.max(0, p.opacity);
           ctx.fillStyle = p.color;
-          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+
+          if (p.isCoin) {
+            ctx.beginPath();
+            ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          } else {
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+          }
+
           ctx.restore();
         }
       });
 
       if (alive) {
-        animationId = requestAnimationFrame(animateParticles);
+        animationId = requestAnimationFrame(animateBurst);
       } else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
     }
 
     // ==========================================
-    // DECODIFICAÇÃO DE TOKENS DA URL
+    // 3D TILT EFFECT NO PACOTE
+    // ==========================================
+    const foilPack = document.getElementById('foilPack');
+    const packScene = document.getElementById('packScene');
+
+    if (packScene && foilPack) {
+      packScene.addEventListener('mousemove', (e) => {
+        if (foilPack.classList.contains('ripping') || foilPack.classList.contains('ripped')) return;
+        const rect = packScene.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        const rotY = (x / (rect.width / 2)) * 14;
+        const rotX = -(y / (rect.height / 2)) * 14;
+        foilPack.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.03)`;
+      });
+
+      packScene.addEventListener('mouseleave', () => {
+        if (foilPack.classList.contains('ripping') || foilPack.classList.contains('ripped')) return;
+        foilPack.style.transform = '';
+      });
+    }
+
+    // ==========================================
+    // CONTROLE DO RESGATE & TOKENS
     // ==========================================
     function getPayloadFromURL() {
-      // 1. Checa Hash (#t=... ou #data=...)
       const hash = window.location.hash.substring(1);
       const params = new URLSearchParams(hash || window.location.search);
       const token = params.get('t') || params.get('data') || params.get('token');
@@ -1154,7 +1378,6 @@
       if (!token) return null;
 
       try {
-        // Base64 decode com suporte a UTF-8
         const decoded = decodeURIComponent(escape(atob(token)));
         return JSON.parse(decoded);
       } catch (e) {
@@ -1172,18 +1395,15 @@
       return btoa(unescape(encodeURIComponent(jsonStr)));
     }
 
-    // ==========================================
-    // CONTROLE DE ESTADOS DA PÁGINA
-    // ==========================================
-    const crateWrapper = document.getElementById('crateWrapper');
-    const crateBox = document.getElementById('crateBox');
-    const btnOpenCrate = document.getElementById('btnOpenCrate');
-    const crateEmblemImg = document.getElementById('crateEmblemImg');
-    const crateStageTag = document.getElementById('crateStageTag');
+    const packStage = document.getElementById('packStage');
+    const foilPackImg = document.getElementById('foilPackImg');
+    const packTagPill = document.getElementById('packTagPill');
+    const btnRipPack = document.getElementById('btnRipPack');
+    const flashOverlay = document.getElementById('flashOverlay');
 
     const rewardCard = document.getElementById('rewardCard');
-    const rewardBadgePill = document.getElementById('rewardBadgePill');
-    const rewardBadgeText = document.getElementById('rewardBadgeText');
+    const rewardPackThumb = document.getElementById('rewardPackThumb');
+    const rewardPackOriginText = document.getElementById('rewardPackOriginText');
     const rewardPlayerName = document.getElementById('rewardPlayerName');
     const rewardConquest = document.getElementById('rewardConquest');
     const rewardSubinfo = document.getElementById('rewardSubinfo');
@@ -1209,64 +1429,77 @@
 
       if (!currentPayload) {
         // Sem token: Exibir o Painel Gerador da Organização
-        if (crateWrapper) crateWrapper.style.display = 'none';
+        if (packStage) packStage.style.display = 'none';
         if (rewardCard) rewardCard.style.display = 'none';
         if (adminGeneratorCard) adminGeneratorCard.style.display = 'block';
         return;
       }
 
-      // Com token: Configurar a Caixa personalizada
-      const isMvp = currentPayload.type === 'mvp';
+      // Com token: Carregar o Pacote Visual Correto
+      const isMvp = currentPayload.type === 'mvp' || (currentPayload.pack === 'mvp');
 
       if (isMvp) {
-        crateWrapper?.classList.add('theme-mvp');
-        rewardCard?.classList.add('theme-mvp');
-        if (crateStageTag) crateStageTag.innerHTML = '<i data-lucide="zap"></i> PACOTE DE MVP // RECONHECIMENTO';
-        if (crateEmblemImg) crateEmblemImg.src = 'assets/banner.jpg';
-        if (btnOpenCrate) btnOpenCrate.innerHTML = '<i data-lucide="unlock"></i> DESBLOQUEAR PREMIAÇÃO DE MVP';
+        document.body.classList.add('theme-mvp');
+        if (foilPackImg) foilPackImg.src = 'assets/pack_mvp.jpg';
+        if (rewardPackThumb) rewardPackThumb.src = 'assets/pack_mvp.jpg';
+        if (rewardPackOriginText) rewardPackOriginText.textContent = 'PACOTE MVP • 1ª EDIÇÃO';
+        if (packTagPill) packTagPill.innerHTML = '<i data-lucide="zap"></i> PACOTE EXCLUSIVO MVP // QNT CUP';
+        if (btnRipPack) btnRipPack.innerHTML = '<i data-lucide="scissors"></i> RASGAR PACOTE MVP';
       } else {
-        crateWrapper?.classList.remove('theme-mvp');
-        rewardCard?.classList.remove('theme-mvp');
-        if (crateStageTag) crateStageTag.innerHTML = '<i data-lucide="crown"></i> PACOTE DO CAMPEÃO // 1º LUGAR';
-        if (crateEmblemImg) crateEmblemImg.src = 'assets/team_sgl.png';
-        if (btnOpenCrate) btnOpenCrate.innerHTML = '<i data-lucide="unlock"></i> DESBLOQUEAR PREMIAÇÃO DE CAMPEÃO';
+        document.body.classList.remove('theme-mvp');
+        if (foilPackImg) foilPackImg.src = 'assets/pack_campeao.jpg';
+        if (rewardPackThumb) rewardPackThumb.src = 'assets/pack_campeao.jpg';
+        if (rewardPackOriginText) rewardPackOriginText.textContent = 'PACOTE CAMPEÃO • SGL';
+        if (packTagPill) packTagPill.innerHTML = '<i data-lucide="crown"></i> PACOTE DO CAMPEÃO // 1ª EDIÇÃO';
+        if (btnRipPack) btnRipPack.innerHTML = '<i data-lucide="scissors"></i> RASGAR PACOTE DO CAMPEÃO';
       }
 
       // Preencher Card da Recompensa
       if (rewardPlayerName) rewardPlayerName.textContent = currentPayload.name || 'JOGADOR';
-      if (rewardConquest) rewardConquest.textContent = currentPayload.conquest || (isMvp ? 'MVP DA PARTIDA' : 'CAMPEÃO DA QNT CUP 2026');
-      if (rewardSubinfo) rewardSubinfo.textContent = currentPayload.sub || 'Parabéns pela grande atuação!';
+      if (rewardConquest) rewardConquest.textContent = currentPayload.conquest || (isMvp ? 'MVP DA PARTIDA // QNT CUP' : 'CAMPEÃO DA 1ª EDIÇÃO // QNT CUP');
+      if (rewardSubinfo) rewardSubinfo.textContent = currentPayload.sub || 'Parabéns pela vitória histórica!';
       if (rewardAmountVal) rewardAmountVal.textContent = currentPayload.amount || '1.000 VP';
       if (codeText) codeText.textContent = currentPayload.code || 'RIOT-VP-XXXX-XXXX';
-      if (rewardBadgeText) rewardBadgeText.textContent = isMvp ? 'RECONHECIMENTO MVP 👑' : 'CAMPEÃ OFICIAL 🏆';
 
       if (window.lucide) window.lucide.createIcons();
     }
 
-    function openLootCrate() {
-      if (!crateBox) return;
+    // Abertura Cinematográfica do Pacote
+    function ripOpenPack() {
+      if (!foilPack || foilPack.classList.contains('ripping') || foilPack.classList.contains('ripped')) return;
 
-      playCrateClickSound();
-      crateBox.classList.add('shaking');
+      playChargeSound();
+      foilPack.classList.add('ripping');
 
+      // 1. Sequência de Rasgo (após 450ms)
       setTimeout(() => {
-        playVictoryUnboxSound();
-        crateBox.classList.remove('shaking');
-        crateBox.classList.add('opening');
+        playFoilRipSound();
+        if (flashOverlay) flashOverlay.classList.add('flash');
 
-        const themeColor = currentPayload?.type === 'mvp' ? '#ff4655' : '#ffd700';
-        triggerConfetti(themeColor);
-
+        // 2. Explosão de Confetes & Fanfarra
         setTimeout(() => {
-          if (crateWrapper) crateWrapper.style.display = 'none';
-          if (rewardCard) rewardCard.style.display = 'flex';
-          if (window.lucide) window.lucide.createIcons();
-        }, 550);
-      }, 700);
+          playEpicVictorySound();
+          if (flashOverlay) flashOverlay.classList.remove('flash');
+
+          foilPack.classList.remove('ripping');
+          foilPack.classList.add('ripped');
+
+          const isMvp = currentPayload?.type === 'mvp' || (currentPayload?.pack === 'mvp');
+          triggerEpicBurst(isMvp);
+
+          // 3. Card Emerge da Luz
+          setTimeout(() => {
+            if (packStage) packStage.style.display = 'none';
+            if (rewardCard) rewardCard.style.display = 'flex';
+            if (window.lucide) window.lucide.createIcons();
+          }, 450);
+        }, 120);
+
+      }, 500);
     }
 
-    crateBox?.addEventListener('click', openLootCrate);
-    btnOpenCrate?.addEventListener('click', openLootCrate);
+    foilPack?.addEventListener('click', ripOpenPack);
+    btnRipPack?.addEventListener('click', ripOpenPack);
 
     // Botão de Copiar Código
     btnCopyCode?.addEventListener('click', async () => {
@@ -1277,7 +1510,7 @@
         await navigator.clipboard.writeText(code);
         btnCopyCode.innerHTML = '<i data-lucide="check"></i> COPIADO!';
         btnCopyCode.classList.add('copied');
-        showToast('Código copiado com sucesso!');
+        showToast('Código Riot Games copiado com sucesso!');
         setTimeout(() => {
           btnCopyCode.innerHTML = '<i data-lucide="copy"></i> COPIAR';
           btnCopyCode.classList.remove('copied');
@@ -1289,7 +1522,7 @@
     });
 
     // ==========================================
-    // PAINEL GERADOR DE LINKS SEGUROS
+    // PAINEL GERADOR DE LINKS SEGUROS (ADMIN)
     // ==========================================
     const genRecipient = document.getElementById('genRecipient');
     const customFields = document.getElementById('customFields');
@@ -1302,9 +1535,37 @@
     const btnCopyGenLink = document.getElementById('btnCopyGenLink');
     const btnTestGenLink = document.getElementById('btnTestGenLink');
 
+    const choicePackChamp = document.getElementById('choicePackChamp');
+    const choicePackMvp = document.getElementById('choicePackMvp');
+    let selectedPackType = 'champ';
+
+    choicePackChamp?.addEventListener('click', () => {
+      selectedPackType = 'champ';
+      choicePackChamp.classList.add('selected');
+      choicePackMvp?.classList.remove('selected');
+    });
+
+    choicePackMvp?.addEventListener('click', () => {
+      selectedPackType = 'mvp';
+      choicePackMvp.classList.add('selected');
+      choicePackChamp?.classList.remove('selected');
+    });
+
     genRecipient?.addEventListener('change', (e) => {
+      const val = e.target.value;
       if (customFields) {
-        customFields.style.display = e.target.value === 'custom' ? 'flex' : 'none';
+        customFields.style.display = val === 'custom' ? 'flex' : 'none';
+      }
+
+      // Auto-seleciona o visual de pacote apropriado
+      if (val.startsWith('mvp')) {
+        selectedPackType = 'mvp';
+        choicePackMvp?.classList.add('selected');
+        choicePackChamp?.classList.remove('selected');
+      } else if (val === 'sgl_champ') {
+        selectedPackType = 'champ';
+        choicePackChamp?.classList.add('selected');
+        choicePackMvp?.classList.remove('selected');
       }
     });
 
@@ -1313,10 +1574,11 @@
       const code = genCodeInput?.value.trim() || 'RIOT-VP-EXEMPLO';
 
       let payload = {
-        name: 'CAMPEÃO',
-        type: 'champ',
-        conquest: 'CAMPEÃO DA 1ª EDIÇÃO // QNT CUP 2026',
-        sub: 'Se Ganhar é Lucro (SGL) • Premiação Oficial',
+        name: 'CAMPEÃO SGL',
+        type: selectedPackType,
+        pack: selectedPackType,
+        conquest: 'CAMPEÃO DA 1ª EDIÇÃO // QNT CUP',
+        sub: 'Se Ganhar é Lucro (SGL) • Premiação Oficial de 1º Lugar',
         amount: '1.000 VP',
         code: code
       };
@@ -1325,7 +1587,8 @@
         payload = {
           name: 'CAMPEÃO SGL',
           type: 'champ',
-          conquest: 'CAMPEÃO DA 1ª EDIÇÃO // QNT CUP 2026',
+          pack: 'champ',
+          conquest: 'CAMPEÃO DA 1ª EDIÇÃO // QNT CUP',
           sub: 'Se Ganhar é Lucro (SGL) • Premiação Oficial de 1º Lugar',
           amount: '1.000 VP',
           code: code
@@ -1334,8 +1597,9 @@
         payload = {
           name: 'YSE',
           type: 'mvp',
-          conquest: 'MVP DA GRANDE FINAL // QNT CUP 2026',
-          sub: 'SGL 2 x 1 Ragnarök • Atuação Lendária na Decisão MD3',
+          pack: 'mvp',
+          conquest: 'MVP DA GRANDE FINAL // QNT CUP',
+          sub: 'SGL 2 x 1 Ragnarök • Atuação Histórica na Decisão MD3',
           amount: '1.000 VP',
           code: code
         };
@@ -1343,6 +1607,7 @@
         payload = {
           name: 'LOHAN1213',
           type: 'mvp',
+          pack: 'mvp',
           conquest: 'MVP DA REPESCAGEM & SEMIFINAL B',
           sub: 'Katarrentos • Atuação Destaque no Mata-Mata',
           amount: '1.000 VP',
@@ -1352,6 +1617,7 @@
         payload = {
           name: 'ACYER',
           type: 'mvp',
+          pack: 'mvp',
           conquest: 'MVP DA PRIMEIRA RODADA // JOGO #01',
           sub: 'Ragnarök 13 x 10 Katarrentos • Destaque da Partida',
           amount: '1.000 VP',
@@ -1361,15 +1627,17 @@
         payload = {
           name: 'NIXT',
           type: 'mvp',
+          pack: 'mvp',
           conquest: 'MVP DA GRANDE FINAL // MAPA 1',
-          sub: 'Ragnarök 13 x 5 SGL • Vitória Expressiva na Abertura da Final',
+          sub: 'Ragnarök 13 x 5 SGL • Vitória Expressiva na Decisão',
           amount: '1.000 VP',
           code: code
         };
       } else if (recipient === 'custom') {
         payload = {
           name: genCustomNick?.value.trim().toUpperCase() || 'JOGADOR',
-          type: 'champ',
+          type: selectedPackType,
+          pack: selectedPackType,
           conquest: genCustomConquest?.value.trim() || 'PREMIAÇÃO OFICIAL QNT CUP',
           sub: '1ª Edição da QNT CUP 2026',
           amount: '1.000 VP',
@@ -1399,7 +1667,6 @@
       }
     });
 
-    // Iniciar
     initPage();
   </script>
 </body>
