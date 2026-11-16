@@ -454,44 +454,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 4. Countdown Tático até 14/11
-  function initCountdown() {
-    const cdDays = document.getElementById('cdDays');
-    const cdHours = document.getElementById('cdHours');
-    const cdMinutes = document.getElementById('cdMinutes');
-    const cdSeconds = document.getElementById('cdSeconds');
-
-    const targetDate = new Date('2026-11-14T13:00:00-03:00').getTime();
-
-    function updateTimer() {
-      const now = new Date().getTime();
-      let diff = targetDate - now;
-
-      if (diff <= 0) {
-        if (cdDays) cdDays.textContent = '00';
-        if (cdHours) cdHours.textContent = '00';
-        if (cdMinutes) cdMinutes.textContent = '00';
-        if (cdSeconds) cdSeconds.textContent = '00';
-        const title = document.querySelector('.countdown-title');
-        if (title) title.textContent = 'TORNEIO EM ANDAMENTO // AO VIVO';
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      if (cdDays) cdDays.textContent = String(days).padStart(2, '0');
-      if (cdHours) cdHours.textContent = String(hours).padStart(2, '0');
-      if (cdMinutes) cdMinutes.textContent = String(minutes).padStart(2, '0');
-      if (cdSeconds) cdSeconds.textContent = String(seconds).padStart(2, '0');
-    }
-
-    updateTimer();
-    setInterval(updateTimer, 1000);
-  }
-  initCountdown();
+  // 4. Botão do Card do Campeão no Topo para abrir o Chaveamento Oficial
+  document.getElementById('btnChampionOpenBracket')?.addEventListener('click', () => {
+    openModal(modals.bracket);
+    playTacticalClick(720, 0.08);
+  });
 
   // 5. Copiar Chave Pix de 1-Clique
   const btnCopyPix = document.getElementById('btnCopyPix');

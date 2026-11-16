@@ -132,32 +132,33 @@
         </div>
       </div>
 
-      <!-- 1. COUNTDOWN TÁTICO ATÉ O INÍCIO -->
-      <div class="countdown-hud" id="countdownHud">
-        <div class="countdown-header">
-          <span class="countdown-pulse-icon"></span>
-          <span class="countdown-title">INÍCIO DO TORNEIO EM:</span>
+      <!-- 1. HUD DO GRANDE CAMPEÃO // 1ª EDIÇÃO -->
+      <div class="champion-hud-card" id="championHudCard">
+        <div class="champion-hud-header">
+          <div class="champion-hud-badge">
+            <i data-lucide="crown"></i> 1ª EDIÇÃO FINALIZADA COM SUCESSO
+          </div>
+          <span class="champion-status-pill"><i data-lucide="check-circle-2"></i> CAMPEÃO DEFINIDO</span>
         </div>
-        <div class="countdown-timer-grid">
-          <div class="timer-box">
-            <span class="timer-num" id="cdDays">00</span>
-            <span class="timer-label">DIAS</span>
+        <div class="champion-hud-body">
+          <div class="champion-emblem-wrap">
+            <img src="assets/team_sgl.png" alt="Se Ganhar é Lucro (SGL)" class="champion-emblem-img">
+            <div class="champion-trophy-ribbon"><i data-lucide="trophy"></i> CAMPEÃ</div>
           </div>
-          <div class="timer-sep">:</div>
-          <div class="timer-box">
-            <span class="timer-num" id="cdHours">00</span>
-            <span class="timer-label">HORAS</span>
+          <div class="champion-hud-info">
+            <span class="champion-subtitle">GRANDE CAMPEÃ DA QNT CUP 2026</span>
+            <h2 class="champion-title text-gold">SE GANHAR É LUCRO (SGL)</h2>
+            <div class="champion-details-line">
+              <span class="c-item"><i data-lucide="shield"></i> Vice: <strong>Ragnarök (2x1)</strong></span>
+              <span class="c-sep">•</span>
+              <span class="c-item text-neon-red"><i data-lucide="zap"></i> MVP da Final: <strong>Yse</strong></span>
+            </div>
           </div>
-          <div class="timer-sep">:</div>
-          <div class="timer-box">
-            <span class="timer-num" id="cdMinutes">00</span>
-            <span class="timer-label">MIN</span>
-          </div>
-          <div class="timer-sep">:</div>
-          <div class="timer-box">
-            <span class="timer-num" id="cdSeconds">00</span>
-            <span class="timer-label">SEG</span>
-          </div>
+        </div>
+        <div class="champion-hud-actions">
+          <button type="button" class="btn-champion-bracket sound-click" id="btnChampionOpenBracket">
+            <i data-lucide="git-merge"></i> Ver Resultados & Chaveamento Completo
+          </button>
         </div>
       </div>
 
@@ -165,68 +166,68 @@
       <div class="slot-tracker-card">
         <div class="slot-tracker-header">
           <div class="slot-tracker-info">
-            <i data-lucide="shield-check" class="text-neon-red"></i>
-            <span class="slot-tracker-title">VAGAS OFICIAIS // 4 TIMES</span>
+            <i data-lucide="trophy" class="text-gold"></i>
+            <span class="slot-tracker-title">CLASSIFICAÇÃO FINAL // 4 TIMES</span>
           </div>
-          <span class="slot-counter-badge sold-out-badge" id="slotAvailableCount"><i data-lucide="check-circle-2"></i> 4/4 EQUIPES CONFIRMADAS</span>
+          <span class="slot-counter-badge sold-out-badge" id="slotAvailableCount" style="background: rgba(255, 215, 0, 0.15); color: #ffd700; border-color: rgba(255, 215, 0, 0.4);"><i data-lucide="award"></i> EDIÇÃO #01 FINALIZADA</span>
         </div>
         <div class="slots-grid">
-          <!-- Vaga 1: Confirmada - Só Na Manha -->
-          <div class="slot-item slot-confirmed slot-interactive sound-click" data-team-id="snm" title="Clique para ver a Lineup da Só Na Manha">
-            <div class="slot-team-emblem emblem-snm">
-              <img src="assets/team_snm.png" alt="Só Na Manha">
+          <!-- Vaga 4: Se Ganhar é Lucro (Campeã) -->
+          <div class="slot-item slot-confirmed slot-interactive sound-click" data-team-id="sgl" title="Clique para ver a Lineup da Se Ganhar é Lucro" style="border-color: rgba(255, 215, 0, 0.4); background: rgba(255, 215, 0, 0.04);">
+            <div class="slot-team-emblem emblem-sgl">
+              <img src="assets/team_sgl.png" alt="Se Ganhar é Lucro">
             </div>
             <div class="slot-details">
-              <span class="slot-id">VAGA #01 // CONFIRMADA</span>
-              <span class="slot-team-name text-gold">Só Na Manha (SNM)</span>
+              <span class="slot-id text-gold" style="font-weight: 700;">🥇 1º LUGAR // CAMPEÃ</span>
+              <span class="slot-team-name text-gold">Se Ganhar é Lucro (SGL)</span>
             </div>
             <div class="slot-action-tag">
-              <span class="slot-status-tag locked-tag">LOCKED</span>
+              <span class="slot-status-tag" style="background: rgba(255, 215, 0, 0.2); color: #ffd700; border: 1px solid rgba(255, 215, 0, 0.5); font-weight: 800;"><i data-lucide="crown"></i> CAMPEÃ 🏆</span>
               <span class="slot-roster-hint"><i data-lucide="eye"></i> LINEUP</span>
             </div>
           </div>
 
-          <!-- Vaga 2: Confirmada - Katarrentos -->
+          <!-- Vaga 3: Ragnarök (Vice) -->
+          <div class="slot-item slot-confirmed slot-interactive sound-click" data-team-id="ragnarok" title="Clique para ver a Lineup da Ragnarök" style="border-color: rgba(0, 240, 255, 0.35);">
+            <div class="slot-team-emblem emblem-ragnarok">
+              <img src="assets/team_ragnarok.png" alt="Ragnarök">
+            </div>
+            <div class="slot-details">
+              <span class="slot-id text-cyan" style="font-weight: 700;">🥈 2º LUGAR // VICE</span>
+              <span class="slot-team-name text-cyan">Ragnarök</span>
+            </div>
+            <div class="slot-action-tag">
+              <span class="slot-status-tag" style="background: rgba(0, 240, 255, 0.15); color: #00f0ff; border: 1px solid rgba(0, 240, 255, 0.4);"><i data-lucide="award"></i> VICE 🥈</span>
+              <span class="slot-roster-hint"><i data-lucide="eye"></i> LINEUP</span>
+            </div>
+          </div>
+
+          <!-- Vaga 2: Katarrentos (3º) -->
           <div class="slot-item slot-confirmed slot-interactive sound-click" data-team-id="katarrentos" title="Clique para ver a Lineup da Katarrentos">
             <div class="slot-team-emblem emblem-katarrentos">
               <img src="assets/team_katarrentos.png" alt="Katarrentos">
             </div>
             <div class="slot-details">
-              <span class="slot-id">VAGA #02 // CONFIRMADA</span>
+              <span class="slot-id" style="color: #c084fc;">🥉 3º LUGAR</span>
               <span class="slot-team-name text-purple">Katarrentos</span>
             </div>
             <div class="slot-action-tag">
-              <span class="slot-status-tag locked-tag">LOCKED</span>
+              <span class="slot-status-tag" style="background: rgba(192, 132, 252, 0.15); color: #c084fc; border: 1px solid rgba(192, 132, 252, 0.35);">3º LUGAR</span>
               <span class="slot-roster-hint"><i data-lucide="eye"></i> LINEUP</span>
             </div>
           </div>
 
-          <!-- Vaga 3: Confirmada - Ragnarök -->
-          <div class="slot-item slot-confirmed slot-interactive sound-click" data-team-id="ragnarok" title="Clique para ver a Lineup da Ragnarök">
-            <div class="slot-team-emblem emblem-ragnarok">
-              <img src="assets/team_ragnarok.png" alt="Ragnarök">
+          <!-- Vaga 1: Só Na Manha (4º) -->
+          <div class="slot-item slot-confirmed slot-interactive sound-click" data-team-id="snm" title="Clique para ver a Lineup da Só Na Manha">
+            <div class="slot-team-emblem emblem-snm">
+              <img src="assets/team_snm.png" alt="Só Na Manha">
             </div>
             <div class="slot-details">
-              <span class="slot-id">VAGA #03 // CONFIRMADA</span>
-              <span class="slot-team-name text-cyan">Ragnarök</span>
+              <span class="slot-id" style="color: var(--text-muted);">4º LUGAR</span>
+              <span class="slot-team-name text-gold">Só Na Manha (SNM)</span>
             </div>
             <div class="slot-action-tag">
-              <span class="slot-status-tag locked-tag">LOCKED</span>
-              <span class="slot-roster-hint"><i data-lucide="eye"></i> LINEUP</span>
-            </div>
-          </div>
-
-          <!-- Vaga 4: Confirmada - Se Ganhar é Lucro -->
-          <div class="slot-item slot-confirmed slot-interactive sound-click" data-team-id="sgl" title="Clique para ver a Lineup da Se Ganhar é Lucro">
-            <div class="slot-team-emblem emblem-sgl">
-              <img src="assets/team_sgl.png" alt="Se Ganhar é Lucro">
-            </div>
-            <div class="slot-details">
-              <span class="slot-id">VAGA #04 // CONFIRMADA</span>
-              <span class="slot-team-name text-neon-red">Se Ganhar é Lucro (SGL)</span>
-            </div>
-            <div class="slot-action-tag">
-              <span class="slot-status-tag locked-tag">LOCKED</span>
+              <span class="slot-status-tag" style="background: rgba(255, 255, 255, 0.08); color: var(--text-muted); border: 1px solid rgba(255, 255, 255, 0.15);">4º LUGAR</span>
               <span class="slot-roster-hint"><i data-lucide="eye"></i> LINEUP</span>
             </div>
           </div>
@@ -247,7 +248,7 @@
 
     <!-- CALL TO ACTION PRINCIPAL - CHAVEAMENTO COMPLETO & LISTA DE ESPERA -->
     <section class="cta-section">
-      <a href="https://wa.me/5582994091676?text=Ol%C3%A1!%20Vi%20que%20as%204%20vagas%20da%20QNT%20CUP%20est%C3%A3o%20preenchidas.%20Gostaria%20de%20entrar%20na%20lista%20de%20espera%20para%20as%20pr%C3%B3ximas%20edi%C3%A7%C3%B5es!" 
+      <a href="https://wa.me/5582994091676?text=Ol%C3%A1!%20Acompanhei%20a%201%C2%AA%20Edi%C3%A7%C3%A3o%20da%20QNT%20CUP%20e%20gostaria%20de%20entrar%20na%20lista%20de%20espera%20para%20a%202%C2%AA%20Edi%C3%A7%C3%A3o!" 
          target="_blank" 
          rel="noopener noreferrer" 
          class="btn-cyber-primary sound-click cta-pulse"
@@ -259,13 +260,13 @@
             <i data-lucide="trophy"></i>
           </div>
           <div class="cta-texts">
-            <span class="cta-subtitle">TORNEIO 100% FECHADO // 4/4 EQUIPES</span>
-            <span class="cta-title">FALAR COM ORGANIZAÇÃO // LISTA DE ESPERA</span>
+            <span class="cta-subtitle">1ª EDIÇÃO FINALIZADA COM SUCESSO</span>
+            <span class="cta-title">ENTRAR NA FILA DE ESPERA DA 2ª EDIÇÃO</span>
           </div>
           <i data-lucide="chevron-right" class="cta-arrow"></i>
         </div>
       </a>
-      <p class="cta-note"><i data-lucide="check-check"></i> Inscrições encerradas! Todas as 4 vagas foram preenchidas. Fale com a organização para lista de espera.</p>
+      <p class="cta-note"><i data-lucide="check-check"></i> Parabéns à equipe Se Ganhar é Lucro (SGL), campeã da 1ª Edição! Fale com a organização para a fila de espera da próxima copa.</p>
     </section>
 
     <!-- NAVEGAÇÃO DE AÇÕES RÁPIDAS (BOTOES INTERATIVOS ESTILO GAMER) -->
@@ -503,56 +504,59 @@
       <div class="hall-fame-card">
         <div class="hall-edition-header">
           <div class="hall-edition-badge">
-            <i data-lucide="crown"></i> EDIÇÃO #01
+            <i data-lucide="crown"></i> EDIÇÃO #01 // 14 E 15 DE NOVEMBRO DE 2026
           </div>
-          <span class="hall-status-tag pulse-tag">DISPUTA EM ABERTO</span>
+          <span class="hall-status-tag" style="background: rgba(0, 230, 118, 0.15); color: var(--tactical-green); border-color: rgba(0, 230, 118, 0.4);"><i data-lucide="check-circle-2"></i> CONCLUÍDA COM SUCESSO</span>
         </div>
 
         <div class="hall-trophy-display">
           <div class="trophy-glow-circle">
-            <i data-lucide="trophy" class="trophy-main-icon"></i>
+            <img src="assets/team_sgl.png" alt="SGL" style="width: 32px; height: 32px; object-fit: contain;">
           </div>
           <div class="trophy-caption">
-            <span class="trophy-title">TROFÉU DA 1ª EDIÇÃO</span>
-            <span class="trophy-sub">Quem levantará a taça no dia 15/11?</span>
+            <span class="trophy-title text-gold">SE GANHAR É LUCRO — CAMPEÃ HISTÓRICA</span>
+            <span class="trophy-sub">Venceu a Grande Final MD3 por 2x1 contra a Ragnarök em uma decisão eletrizante!</span>
           </div>
         </div>
 
-        <!-- Pódios da Edição (Facilmente editável após os jogos) -->
+        <!-- Pódios da Edição -->
         <div class="hall-podium-list">
           
           <!-- Campeão -->
-          <div class="podium-row champion-row">
+          <div class="podium-row champion-row" style="border-left: 3px solid #ffd700; background: rgba(255, 215, 0, 0.05);">
             <div class="podium-place gold-place">1º</div>
             <div class="podium-info">
-              <span class="podium-label">CAMPEÃO DA COPA</span>
-              <!-- EDITE AQUI APÓS A FINAL: substitua o texto pelo nome da equipe campeã -->
-              <span class="podium-team-name text-gold">A DEFINIR NA FINAL (15/11)</span>
-              <span class="podium-reward">1.000 VP por jogador + Troféu Oficial</span>
+              <span class="podium-label">CAMPEÃO DA COPA 🏆</span>
+              <span class="podium-team-name text-gold" style="display: flex; align-items: center; gap: 6px;">
+                <img src="assets/team_sgl.png" alt="SGL" style="width: 16px; height: 16px; object-fit: contain;">
+                Se Ganhar é Lucro (SGL)
+              </span>
+              <span class="podium-reward">1.000 VP por jogador + Troféu Oficial // Line: yse, NuRmAgUmEdOv, Lckz, Arise, crok</span>
             </div>
             <div class="podium-medal text-gold"><i data-lucide="award"></i></div>
           </div>
 
           <!-- Vice-Campeão -->
-          <div class="podium-row vice-row">
+          <div class="podium-row vice-row" style="border-left: 3px solid #00f0ff; background: rgba(0, 240, 255, 0.05);">
             <div class="podium-place silver-place">2º</div>
             <div class="podium-info">
-              <span class="podium-label">VICE-CAMPEÃO</span>
-              <!-- EDITE AQUI APÓS A FINAL: substitua o texto pelo nome do vice -->
-              <span class="podium-team-name text-cyan">A DEFINIR NA FINAL (15/11)</span>
-              <span class="podium-reward">R$ 40,00 via Pix direto</span>
+              <span class="podium-label">VICE-CAMPEÃO 🥈</span>
+              <span class="podium-team-name text-cyan" style="display: flex; align-items: center; gap: 6px;">
+                <img src="assets/team_ragnarok.png" alt="Ragnarök" style="width: 16px; height: 16px; object-fit: contain;">
+                Ragnarök
+              </span>
+              <span class="podium-reward">R$ 40,00 via Pix direto + Finalista MD3 com grandes atuações</span>
             </div>
             <div class="podium-medal text-cyan"><i data-lucide="shield"></i></div>
           </div>
 
           <!-- MVP da Grande Final -->
-          <div class="podium-row mvp-row-hall">
+          <div class="podium-row mvp-row-hall" style="border-left: 3px solid #ff4655; background: rgba(255, 70, 85, 0.05);">
             <div class="podium-place mvp-place"><i data-lucide="zap"></i></div>
             <div class="podium-info">
-              <span class="podium-label">MVP DA GRANDE DECISÃO</span>
-              <!-- EDITE AQUI APÓS A FINAL: substitua o texto pelo nick do jogador MVP -->
-              <span class="podium-team-name text-neon-red">A DEFINIR (15/11)</span>
-              <span class="podium-reward">1.000 VP de bônus individual</span>
+              <span class="podium-label">MVP DA GRANDE FINAL 👑</span>
+              <span class="podium-team-name text-neon-red">Yse (Capitão da SGL)</span>
+              <span class="podium-reward">1.000 VP individual • MVP em 4 partidas do torneio e dominante na decisão!</span>
             </div>
             <div class="podium-medal text-neon-red"><i data-lucide="star"></i></div>
           </div>
@@ -769,31 +773,69 @@
       </div>
       <div class="modal-body bracket-modal-body">
         
-        <!-- Confrontos Confirmados da Primeira Rodada -->
-        <div class="bracket-draw-alert confirmed-alert">
+        <!-- Resumo Oficial dos Campeões e Resultados -->
+        <div class="bracket-draw-alert confirmed-alert" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.08) 0%, rgba(0, 0, 0, 0.6) 100%); border-color: rgba(255, 215, 0, 0.35);">
           <div class="draw-alert-header">
-            <span class="draw-tag confirmed-tag"><i data-lucide="check-circle-2"></i> CONFRONTOS CONFIRMADOS</span>
-            <span class="draw-date">1ª RODADA // 14/11</span>
+            <span class="draw-tag confirmed-tag" style="background: rgba(255, 215, 0, 0.18); color: #ffd700;"><i data-lucide="trophy"></i> RESULTADOS OFICIAIS</span>
+            <span class="draw-date"><i data-lucide="check-check"></i> TORNEIO FINALIZADO</span>
           </div>
           <p class="draw-alert-desc">
-            Sorteio realizado! Os confrontos oficiais de abertura da QNT CUP estão definidos:
+            A 1ª Edição da QNT CUP foi um sucesso absoluto! Confira todos os confrontos, placares de mapas e os MVPs de cada partida:
           </p>
           <div class="draw-matches-preview">
-            <div class="draw-match-item">
-              <span class="draw-match-tag">JOGO #01</span>
+            <div class="draw-match-item" style="border-left: 3px solid var(--neon-cyan);">
+              <span class="draw-match-tag">JOGO #01 // R1</span>
               <div class="draw-match-teams">
-                <span class="text-cyan"><img src="assets/team_ragnarok.png" alt="RAG" class="pill-team-logo"> Ragnarök</span>
-                <span class="match-vs-micro">VS</span>
-                <span class="text-purple"><img src="assets/team_katarrentos.png" alt="KAT" class="pill-team-logo"> Katarrentos</span>
+                <span class="text-cyan font-bold"><img src="assets/team_ragnarok.png" alt="RAG" class="pill-team-logo"> RAG <strong>13</strong></span>
+                <span class="match-vs-micro">x</span>
+                <span class="text-muted"><img src="assets/team_katarrentos.png" alt="KAT" class="pill-team-logo"> KAT <strong>10</strong></span>
               </div>
+              <span class="draw-mvp-badge"><i data-lucide="star"></i> MVP: <strong>Acyer</strong></span>
             </div>
-            <div class="draw-match-item">
-              <span class="draw-match-tag">JOGO #02</span>
+            <div class="draw-match-item" style="border-left: 3px solid var(--valorant-red);">
+              <span class="draw-match-tag">JOGO #02 // R1</span>
               <div class="draw-match-teams">
-                <span class="text-neon-red"><img src="assets/team_sgl.png" alt="SGL" class="pill-team-logo"> SGL</span>
-                <span class="match-vs-micro">VS</span>
-                <span class="text-gold"><img src="assets/team_snm.png" alt="SNM" class="pill-team-logo"> Só Na Manha</span>
+                <span class="text-neon-red font-bold"><img src="assets/team_sgl.png" alt="SGL" class="pill-team-logo"> SGL <strong>13</strong></span>
+                <span class="match-vs-micro">x</span>
+                <span class="text-muted"><img src="assets/team_snm.png" alt="SNM" class="pill-team-logo"> SNM <strong>1</strong></span>
               </div>
+              <span class="draw-mvp-badge"><i data-lucide="star"></i> MVP: <strong>Yse</strong></span>
+            </div>
+            <div class="draw-match-item" style="border-left: 3px solid #ff9100;">
+              <span class="draw-match-tag">REPESCAGEM // MD1</span>
+              <div class="draw-match-teams">
+                <span class="text-purple font-bold"><img src="assets/team_katarrentos.png" alt="KAT" class="pill-team-logo"> KAT <strong>13</strong></span>
+                <span class="match-vs-micro">x</span>
+                <span class="text-muted"><img src="assets/team_snm.png" alt="SNM" class="pill-team-logo"> SNM <strong>0</strong></span>
+              </div>
+              <span class="draw-mvp-badge"><i data-lucide="star"></i> MVP: <strong>Lohan1213</strong></span>
+            </div>
+            <div class="draw-match-item" style="border-left: 3px solid var(--valorant-red);">
+              <span class="draw-match-tag">SEMIFINAL A // MD1</span>
+              <div class="draw-match-teams">
+                <span class="text-neon-red font-bold"><img src="assets/team_sgl.png" alt="SGL" class="pill-team-logo"> SGL <strong>13</strong></span>
+                <span class="match-vs-micro">x</span>
+                <span class="text-muted"><img src="assets/team_ragnarok.png" alt="RAG" class="pill-team-logo"> RAG <strong>10</strong></span>
+              </div>
+              <span class="draw-mvp-badge"><i data-lucide="star"></i> MVP: <strong>Yse</strong></span>
+            </div>
+            <div class="draw-match-item" style="border-left: 3px solid var(--neon-cyan);">
+              <span class="draw-match-tag">SEMIFINAL B // MD1</span>
+              <div class="draw-match-teams">
+                <span class="text-cyan font-bold"><img src="assets/team_ragnarok.png" alt="RAG" class="pill-team-logo"> RAG <strong>13</strong></span>
+                <span class="match-vs-micro">x</span>
+                <span class="text-muted"><img src="assets/team_katarrentos.png" alt="KAT" class="pill-team-logo"> KAT <strong>11</strong></span>
+              </div>
+              <span class="draw-mvp-badge"><i data-lucide="star"></i> MVP: <strong>Lohan1213</strong></span>
+            </div>
+            <div class="draw-match-item grand-final-summary-item" style="border-left: 3px solid #ffd700; background: rgba(255, 215, 0, 0.08);">
+              <span class="draw-match-tag text-gold">🏆 GRANDE FINAL // MD3</span>
+              <div class="draw-match-teams">
+                <span class="text-gold font-bold"><img src="assets/team_sgl.png" alt="SGL" class="pill-team-logo"> SGL <strong>2</strong></span>
+                <span class="match-vs-micro">x</span>
+                <span class="text-cyan font-bold"><img src="assets/team_ragnarok.png" alt="RAG" class="pill-team-logo"> RAG <strong>1</strong></span>
+              </div>
+              <span class="draw-mvp-badge text-gold"><i data-lucide="crown"></i> MVP FINAL: <strong>Yse (SGL)</strong></span>
             </div>
           </div>
         </div>
@@ -815,22 +857,22 @@
               <div class="match-box">
                 <div class="match-box-header">
                   <span class="match-label">JOGO #01 // MD1</span>
-                  <span class="match-status-tag" style="background: rgba(0, 230, 118, 0.15); color: var(--tactical-green);">CONFIRMADO</span>
+                  <span class="match-status-tag" style="background: rgba(0, 230, 118, 0.15); color: var(--tactical-green);"><i data-lucide="check"></i> FINALIZADO</span>
                 </div>
-                <div class="match-team team-top winner-slot">
+                <div class="match-team team-top winner-slot" style="border-left: 2px solid var(--neon-cyan);">
                   <span class="team-seed"><img src="assets/team_ragnarok.png" alt="Ragnarök" class="bracket-team-logo"></span>
-                  <span class="team-name text-cyan">Ragnarök</span>
-                  <span class="team-score">-</span>
+                  <span class="team-name text-cyan font-bold">Ragnarök</span>
+                  <span class="team-score score-win">13</span>
                 </div>
                 <div class="match-vs-divider"><span>VS</span></div>
-                <div class="match-team team-bottom winner-slot">
+                <div class="match-team team-bottom">
                   <span class="team-seed"><img src="assets/team_katarrentos.png" alt="Katarrentos" class="bracket-team-logo"></span>
                   <span class="team-name text-purple">Katarrentos</span>
-                  <span class="team-score">-</span>
+                  <span class="team-score score-lose">10</span>
                 </div>
                 <div class="match-destiny-footer">
-                  <span class="destiny-win"><i data-lucide="arrow-up-right"></i> Vencedor: Semifinal A</span>
-                  <span class="destiny-lose"><i data-lucide="corner-down-right"></i> Perdedor: Repescagem</span>
+                  <span class="destiny-win text-gold"><i data-lucide="star"></i> MVP: <strong>Acyer</strong> (Ragnarök)</span>
+                  <span class="destiny-info"><i data-lucide="arrow-up-right"></i> Ragnarök na Semifinal A | Katarrentos na Repescagem</span>
                 </div>
               </div>
 
@@ -838,22 +880,22 @@
               <div class="match-box">
                 <div class="match-box-header">
                   <span class="match-label">JOGO #02 // MD1</span>
-                  <span class="match-status-tag" style="background: rgba(0, 230, 118, 0.15); color: var(--tactical-green);">CONFIRMADO</span>
+                  <span class="match-status-tag" style="background: rgba(0, 230, 118, 0.15); color: var(--tactical-green);"><i data-lucide="check"></i> FINALIZADO</span>
                 </div>
-                <div class="match-team team-top winner-slot">
+                <div class="match-team team-top winner-slot" style="border-left: 2px solid var(--valorant-red);">
                   <span class="team-seed"><img src="assets/team_sgl.png" alt="SGL" class="bracket-team-logo"></span>
-                  <span class="team-name text-neon-red">Se Ganhar é Lucro (SGL)</span>
-                  <span class="team-score">-</span>
+                  <span class="team-name text-neon-red font-bold">Se Ganhar é Lucro (SGL)</span>
+                  <span class="team-score score-win">13</span>
                 </div>
                 <div class="match-vs-divider"><span>VS</span></div>
-                <div class="match-team team-bottom winner-slot">
+                <div class="match-team team-bottom">
                   <span class="team-seed"><img src="assets/team_snm.png" alt="SNM" class="bracket-team-logo"></span>
                   <span class="team-name text-gold">Só Na Manha (SNM)</span>
-                  <span class="team-score">-</span>
+                  <span class="team-score score-lose">1</span>
                 </div>
                 <div class="match-destiny-footer">
-                  <span class="destiny-win"><i data-lucide="arrow-up-right"></i> Vencedor: Semifinal A</span>
-                  <span class="destiny-lose"><i data-lucide="corner-down-right"></i> Perdedor: Repescagem</span>
+                  <span class="destiny-win text-gold"><i data-lucide="star"></i> MVP: <strong>Yse</strong> (SGL)</span>
+                  <span class="destiny-info"><i data-lucide="arrow-up-right"></i> SGL na Semifinal A | SNM na Repescagem</span>
                 </div>
               </div>
             </div>
@@ -871,22 +913,22 @@
             <div class="match-box">
               <div class="match-box-header">
                 <span class="match-label text-amber">JOGO #03 // MD1</span>
-                <span class="match-elimination-tag"><i data-lucide="alert-triangle"></i> VALE A SOBREVIVÊNCIA</span>
+                <span class="match-status-tag" style="background: rgba(0, 230, 118, 0.15); color: var(--tactical-green);"><i data-lucide="check"></i> FINALIZADO</span>
               </div>
-              <div class="match-team team-top">
-                <span class="team-seed"><i data-lucide="shield-alert"></i></span>
-                <span class="team-name">Perdedor: Ragnarök / Katarrentos</span>
-                <span class="team-score">-</span>
+              <div class="match-team team-top winner-slot" style="border-left: 2px solid #c084fc;">
+                <span class="team-seed"><img src="assets/team_katarrentos.png" alt="Katarrentos" class="bracket-team-logo"></span>
+                <span class="team-name text-purple font-bold">Katarrentos</span>
+                <span class="team-score score-win">13</span>
               </div>
               <div class="match-vs-divider"><span>VS</span></div>
               <div class="match-team team-bottom">
-                <span class="team-seed"><i data-lucide="shield-alert"></i></span>
-                <span class="team-name">Perdedor: SGL / Só Na Manha</span>
-                <span class="team-score">-</span>
+                <span class="team-seed"><img src="assets/team_snm.png" alt="SNM" class="bracket-team-logo"></span>
+                <span class="team-name text-gold">Só Na Manha (SNM)</span>
+                <span class="team-score score-lose">0</span>
               </div>
               <div class="match-destiny-footer">
-                <span class="destiny-win"><i data-lucide="arrow-up-right"></i> Vencedor: Semifinal B</span>
-                <span class="destiny-eliminated"><i data-lucide="x-circle"></i> Perdedor: ELIMINADO ❌</span>
+                <span class="destiny-win text-gold"><i data-lucide="star"></i> MVP: <strong>Lohan1213</strong> (Katarrentos)</span>
+                <span class="destiny-eliminated"><i data-lucide="x-circle"></i> Katarrentos avança p/ Semifinal B | SNM Eliminada ❌</span>
               </div>
             </div>
           </div>
@@ -895,7 +937,7 @@
           <div class="bracket-stage-card stage-orange">
             <div class="stage-card-header">
               <div class="stage-badge orange">
-                <i data-lucide="flame"></i> FASE 3 // 14/11 ou 15/11 (MD1)
+                <i data-lucide="flame"></i> FASE 3 // 14/11 & 15/11 (MD1)
               </div>
               <h4 class="stage-title">SEMIFINAIS</h4>
             </div>
@@ -904,44 +946,46 @@
               <!-- Semifinal 1 (Upper) -->
               <div class="match-box">
                 <div class="match-box-header">
-                  <span class="match-label text-orange">SEMIFINAL A // DISPUTA DA 1ª VAGA</span>
+                  <span class="match-label text-orange">SEMIFINAL A // 1ª VAGA NA FINAL</span>
+                  <span class="match-status-tag" style="background: rgba(0, 230, 118, 0.15); color: var(--tactical-green);"><i data-lucide="check"></i> FINALIZADO</span>
                 </div>
-                <div class="match-team team-top winner-slot">
-                  <span class="team-seed"><i data-lucide="zap"></i></span>
-                  <span class="team-name">Vencedor: Ragnarök / Katarrentos</span>
-                  <span class="team-score">-</span>
+                <div class="match-team team-top winner-slot" style="border-left: 2px solid var(--valorant-red);">
+                  <span class="team-seed"><img src="assets/team_sgl.png" alt="SGL" class="bracket-team-logo"></span>
+                  <span class="team-name text-neon-red font-bold">Se Ganhar é Lucro (SGL)</span>
+                  <span class="team-score score-win">13</span>
                 </div>
                 <div class="match-vs-divider"><span>VS</span></div>
-                <div class="match-team team-bottom winner-slot">
-                  <span class="team-seed"><i data-lucide="zap"></i></span>
-                  <span class="team-name">Vencedor: SGL / Só Na Manha</span>
-                  <span class="team-score">-</span>
+                <div class="match-team team-bottom">
+                  <span class="team-seed"><img src="assets/team_ragnarok.png" alt="Ragnarök" class="bracket-team-logo"></span>
+                  <span class="team-name text-cyan">Ragnarök</span>
+                  <span class="team-score score-lose">10</span>
                 </div>
                 <div class="match-destiny-footer">
-                  <span class="destiny-win"><i data-lucide="trophy"></i> Vencedor: Vaga na Grande Final! 🏆</span>
-                  <span class="destiny-lose"><i data-lucide="corner-down-right"></i> Perdedor: Semifinal B (Decisiva)</span>
+                  <span class="destiny-win text-gold"><i data-lucide="star"></i> MVP: <strong>Yse</strong> (SGL)</span>
+                  <span class="destiny-win"><i data-lucide="trophy"></i> SGL na Grande Final! 🏆 | Ragnarök na Semifinal B</span>
                 </div>
               </div>
 
               <!-- Semifinal 2 (Decisiva / Lower) -->
               <div class="match-box">
                 <div class="match-box-header">
-                  <span class="match-label text-orange">SEMIFINAL B // DISPUTA DA 2ª VAGA</span>
+                  <span class="match-label text-orange">SEMIFINAL B // 2ª VAGA NA FINAL</span>
+                  <span class="match-status-tag" style="background: rgba(0, 230, 118, 0.15); color: var(--tactical-green);"><i data-lucide="check"></i> FINALIZADO</span>
                 </div>
-                <div class="match-team team-top">
-                  <span class="team-seed"><i data-lucide="life-buoy"></i></span>
-                  <span class="team-name">Vencedor da Repescagem (J3)</span>
-                  <span class="team-score">-</span>
+                <div class="match-team team-top winner-slot" style="border-left: 2px solid var(--neon-cyan);">
+                  <span class="team-seed"><img src="assets/team_ragnarok.png" alt="Ragnarök" class="bracket-team-logo"></span>
+                  <span class="team-name text-cyan font-bold">Ragnarök</span>
+                  <span class="team-score score-win">13</span>
                 </div>
                 <div class="match-vs-divider"><span>VS</span></div>
                 <div class="match-team team-bottom">
-                  <span class="team-seed"><i data-lucide="arrow-down-right"></i></span>
-                  <span class="team-name">Perdedor da Semifinal A</span>
-                  <span class="team-score">-</span>
+                  <span class="team-seed"><img src="assets/team_katarrentos.png" alt="Katarrentos" class="bracket-team-logo"></span>
+                  <span class="team-name text-purple">Katarrentos</span>
+                  <span class="team-score score-lose">11</span>
                 </div>
                 <div class="match-destiny-footer">
-                  <span class="destiny-win"><i data-lucide="trophy"></i> Vencedor: Vaga na Grande Final! 🏆</span>
-                  <span class="destiny-eliminated"><i data-lucide="x-circle"></i> Perdedor: ELIMINADO ❌</span>
+                  <span class="destiny-win text-gold"><i data-lucide="star"></i> MVP: <strong>Lohan1213</strong> (Katarrentos)</span>
+                  <span class="destiny-eliminated"><i data-lucide="trophy"></i> Ragnarök na Grande Final! | Katarrentos Eliminada (3º Lugar) 🥉</span>
                 </div>
               </div>
             </div>
@@ -957,24 +1001,59 @@
             </div>
 
             <!-- Grande Decisão Box -->
-            <div class="match-box grand-final-box">
-              <div class="grand-final-trophy-badge">
-                <i data-lucide="crown"></i> DISPUTA DO TÍTULO // 1.000 VP POR JOGADOR + TROFÉU
+            <div class="match-box grand-final-box" style="border: 2px solid rgba(255, 215, 0, 0.45); background: linear-gradient(180deg, rgba(22, 28, 38, 0.95) 0%, rgba(12, 16, 22, 0.98) 100%);">
+              <div class="grand-final-trophy-badge" style="background: rgba(255, 215, 0, 0.15); color: #ffd700; border-color: rgba(255, 215, 0, 0.35);">
+                <i data-lucide="crown"></i> GRANDE DECISÃO MD3 // CAMPEÃO DA QNT CUP DEFINIDO!
               </div>
-              <div class="match-team team-top gold-highlight">
-                <span class="team-seed"><i data-lucide="star"></i></span>
-                <span class="team-name">Finalista 1 (Venc. Semifinal A)</span>
-                <span class="team-score">-</span>
+
+              <div class="match-team team-top gold-highlight winner-slot" style="border-left: 3px solid #ffd700; padding: 10px 12px; background: rgba(255, 215, 0, 0.08);">
+                <span class="team-seed"><img src="assets/team_sgl.png" alt="SGL" class="bracket-team-logo" style="width: 22px; height: 22px;"></span>
+                <span class="team-name text-gold" style="font-size: 0.95rem; font-weight: 800;">
+                  Se Ganhar é Lucro (SGL) <span style="font-size: 0.7rem; color: #ffd700; margin-left: 6px;">[CAMPEÃ 🥇]</span>
+                </span>
+                <span class="team-score score-win" style="font-size: 1.1rem; color: #ffd700; font-weight: 900;">2</span>
               </div>
-              <div class="match-vs-divider"><span>VS</span></div>
-              <div class="match-team team-bottom gold-highlight">
-                <span class="team-seed"><i data-lucide="star"></i></span>
-                <span class="team-name">Finalista 2 (Venc. Semifinal B)</span>
-                <span class="team-score">-</span>
+
+              <div class="match-vs-divider"><span>MD3 (SÉRIE MELHOR DE 3)</span></div>
+
+              <div class="match-team team-bottom gold-highlight" style="border-left: 3px solid #00f0ff; padding: 10px 12px; background: rgba(0, 240, 255, 0.05);">
+                <span class="team-seed"><img src="assets/team_ragnarok.png" alt="Ragnarök" class="bracket-team-logo" style="width: 22px; height: 22px;"></span>
+                <span class="team-name text-cyan" style="font-size: 0.95rem; font-weight: 700;">
+                  Ragnarök <span style="font-size: 0.7rem; color: #00f0ff; margin-left: 6px;">[VICE 🥈]</span>
+                </span>
+                <span class="team-score" style="font-size: 1.1rem; color: #00f0ff; font-weight: 700;">1</span>
               </div>
-              <div class="match-destiny-footer text-center">
-                <span class="destiny-champion"><i data-lucide="medal"></i> 🥇 CAMPEÃO: 1.000 VP/Player + Troféu</span>
-                <span class="destiny-vice"><i data-lucide="award"></i> 🥈 VICE-CAMPEÃO</span>
+
+              <!-- Detalhamento dos 3 Mapas da Final -->
+              <div class="final-maps-breakdown">
+                <div class="final-maps-header"><i data-lucide="layers"></i> PLACARES DETALHADOS DOS MAPAS:</div>
+                <div class="final-map-row">
+                  <span class="f-map-name">Mapa 1:</span>
+                  <span class="f-map-score"><strong>Ragnarök 13</strong> x 5 SGL</span>
+                  <span class="f-map-mvp"><i data-lucide="star"></i> MVP: <strong>Nixt</strong> (RAG)</span>
+                </div>
+                <div class="final-map-row overtime-row">
+                  <span class="f-map-name">Mapa 2:</span>
+                  <span class="f-map-score"><strong>SGL 14</strong> x 12 Ragnarök <em class="ot-badge">OVERTIME</em></span>
+                  <span class="f-map-mvp text-gold"><i data-lucide="star"></i> MVP: <strong>Yse</strong> (SGL)</span>
+                </div>
+                <div class="final-map-row decider-row">
+                  <span class="f-map-name">Mapa 3 (Decider):</span>
+                  <span class="f-map-score"><strong>SGL 13</strong> x 6 Ragnarök</span>
+                  <span class="f-map-mvp text-gold"><i data-lucide="star"></i> MVP: <strong>Yse</strong> (SGL)</span>
+                </div>
+              </div>
+
+              <div class="match-destiny-footer text-center" style="background: rgba(0, 0, 0, 0.45); border-radius: 6px; padding: 10px; margin-top: 8px;">
+                <div style="font-family: var(--font-tactical); font-size: 0.82rem; color: #ffd700; font-weight: 800; margin-bottom: 4px;">
+                  🥇 CAMPEÃO: SE GANHAR É LUCRO (SGL) — 1.000 VP por Jogador + Troféu
+                </div>
+                <div style="font-family: var(--font-tactical); font-size: 0.76rem; color: #00f0ff; margin-bottom: 4px;">
+                  🥈 VICE-CAMPEÃO: RAGNARÖK — R$ 40,00 Pix direto
+                </div>
+                <div style="font-family: var(--font-tactical); font-size: 0.76rem; color: #ff4655; font-weight: 700;">
+                  👑 MVP DA GRANDE FINAL: YSE (SGL) — 1.000 VP Bônus Individual
+                </div>
               </div>
             </div>
           </div>

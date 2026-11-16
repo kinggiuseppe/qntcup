@@ -3806,3 +3806,291 @@ body.spike-armed-mode .brand-title {
   background: var(--valorant-red);
   box-shadow: 0 0 8px rgba(255, 70, 85, 0.6);
 }
+
+/* ==========================================================================
+   CHAMPION HUD & TOURNAMENT RESULTS STYLING
+   ========================================================================== */
+
+.champion-hud-card {
+  background: linear-gradient(135deg, rgba(25, 30, 42, 0.95) 0%, rgba(10, 14, 20, 0.98) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6), inset 0 0 25px rgba(255, 215, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+  animation: hudGlow 3s infinite alternate ease-in-out;
+}
+
+@keyframes hudGlow {
+  0% { border-color: rgba(255, 215, 0, 0.3); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(255, 215, 0, 0.05); }
+  100% { border-color: rgba(255, 215, 0, 0.6); box-shadow: 0 4px 28px rgba(255, 215, 0, 0.25), inset 0 0 30px rgba(255, 215, 0, 0.12); }
+}
+
+.champion-hud-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 8px;
+}
+
+.champion-hud-badge {
+  font-family: var(--font-tactical);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #ffd700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.8px;
+}
+
+.champion-hud-badge svg {
+  width: 14px;
+  height: 14px;
+}
+
+.champion-status-pill {
+  font-family: var(--font-tactical);
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0, 230, 118, 0.15);
+  color: var(--tactical-green);
+  border: 1px solid rgba(0, 230, 118, 0.35);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.champion-hud-body {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.champion-emblem-wrap {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.25) 0%, rgba(10, 14, 20, 0.8) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+.champion-emblem-img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
+}
+
+.champion-trophy-ribbon {
+  position: absolute;
+  bottom: -6px;
+  background: #ffd700;
+  color: #05070a;
+  font-family: var(--font-tactical);
+  font-size: 0.55rem;
+  font-weight: 900;
+  padding: 1px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.champion-hud-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex-grow: 1;
+}
+
+.champion-subtitle {
+  font-family: var(--font-tactical);
+  font-size: 0.62rem;
+  color: var(--text-subtle);
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.champion-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1.1;
+  color: #ffd700;
+  letter-spacing: 0.5px;
+  margin: 2px 0 4px 0;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+.champion-details-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-tactical);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.champion-details-line .c-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.champion-details-line .c-item svg {
+  width: 12px;
+  height: 12px;
+}
+
+.c-sep {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.champion-hud-actions {
+  display: flex;
+  margin-top: 4px;
+}
+
+.btn-champion-bracket {
+  width: 100%;
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  color: #ffd700;
+  font-family: var(--font-tactical);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+}
+
+.btn-champion-bracket:hover {
+  background: rgba(255, 215, 0, 0.25);
+  border-color: #ffd700;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+.score-win {
+  color: var(--tactical-green) !important;
+  font-weight: 800;
+  font-size: 0.85rem !important;
+}
+
+.score-lose {
+  color: var(--text-subtle) !important;
+  font-size: 0.75rem !important;
+}
+
+.draw-mvp-badge {
+  font-family: var(--font-tactical);
+  font-size: 0.65rem;
+  color: #ffd700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.draw-mvp-badge svg {
+  width: 11px;
+  height: 11px;
+}
+
+.final-maps-breakdown {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.final-maps-header {
+  font-family: var(--font-tactical);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  letter-spacing: 0.5px;
+}
+
+.final-maps-header svg {
+  width: 12px;
+  height: 12px;
+}
+
+.final-map-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-tactical);
+  font-size: 0.72rem;
+  color: var(--text-main);
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.final-map-row:last-child {
+  border-bottom: none;
+}
+
+.final-map-row .f-map-name {
+  color: var(--text-subtle);
+  font-size: 0.68rem;
+}
+
+.final-map-row .f-map-score strong {
+  color: #ffffff;
+}
+
+.final-map-row .f-map-mvp {
+  font-size: 0.65rem;
+  color: var(--text-subtle);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.final-map-row .f-map-mvp svg {
+  width: 10px;
+  height: 10px;
+}
+
+.ot-badge {
+  font-style: normal;
+  font-size: 0.55rem;
+  font-weight: 800;
+  background: rgba(255, 70, 85, 0.2);
+  color: #ff4655;
+  border: 1px solid rgba(255, 70, 85, 0.4);
+  padding: 1px 4px;
+  border-radius: 3px;
+  margin-left: 3px;
+}
