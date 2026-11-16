@@ -17,9 +17,10 @@
   <style>
     :root {
       --bg-primary: #05070a;
-      --bg-card: rgba(14, 18, 25, 0.94);
+      --bg-card: rgba(14, 18, 25, 0.96);
       --valorant-red: #ff4655;
       --gold: #ffd700;
+      --gold-dark: #b8860b;
       --cyan: #00f0ff;
       --green: #00e676;
       --purple: #c084fc;
@@ -47,8 +48,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 16px 12px;
+      justify-content: flex-start;
+      padding: 20px 12px 60px;
       overflow-x: hidden;
       position: relative;
     }
@@ -58,13 +59,13 @@
       content: "";
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at 50% 40%, rgba(30, 22, 10, 0.35) 0%, rgba(8, 11, 16, 0.85) 60%, #030407 100%);
+      background: radial-gradient(circle at 50% 35%, rgba(40, 30, 12, 0.45) 0%, rgba(8, 11, 16, 0.88) 60%, #030407 100%);
       z-index: -2;
       transition: background 0.8s ease;
     }
 
     body.theme-mvp::before {
-      background: radial-gradient(circle at 50% 40%, rgba(45, 12, 18, 0.45) 0%, rgba(12, 8, 12, 0.85) 60%, #030407 100%);
+      background: radial-gradient(circle at 50% 35%, rgba(55, 12, 22, 0.5) 0%, rgba(12, 8, 12, 0.88) 60%, #030407 100%);
     }
 
     body::after {
@@ -79,22 +80,6 @@
       pointer-events: none;
     }
 
-    /* Screen Flashbang Effect during Unbox */
-    #flashOverlay {
-      position: fixed;
-      inset: 0;
-      background: #ffffff;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 50;
-      transition: opacity 0.1s ease-out;
-    }
-
-    #flashOverlay.flash {
-      opacity: 0.95;
-      transition: opacity 0.05s ease-in;
-    }
-
     /* Confetti / Particle Canvas */
     #fxCanvas {
       position: fixed;
@@ -102,12 +87,12 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 20;
+      z-index: 40;
     }
 
     .main-wrap {
       width: 100%;
-      max-width: 480px;
+      max-width: 460px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -120,7 +105,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       text-decoration: none;
       color: var(--text-main);
       transition: transform 0.2s;
@@ -140,7 +125,7 @@
 
     .top-brand-text {
       font-family: var(--font-display);
-      font-size: 1.4rem;
+      font-size: 1.45rem;
       letter-spacing: 1px;
     }
 
@@ -148,208 +133,666 @@
       color: var(--valorant-red);
     }
 
-    /* ===================================================
-       ESTADO 1: O PACOTE LACRADO (FOIL BOOSTER PACK)
-       =================================================== */
-    .pack-unboxing-stage {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      perspective: 1000px;
-      transition: all 0.5s ease;
-    }
-
-    /* Stage Header Tag */
+    /* Tag Pill */
     .pack-tag-pill {
-      font-family: var(--font-tactical);
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 1px;
-      padding: 5px 14px;
-      border-radius: 20px;
-      background: rgba(255, 215, 0, 0.15);
-      color: var(--gold);
-      border: 1px solid rgba(255, 215, 0, 0.4);
-      margin-bottom: 14px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.15);
+      background: rgba(255, 215, 0, 0.12);
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      color: var(--gold);
+      font-family: var(--font-tactical);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+      transition: all 0.3s;
     }
 
     body.theme-mvp .pack-tag-pill {
-      background: rgba(255, 70, 85, 0.15);
+      background: rgba(255, 70, 85, 0.12);
+      border-color: rgba(255, 70, 85, 0.45);
       color: var(--valorant-red);
-      border-color: rgba(255, 70, 85, 0.4);
-      box-shadow: 0 0 15px rgba(255, 70, 85, 0.2);
+      box-shadow: 0 0 15px rgba(255, 70, 85, 0.25);
     }
 
-    /* 3D Floating Pack Container */
+    /* ===================================================
+       STAGE 3D DO PACOTE FÍSICO
+       =================================================== */
+    .unboxing-stage {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
     .pack-3d-scene {
       width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
+      perspective: 1200px;
+      min-height: 470px;
       position: relative;
-      margin: 10px 0 20px 0;
+      padding-top: 10px;
+      margin-bottom: 24px;
     }
 
-    /* Ambient Spotlight Halo behind the pack */
+    /* Halo de luz atrás do pacote */
     .pack-halo {
       position: absolute;
-      width: 260px;
-      height: 380px;
+      width: 320px;
+      height: 440px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 215, 0, 0.35) 0%, rgba(255, 140, 0, 0.15) 50%, transparent 75%);
-      filter: blur(25px);
-      animation: haloBreath 3s infinite alternate ease-in-out;
+      background: radial-gradient(circle, rgba(255, 215, 0, 0.35) 0%, rgba(255, 145, 0, 0.15) 45%, transparent 70%);
+      filter: blur(28px);
+      z-index: 1;
       pointer-events: none;
+      transition: background 0.5s ease, opacity 0.5s ease;
+      animation: haloPulse 3s infinite ease-in-out;
     }
 
     body.theme-mvp .pack-halo {
-      background: radial-gradient(circle, rgba(255, 70, 85, 0.4) 0%, rgba(180, 20, 40, 0.2) 50%, transparent 75%);
+      background: radial-gradient(circle, rgba(255, 70, 85, 0.45) 0%, rgba(192, 20, 40, 0.18) 45%, transparent 70%);
     }
 
-    @keyframes haloBreath {
-      0% { transform: scale(0.9); opacity: 0.6; }
-      100% { transform: scale(1.15); opacity: 0.95; }
+    @keyframes haloPulse {
+      0% { transform: scale(0.95); opacity: 0.65; }
+      50% { transform: scale(1.08); opacity: 0.95; }
+      100% { transform: scale(0.95); opacity: 0.65; }
     }
 
-    /* Foil Booster Pack Physical Element */
-    .foil-pack {
-      width: 270px;
-      height: 385px;
-      border-radius: 12px;
+    /* O PACOTE FÍSICO COM AS CAMADAS */
+    .physical-booster-pack {
+      width: 295px;
+      height: 430px;
       position: relative;
-      cursor: pointer;
       transform-style: preserve-3d;
-      transition: transform 0.15s ease-out, box-shadow 0.3s ease;
-      animation: packFloat 4s infinite ease-in-out;
       user-select: none;
+      transition: transform 0.2s ease-out;
+      animation: packFloat 4s infinite ease-in-out;
+      z-index: 5;
     }
 
     @keyframes packFloat {
       0% { transform: translateY(0px) rotateZ(0deg); }
-      50% { transform: translateY(-10px) rotateZ(0.5deg); }
+      50% { transform: translateY(-8px) rotateZ(0.5deg); }
       100% { transform: translateY(0px) rotateZ(0deg); }
     }
 
-    .foil-pack-img {
+    .physical-booster-pack.opened {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 12px;
-      box-shadow: 
-        0 20px 50px rgba(0, 0, 0, 0.85),
-        0 0 35px rgba(255, 215, 0, 0.35),
-        inset 0 0 15px rgba(255, 255, 255, 0.2);
-      display: block;
-      transition: filter 0.3s ease;
+      max-width: 440px;
+      height: auto;
+      min-height: auto;
+      perspective: none;
+      transform: none !important;
     }
 
-    body.theme-mvp .foil-pack-img {
-      box-shadow: 
-        0 20px 50px rgba(0, 0, 0, 0.85),
-        0 0 35px rgba(255, 70, 85, 0.45),
-        inset 0 0 15px rgba(255, 255, 255, 0.2);
+    .physical-booster-pack.opened .pack-inner-foil {
+      display: none;
     }
 
-    /* Specular Metallic Gloss Sheen Sweep */
-    .foil-pack::before {
+    /* 1. Camada de Fundo do Pacote (interior metálico escuro) */
+    .pack-inner-foil {
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #181920 0%, #292a34 50%, #12131a 100%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 25px rgba(0, 0, 0, 0.8);
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .pack-inner-foil::before {
       content: "";
       position: absolute;
       inset: 0;
-      border-radius: 12px;
+      background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.02) 0, rgba(255, 255, 255, 0.02) 2px, transparent 2px, transparent 6px);
+    }
+
+    /* 2. Camada da Frente - Parte Inferior (O envelope que segura o card) */
+    .pack-slice-bottom {
+      position: absolute;
+      inset: 0;
+      z-index: 8;
+      clip-path: polygon(0% 18.2%, 100% 18.2%, 100% 100%, 0% 100%);
+      transform-origin: bottom center;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+      cursor: pointer;
+    }
+
+    .pack-slice-bottom img,
+    .pack-slice-top img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 14px;
+      display: block;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
+    }
+
+    /* Borda da boca do pacote (efeito de profundidade quando abre) */
+    .pouch-open-lip {
+      position: absolute;
+      top: 18.2%;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(0, 0, 0, 0.8));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .pack-slice-bottom.pouch-open .pouch-open-lip {
+      opacity: 1;
+    }
+
+    .pack-slice-bottom.pouch-open {
+      transform: perspective(600px) rotateX(8deg);
+    }
+
+    .pack-slice-bottom.spent {
+      transform: translateY(80px) scale(0.9);
+      opacity: 0.25;
+      filter: blur(2px);
+      pointer-events: none;
+    }
+
+    /* 3. Camada da Frente - Parte Superior (A tampa do pacote que vai rasgar) */
+    .pack-slice-top {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      clip-path: polygon(0% 0%, 100% 0%, 100% 18.5%, 0% 18.5%);
+      transform-origin: top right;
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease 0.2s;
+      cursor: pointer;
+    }
+
+    .pack-slice-top.is-torn {
+      transform: translate3d(-40px, -90px, 45px) rotate(-22deg) rotateY(15deg) scale(0.92);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Brilho Holográfico nos pedaços de pacote */
+    .foil-specular-gloss {
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
       background: linear-gradient(
         115deg,
         transparent 35%,
         rgba(255, 255, 255, 0.15) 42%,
-        rgba(255, 255, 255, 0.5) 48%,
+        rgba(255, 255, 255, 0.55) 48%,
         rgba(255, 255, 255, 0.8) 50%,
-        rgba(255, 255, 255, 0.5) 52%,
+        rgba(255, 255, 255, 0.55) 52%,
         rgba(255, 255, 255, 0.15) 58%,
         transparent 65%
       );
       background-size: 250% 250%;
-      animation: glossSweep 4.5s infinite linear;
+      animation: glossShimmer 4s infinite linear;
       pointer-events: none;
-      mix-blend-mode: overlay;
     }
 
-    @keyframes glossSweep {
+    @keyframes glossShimmer {
       0% { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
 
-    /* Tear Guide Indicator (Rasgue Aqui) */
-    .tear-guide-line {
+    /* 4. Linha de Rasgo / Guia Tática */
+    .tear-strip-seam {
       position: absolute;
-      top: 18px;
-      left: 10px;
-      right: 10px;
-      height: 2px;
+      top: 18.3%;
+      left: -2px;
+      right: -2px;
+      height: 3px;
+      z-index: 12;
       background: repeating-linear-gradient(90deg, #ffd700 0, #ffd700 8px, transparent 8px, transparent 14px);
-      z-index: 5;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+      cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: center;
-      opacity: 0.85;
-      animation: tearGlow 1.8s infinite alternate ease-in-out;
+      transition: opacity 0.3s ease;
     }
 
-    body.theme-mvp .tear-guide-line {
+    body.theme-mvp .tear-strip-seam {
       background: repeating-linear-gradient(90deg, #ff4655 0, #ff4655 8px, transparent 8px, transparent 14px);
+      box-shadow: 0 0 10px rgba(255, 70, 85, 0.8);
     }
 
-    @keyframes tearGlow {
-      0% { filter: drop-shadow(0 0 2px #ffd700); opacity: 0.6; }
-      100% { filter: drop-shadow(0 0 8px #ffd700); opacity: 1; }
+    .tear-laser-trail {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background: #ffffff;
+      box-shadow: 0 0 14px 4px #ffffff, 0 0 25px 8px var(--gold);
+      transition: width 0.22s ease-in;
     }
 
-    .tear-label-tag {
-      background: rgba(5, 7, 10, 0.9);
+    body.theme-mvp .tear-laser-trail {
+      box-shadow: 0 0 14px 4px #ffffff, 0 0 25px 8px var(--valorant-red);
+    }
+
+    .tear-notch-tab {
+      position: absolute;
+      left: 8px;
+      top: -12px;
+      background: rgba(5, 7, 10, 0.95);
       border: 1px solid var(--gold);
       color: var(--gold);
       font-family: var(--font-tactical);
-      font-size: 0.58rem;
+      font-size: 0.65rem;
       font-weight: 800;
-      padding: 1px 8px;
+      padding: 3px 10px;
       border-radius: 4px;
       letter-spacing: 0.8px;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
+      pointer-events: none;
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+      animation: notchBounce 1.5s infinite ease-in-out;
     }
 
-    body.theme-mvp .tear-label-tag {
+    body.theme-mvp .tear-notch-tab {
       border-color: var(--valorant-red);
       color: var(--valorant-red);
+      box-shadow: 0 0 12px rgba(255, 70, 85, 0.4);
+    }
+
+    @keyframes notchBounce {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(5px); }
     }
 
     /* ===================================================
-       ANIMAÇÃO DE RASGO / ABERTURA (RIPPING SEQUENCE)
+       O CARD DE RECOMPENSA (DENTRO DO PACOTE)
        =================================================== */
-    .foil-pack.ripping {
-      animation: ripShake 0.65s ease-in-out infinite alternate !important;
+    .card-insert {
+      position: absolute;
+      top: 12px;
+      left: 8px;
+      right: 8px;
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 215, 0, 0.5);
+      border-radius: 12px;
+      padding: 20px 16px;
+      z-index: 5; /* Fica atrás da frente do pacote */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
+      transform: translateY(0);
+      transform-origin: center center;
+      transition: transform 0.95s cubic-bezier(0.2, 0.9, 0.25, 1), max-height 0.6s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-height: 405px;
+      overflow: hidden;
+      opacity: 1;
+      pointer-events: none;
     }
 
-    @keyframes ripShake {
-      0% { transform: scale(1.04) translate(0, 0) rotate(0deg); filter: brightness(1.2); }
-      25% { transform: scale(1.06) translate(-4px, 3px) rotate(-1.5deg); }
-      50% { transform: scale(1.08) translate(4px, -3px) rotate(1.5deg); filter: brightness(1.5); }
-      75% { transform: scale(1.1) translate(-5px, -2px) rotate(-1deg); }
-      100% { transform: scale(1.12) translate(5px, 2px) rotate(1deg); filter: brightness(1.8); }
+    body.theme-mvp .card-insert {
+      border-color: rgba(255, 70, 85, 0.5);
     }
 
-    .foil-pack.ripped {
-      transform: scale(1.3) translateY(40px) !important;
-      opacity: 0 !important;
-      filter: blur(12px) brightness(2) !important;
-      transition: all 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) !important;
+    /* Estado: Card deslizando para cima saindo do pacote */
+    .card-insert.is-sliding {
+      transform: translateY(-84%) translateZ(40px);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(255, 215, 0, 0.3);
     }
 
-    /* CTA Button to Open */
+    body.theme-mvp .card-insert.is-sliding {
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(255, 70, 85, 0.35);
+    }
+
+    /* Estado: Card 100% revelado e no centro */
+    .card-insert.is-revealed {
+      position: relative;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      max-width: 440px;
+      max-height: 2500px;
+      overflow: visible;
+      z-index: 30;
+      transform: translateY(0) scale(1) translateZ(60px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 45px rgba(255, 215, 0, 0.25);
+      transition: all 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: auto;
+      margin-top: 10px;
+    }
+
+    body.theme-mvp .card-insert.is-revealed {
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 45px rgba(255, 70, 85, 0.25);
+    }
+
+    /* Detalhes internos do card */
+    .reward-pack-origin {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 4px 12px;
+      margin-bottom: 12px;
+    }
+
+    .reward-pack-thumb {
+      width: 22px;
+      height: 30px;
+      border-radius: 3px;
+      object-fit: cover;
+    }
+
+    .reward-pack-origin-text {
+      font-family: var(--font-tactical);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.8px;
+    }
+
+    .reward-player-name {
+      font-family: var(--font-display);
+      font-size: 3.6rem;
+      line-height: 0.9;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    body.theme-mvp .reward-player-name {
+      text-shadow: 0 0 25px rgba(255, 70, 85, 0.7);
+    }
+
+    .reward-conquest {
+      font-family: var(--font-tactical);
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: 1px;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    body.theme-mvp .reward-conquest {
+      color: var(--valorant-red);
+    }
+
+    .reward-subinfo {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    /* Box 1.000 VP */
+    .reward-amount-box {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.12) 0%, rgba(255, 145, 0, 0.05) 100%);
+      border: 1px solid rgba(255, 215, 0, 0.35);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    body.theme-mvp .reward-amount-box {
+      background: linear-gradient(135deg, rgba(255, 70, 85, 0.15) 0%, rgba(192, 20, 40, 0.05) 100%);
+      border-color: rgba(255, 70, 85, 0.4);
+    }
+
+    .reward-vp-emblem {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ffd700 0%, #ff8f00 100%);
+      color: #05070a;
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+      flex-shrink: 0;
+    }
+
+    body.theme-mvp .reward-vp-emblem {
+      background: linear-gradient(135deg, var(--valorant-red) 0%, #b81424 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(255, 70, 85, 0.45);
+    }
+
+    .reward-amount-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .reward-amount-val {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      line-height: 1;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
+    .reward-amount-desc {
+      font-family: var(--font-tactical);
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.8px;
+    }
+
+    body.theme-mvp .reward-amount-desc {
+      color: var(--valorant-red);
+    }
+
+    /* Box do Código com Copiar de 1 Clique */
+    .code-box-wrapper {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .code-box-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-tactical);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.6px;
+      margin-bottom: 6px;
+      padding: 0 2px;
+    }
+
+    .code-box-label span:last-child {
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .code-box {
+      width: 100%;
+      background: #020406;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .code-text {
+      font-family: 'Courier New', monospace;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: 1.8px;
+      user-select: all;
+      word-break: break-all;
+    }
+
+    body.theme-mvp .code-text {
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 70, 85, 0.5);
+    }
+
+    .btn-copy-code {
+      background: linear-gradient(135deg, var(--gold) 0%, #ff9100 100%);
+      color: #05070a;
+      border: none;
+      font-family: var(--font-tactical);
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.8px;
+      box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    body.theme-mvp .btn-copy-code {
+      background: linear-gradient(135deg, var(--valorant-red) 0%, #b81424 100%);
+      color: #ffffff;
+      box-shadow: 0 2px 10px rgba(255, 70, 85, 0.35);
+    }
+
+    .btn-copy-code:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.1);
+    }
+
+    .btn-copy-code.copied {
+      background: #00e676 !important;
+      color: #05070a !important;
+      box-shadow: 0 2px 12px rgba(0, 230, 118, 0.4) !important;
+    }
+
+    /* Guia de Ativação no Valorant */
+    .activation-guide {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .guide-title {
+      font-family: var(--font-tactical);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--cyan);
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .guide-steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .guide-steps li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.72rem;
+      line-height: 1.4;
+      color: var(--text-muted);
+    }
+
+    .guide-steps li strong {
+      color: #ffffff;
+    }
+
+    .step-num {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-family: var(--font-tactical);
+      font-size: 0.62rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Botão Compartilhar no Instagram */
+    .btn-share-instagram {
+      width: 100%;
+      background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      font-family: var(--font-tactical);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 18px rgba(253, 29, 29, 0.35);
+      transition: transform 0.2s, filter 0.2s;
+    }
+
+    .btn-share-instagram:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    /* ===================================================
+       CONTROLES INFERIORES DE ABERTURA
+       =================================================== */
+    .unboxing-controls-bar {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 6px;
+      transition: opacity 0.4s ease;
+    }
+
     .btn-rip-pack {
       background: linear-gradient(135deg, #ffd700 0%, #ff9100 100%);
       color: #05070a;
@@ -357,7 +800,7 @@
       font-family: var(--font-tactical);
       font-size: 1rem;
       font-weight: 800;
-      padding: 14px 32px;
+      padding: 14px 34px;
       border-radius: 8px;
       cursor: pointer;
       display: inline-flex;
@@ -397,377 +840,52 @@
     }
 
     /* ===================================================
-       ESTADO 2: RECOMPENSA REVELADA (PRESTIGE REWARD CARD)
+       PAINEL ADMIN (GERADOR DE LINKS SEGUROS)
        =================================================== */
-    .reward-card {
-      display: none;
+    .admin-generator-panel {
       width: 100%;
-      background: var(--bg-card);
-      border: 1px solid rgba(255, 215, 0, 0.45);
-      border-radius: 14px;
-      padding: 24px 20px;
-      flex-direction: column;
-      align-items: center;
-      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8), inset 0 0 35px rgba(255, 215, 0, 0.08);
-      animation: cardEmerge 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      position: relative;
-      overflow: hidden;
-    }
-
-    body.theme-mvp .reward-card {
-      border-color: rgba(255, 70, 85, 0.5);
-      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8), inset 0 0 35px rgba(255, 70, 85, 0.08);
-    }
-
-    @keyframes cardEmerge {
-      0% { opacity: 0; transform: translateY(60px) scale(0.85) rotateX(15deg); }
-      100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); }
-    }
-
-    /* Pack Mini Thumbnail on top of reward card */
-    .reward-pack-origin {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--border-subtle);
-      border-radius: 20px;
-      padding: 4px 12px;
-      margin-bottom: 12px;
-    }
-
-    .reward-pack-thumb {
-      width: 20px;
-      height: 28px;
-      border-radius: 3px;
-      object-fit: cover;
-    }
-
-    .reward-pack-origin-text {
-      font-family: var(--font-tactical);
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: var(--text-muted);
-    }
-
-    .reward-player-name {
-      font-family: var(--font-display);
-      font-size: 3rem;
-      line-height: 0.95;
-      color: #ffffff;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      text-align: center;
-      margin-bottom: 4px;
-      text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-    }
-
-    .reward-conquest {
-      font-family: var(--font-tactical);
-      font-size: 0.9rem;
-      font-weight: 800;
-      color: var(--gold);
-      text-align: center;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
-    }
-
-    body.theme-mvp .reward-conquest {
-      color: var(--valorant-red);
-    }
-
-    .reward-subinfo {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      text-align: center;
-      margin-bottom: 18px;
-    }
-
-    /* Prize Value Big Banner */
-    .reward-amount-box {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(14, 18, 25, 0.95);
       border: 1px solid rgba(255, 215, 0, 0.3);
-      border-radius: 10px;
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    body.theme-mvp .reward-amount-box {
-      border-color: rgba(255, 70, 85, 0.3);
-    }
-
-    .reward-vp-emblem {
-      width: 44px;
-      height: 44px;
-      border-radius: 8px;
-      background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 80%);
-      border: 1px solid var(--gold);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-display);
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: var(--gold);
-      flex-shrink: 0;
-    }
-
-    body.theme-mvp .reward-vp-emblem {
-      background: radial-gradient(circle, rgba(255, 70, 85, 0.3) 0%, transparent 80%);
-      border-color: var(--valorant-red);
-      color: var(--valorant-red);
-    }
-
-    .reward-amount-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .reward-amount-val {
-      font-family: var(--font-display);
-      font-size: 1.7rem;
-      line-height: 1;
-      color: #ffffff;
-      font-weight: 700;
-    }
-
-    .reward-amount-desc {
-      font-family: var(--font-tactical);
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      letter-spacing: 0.5px;
-    }
-
-    /* Code Card Box */
-    .code-box-wrapper {
-      width: 100%;
-      margin-bottom: 18px;
-    }
-
-    .code-box-label {
-      font-family: var(--font-tactical);
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: var(--text-subtle);
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .code-box {
-      width: 100%;
-      background: #040608;
-      border: 1px dashed var(--gold);
-      border-radius: 8px;
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    body.theme-mvp .code-box {
-      border-color: var(--valorant-red);
-    }
-
-    .code-text {
-      font-family: 'Courier New', monospace;
-      font-size: 1.15rem;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      color: #ffffff;
-      word-break: break-all;
-    }
-
-    .btn-copy-code {
-      background: rgba(255, 215, 0, 0.18);
-      border: 1px solid var(--gold);
-      color: var(--gold);
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-family: var(--font-tactical);
-      font-size: 0.78rem;
-      font-weight: 800;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-      transition: all 0.2s ease;
-    }
-
-    body.theme-mvp .btn-copy-code {
-      background: rgba(255, 70, 85, 0.18);
-      border-color: var(--valorant-red);
-      color: var(--valorant-red);
-    }
-
-    .btn-copy-code:hover {
-      background: var(--gold);
-      color: #05070a;
-    }
-
-    body.theme-mvp .btn-copy-code:hover {
-      background: var(--valorant-red);
-      color: #ffffff;
-    }
-
-    .btn-copy-code.copied {
-      background: var(--green) !important;
-      border-color: var(--green) !important;
-      color: #05070a !important;
-    }
-
-    /* Step-by-Step Activation Guide */
-    .activation-guide {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 12px 14px;
-      margin-bottom: 18px;
-    }
-
-    .guide-title {
-      font-family: var(--font-tactical);
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--cyan);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-
-    .guide-steps {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      line-height: 1.35;
-    }
-
-    .guide-steps li {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-
-    .step-num {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
-      color: #ffffff;
-      font-size: 0.6rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    /* Actions */
-    .reward-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      width: 100%;
-    }
-
-    .btn-share-instagram {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      color: #ffffff;
-      font-family: var(--font-tactical);
-      font-size: 0.78rem;
-      font-weight: 700;
-      padding: 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.2s ease;
-      text-decoration: none;
-    }
-
-    .btn-share-instagram:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.35);
-    }
-
-    .btn-back-home {
-      color: var(--text-subtle);
-      font-family: var(--font-tactical);
-      font-size: 0.72rem;
-      text-align: center;
-      text-decoration: none;
-      margin-top: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      transition: color 0.2s;
-    }
-
-    .btn-back-home:hover {
-      color: var(--text-main);
-    }
-
-    /* ===================================================
-       ADMIN GENERATOR PANEL (SEM TOKEN NA URL)
-       =================================================== */
-    .admin-generator-card {
-      display: none;
-      width: 100%;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
       border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+      padding: 22px 18px;
+      margin-top: 26px;
+      display: none;
+      flex-direction: column;
+      gap: 16px;
     }
 
-    .admin-header {
+    .admin-panel-header {
       display: flex;
       align-items: center;
       gap: 10px;
-      border-bottom: 1px solid var(--border-subtle);
       padding-bottom: 12px;
-      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
     }
 
-    .admin-header h2 {
+    .admin-panel-title {
       font-family: var(--font-display);
       font-size: 1.5rem;
+      line-height: 1;
+      letter-spacing: 1px;
       color: var(--gold);
-      letter-spacing: 0.5px;
     }
 
-    /* Pack Preview selector pills */
-    .admin-pack-choice-grid {
+    .admin-panel-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .pack-choice-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-bottom: 14px;
     }
 
-    .pack-choice-card {
+    .pack-choice-btn {
+      background: #020406;
       border: 2px solid var(--border-subtle);
       border-radius: 8px;
-      padding: 8px;
-      background: rgba(0, 0, 0, 0.4);
+      padding: 10px 8px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
@@ -776,26 +894,27 @@
       transition: all 0.2s;
     }
 
-    .pack-choice-card img {
-      width: 70px;
-      height: 98px;
-      object-fit: cover;
+    .pack-choice-btn img {
+      width: 50px;
+      height: 72px;
       border-radius: 4px;
+      object-fit: cover;
     }
 
-    .pack-choice-card span {
+    .pack-choice-btn span {
       font-family: var(--font-tactical);
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       font-weight: 700;
       color: var(--text-muted);
+      letter-spacing: 0.5px;
     }
 
-    .pack-choice-card.selected {
+    .pack-choice-btn.selected {
       border-color: var(--gold);
-      background: rgba(255, 215, 0, 0.1);
+      background: rgba(255, 215, 0, 0.08);
     }
 
-    .pack-choice-card.selected span {
+    .pack-choice-btn.selected span {
       color: var(--gold);
     }
 
@@ -803,150 +922,156 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-      margin-bottom: 14px;
     }
 
-    .admin-label {
+    .admin-form-label {
       font-family: var(--font-tactical);
       font-size: 0.7rem;
       font-weight: 700;
-      color: var(--text-subtle);
+      color: var(--text-muted);
       letter-spacing: 0.5px;
     }
 
-    .admin-select, .admin-input {
+    .admin-select,
+    .admin-input {
       background: #05070a;
-      border: 1px solid var(--border-subtle);
-      color: #ffffff;
-      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 6px;
+      color: var(--text-main);
       font-family: var(--font-tactical);
-      font-size: 0.82rem;
+      font-size: 0.85rem;
+      padding: 10px 12px;
       outline: none;
       transition: border-color 0.2s;
     }
 
-    .admin-select:focus, .admin-input:focus {
+    .admin-select:focus,
+    .admin-input:focus {
       border-color: var(--gold);
     }
 
-    .btn-admin-generate {
-      width: 100%;
-      background: linear-gradient(135deg, var(--gold) 0%, #e6a100 100%);
+    .btn-admin-action {
+      background: linear-gradient(135deg, var(--gold) 0%, #ff8f00 100%);
       color: #05070a;
       border: none;
-      font-family: var(--font-tactical);
-      font-size: 0.9rem;
-      font-weight: 800;
-      padding: 12px;
       border-radius: 6px;
+      padding: 12px;
+      font-family: var(--font-tactical);
+      font-size: 0.88rem;
+      font-weight: 800;
+      letter-spacing: 1px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      margin-top: 6px;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.35);
+      transition: all 0.2s;
+    }
+
+    .btn-admin-action:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
     }
 
     .admin-result-box {
-      display: none;
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 215, 0, 0.3);
+      background: #020406;
+      border: 1px solid rgba(0, 230, 118, 0.3);
       border-radius: 8px;
-      padding: 14px;
-      margin-top: 16px;
-    }
-
-    .admin-result-title {
-      font-family: var(--font-tactical);
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--gold);
-      margin-bottom: 6px;
-    }
-
-    .admin-link-input {
-      width: 100%;
-      background: #000;
-      border: 1px solid var(--border-subtle);
-      color: var(--cyan);
-      font-family: monospace;
-      font-size: 0.78rem;
-      padding: 8px;
-      border-radius: 4px;
-      margin-bottom: 8px;
-    }
-
-    .admin-buttons-row {
-      display: flex;
+      padding: 12px;
+      display: none;
+      flex-direction: column;
       gap: 8px;
     }
 
-    .btn-admin-copy {
-      flex: 1;
-      background: rgba(0, 240, 255, 0.15);
-      border: 1px solid var(--cyan);
-      color: var(--cyan);
+    .admin-result-label {
+      font-family: var(--font-tactical);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .admin-generated-link {
+      background: #0a0d14;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: #ffffff;
+      font-family: 'Courier New', monospace;
+      font-size: 0.72rem;
+      width: 100%;
+      outline: none;
+      word-break: break-all;
+    }
+
+    .admin-link-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .btn-link-action {
+      border: none;
+      border-radius: 6px;
+      padding: 8px 12px;
       font-family: var(--font-tactical);
       font-size: 0.72rem;
       font-weight: 700;
-      padding: 8px;
-      border-radius: 4px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
+      text-decoration: none;
+      transition: all 0.2s;
     }
 
-    .btn-admin-test {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-      font-family: var(--font-tactical);
-      font-size: 0.72rem;
-      padding: 8px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      text-decoration: none;
+    .btn-copy-link {
+      background: rgba(0, 230, 118, 0.15);
+      border: 1px solid var(--green);
+      color: var(--green);
+    }
+
+    .btn-test-link {
+      background: rgba(255, 215, 0, 0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold);
     }
 
     /* Toast Notification */
     .toast-msg {
       position: fixed;
       bottom: 24px;
-      background: rgba(10, 14, 20, 0.95);
-      border: 1px solid var(--green);
-      color: var(--green);
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(14, 18, 25, 0.96);
+      border: 1px solid var(--gold);
+      color: #ffffff;
       font-family: var(--font-tactical);
       font-size: 0.8rem;
       font-weight: 700;
-      padding: 10px 18px;
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      padding: 10px 20px;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
       z-index: 100;
       display: flex;
       align-items: center;
       gap: 8px;
       opacity: 0;
-      transform: translateY(20px);
       transition: all 0.3s ease;
       pointer-events: none;
     }
 
     .toast-msg.show {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateX(-50%) translateY(0);
     }
   </style>
 </head>
 <body>
-
-  <!-- Flashbang overlay on opening -->
-  <div id="flashOverlay"></div>
 
   <!-- Particle / Confetti Canvas -->
   <canvas id="fxCanvas"></canvas>
@@ -960,244 +1085,236 @@
     </a>
 
     <!-- ==============================================
-         ESTADO 1: O PACOTE DE CARTAS LACRADO
+         STAGE DO PACOTE FÍSICO COM ABERTURA REAL
          ============================================== -->
-    <div class="pack-unboxing-stage" id="packStage">
+    <div class="unboxing-stage" id="unboxingStage">
       <div class="pack-tag-pill" id="packTagPill">
         <i data-lucide="crown"></i> PACOTE EXCLUSIVO 1ª EDIÇÃO
       </div>
 
-      <!-- 3D Scene with Booster Pack -->
+      <!-- 3D Scene holding the Physical Booster Pack -->
       <div class="pack-3d-scene" id="packScene">
         <div class="pack-halo" id="packHalo"></div>
 
-        <div class="foil-pack" id="foilPack">
-          <img src="assets/pack_campeao.jpg" alt="Pacote QNT CUP" class="foil-pack-img" id="foilPackImg">
+        <div class="physical-booster-pack" id="boosterPack">
           
-          <!-- Linha de Rasgo Tática -->
-          <div class="tear-guide-line">
-            <span class="tear-label-tag">
-              <i data-lucide="scissors"></i> TOQUE P/ RASGAR
-            </span>
+          <!-- 1. Fundo Metálico Interior do Pacote -->
+          <div class="pack-inner-foil"></div>
+
+          <!-- 2. O Card de Recompensa (DENTRO do pacote) -->
+          <div class="card-insert" id="cardInsert">
+            
+            <!-- Miniatura do pacote de onde saiu -->
+            <div class="reward-pack-origin">
+              <img src="assets/pack_campeao.jpg" alt="Pacote" class="reward-pack-thumb" id="rewardPackThumb">
+              <span class="reward-pack-origin-text" id="rewardPackOriginText">PACOTE DO CAMPEÃO SGL</span>
+            </div>
+
+            <h1 class="reward-player-name" id="rewardPlayerName">YSE</h1>
+            <div class="reward-conquest" id="rewardConquest">CAMPEÃO DA 1ª EDIÇÃO // QNT CUP</div>
+            <p class="reward-subinfo" id="rewardSubinfo">Se Ganhar é Lucro (SGL) • Premiação Oficial</p>
+
+            <!-- Valor do Prêmio -->
+            <div class="reward-amount-box">
+              <div class="reward-vp-emblem">VP</div>
+              <div class="reward-amount-info">
+                <span class="reward-amount-val" id="rewardAmountVal">1.000 VP</span>
+                <span class="reward-amount-desc">VALORANT POINTS // CÓDIGO RIOT GAMES</span>
+              </div>
+            </div>
+
+            <!-- Box do Código com Copiar de 1 Clique -->
+            <div class="code-box-wrapper" id="codeBoxWrapper">
+              <div class="code-box-label">
+                <span>SEU CÓDIGO DE RESGATE RIOT GAMES:</span>
+                <span><i data-lucide="shield-check"></i> 100% EXCLUSIVO</span>
+              </div>
+              <div class="code-box">
+                <span class="code-text" id="codeText">XXXX-XXXX-XXXX-XXXX</span>
+                <button type="button" class="btn-copy-code" id="btnCopyCode">
+                  <i data-lucide="copy"></i> COPIAR
+                </button>
+              </div>
+            </div>
+
+            <!-- Guia de Ativação no Valorant -->
+            <div class="activation-guide" id="activationGuide">
+              <div class="guide-title">
+                <i data-lucide="help-circle"></i> COMO ATIVAR SEU CÓDIGO NO VALORANT:
+              </div>
+              <ul class="guide-steps">
+                <li>
+                  <span class="step-num">1</span>
+                  <span>Abra o <strong>VALORANT</strong> no seu PC e faça login na sua conta.</span>
+                </li>
+                <li>
+                  <span class="step-num">2</span>
+                  <span>No canto superior direito, clique no <strong>ícone de VP (V)</strong> ao lado do seu saldo.</span>
+                </li>
+                <li>
+                  <span class="step-num">3</span>
+                  <span>Selecione a opção de pagamento <strong>"Códigos Pré-pagos"</strong>.</span>
+                </li>
+                <li>
+                  <span class="step-num">4</span>
+                  <span>Cole o código copiado acima e clique em <strong>Enviar</strong>. Seus 1.000 VP caem na hora!</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Botão Instagram Stories -->
+            <a href="https://instagram.com/qntcupoficial" target="_blank" rel="noopener noreferrer" class="btn-share-instagram" id="btnShareStory">
+              <i data-lucide="instagram"></i> COMPARTILHAR NO INSTAGRAM @QNTCUPOFICIAL
+            </a>
           </div>
-        </div>
+
+          <!-- 3. Frente Inferior (Envelope que tampa o card) -->
+          <div class="pack-slice-bottom" id="packSliceBottom">
+            <img src="assets/pack_campeao.jpg" alt="Pacote Frente" class="pack-slice-img" id="foilPackImgBottom">
+            <div class="pouch-open-lip"></div>
+            <div class="foil-specular-gloss"></div>
+          </div>
+
+          <!-- 4. Frente Superior (A ponta lacrada que rasga) -->
+          <div class="pack-slice-top" id="packSliceTop">
+            <img src="assets/pack_campeao.jpg" alt="Pacote Topo" class="pack-slice-img" id="foilPackImgTop">
+            <div class="foil-specular-gloss"></div>
+          </div>
+
+          <!-- 5. Linha de Rasgo / Guia Tática -->
+          <div class="tear-strip-seam" id="tearStripSeam">
+            <div class="tear-laser-trail" id="tearLaserTrail"></div>
+            <div class="tear-notch-tab" id="tearNotchTab">
+              <i data-lucide="scissors"></i>
+              <span>TOQUE P/ RASGAR</span>
+            </div>
+          </div>
+
+        </div> <!-- /physical-booster-pack -->
+      </div> <!-- /pack-3d-scene -->
+
+      <!-- Controles Inferiores -->
+      <div class="unboxing-controls-bar" id="unboxingControlsBar">
+        <button type="button" class="btn-rip-pack" id="btnRipPack">
+          <i data-lucide="scissors"></i> RASGAR E ABRIR PACOTE
+        </button>
+        <span class="pack-hint-text">
+          <i data-lucide="touchpad"></i> Toque no pacote ou no botão para abrir
+        </span>
       </div>
 
-      <button type="button" class="btn-rip-pack" id="btnRipPack">
-        <i data-lucide="sparkles"></i> ABRIR PACOTE OFICIAL
-      </button>
-
-      <span class="pack-hint-text">
-        <i data-lucide="touchpad"></i> Toque no pacote para abrir a premiação
-      </span>
-    </div>
+    </div> <!-- /unboxing-stage -->
 
     <!-- ==============================================
-         ESTADO 2: RECOMPENSA REVELADA (CARD FINAL)
+         PAINEL GERADOR DE LINKS SEGUROS (ADMIN)
          ============================================== -->
-    <div class="reward-card" id="rewardCard">
-      
-      <!-- Miniatura do pacote de onde saiu o card -->
-      <div class="reward-pack-origin">
-        <img src="assets/pack_campeao.jpg" alt="Pacote" class="reward-pack-thumb" id="rewardPackThumb">
-        <span class="reward-pack-origin-text" id="rewardPackOriginText">PACOTE DO CAMPEÃO SGL</span>
-      </div>
-
-      <h1 class="reward-player-name" id="rewardPlayerName">YSE</h1>
-      <div class="reward-conquest" id="rewardConquest">CAMPEÃO DA 1ª EDIÇÃO // QNT CUP</div>
-      <p class="reward-subinfo" id="rewardSubinfo">Se Ganhar é Lucro (SGL) • Premiação Oficial</p>
-
-      <!-- Valor do Prêmio -->
-      <div class="reward-amount-box">
-        <div class="reward-vp-emblem">VP</div>
-        <div class="reward-amount-info">
-          <span class="reward-amount-val" id="rewardAmountVal">1.000 VP</span>
-          <span class="reward-amount-desc">VALORANT POINTS // CÓDIGO RIOT GAMES</span>
+    <div class="admin-generator-panel" id="adminPanel">
+      <div class="admin-panel-header">
+        <i data-lucide="shield-check" style="color: var(--gold); width: 28px; height: 28px;"></i>
+        <div>
+          <div class="admin-panel-title">PAINEL DO ORGANIZADOR</div>
+          <div class="admin-panel-desc">Gere links individuais de unboxing para enviar no WhatsApp</div>
         </div>
       </div>
 
-      <!-- Box do Código com Copiar de 1 Clique -->
-      <div class="code-box-wrapper">
-        <div class="code-box-label">
-          <span>SEU CÓDIGO DE RESGATE RIOT GAMES:</span>
-          <span><i data-lucide="shield-check"></i> 100% EXCLUSIVO</span>
-        </div>
-        <div class="code-box">
-          <span class="code-text" id="codeText">XXXX-XXXX-XXXX-XXXX</span>
-          <button type="button" class="btn-copy-code" id="btnCopyCode">
-            <i data-lucide="copy"></i> COPIAR
+      <!-- Escolha do Pacote Visual -->
+      <div class="admin-form-group">
+        <label class="admin-form-label">SELECIONE O TIPO DE PACOTE:</label>
+        <div class="pack-choice-row">
+          <button type="button" class="pack-choice-btn selected" id="choicePackChamp" data-pack="champ">
+            <img src="assets/pack_campeao.jpg" alt="Pacote Campeão">
+            <span>PACOTE CAMPEÃO</span>
+          </button>
+          <button type="button" class="pack-choice-btn" id="choicePackMvp" data-pack="mvp">
+            <img src="assets/pack_mvp.jpg" alt="Pacote MVP">
+            <span>PACOTE MVP</span>
           </button>
         </div>
       </div>
 
-      <!-- Guia de Ativação no Valorant -->
-      <div class="activation-guide">
-        <div class="guide-title">
-          <i data-lucide="help-circle"></i> COMO ATIVAR SEU CÓDIGO NO VALORANT:
-        </div>
-        <ul class="guide-steps">
-          <li>
-            <span class="step-num">1</span>
-            <span>Abra o client do <strong>Valorant</strong> no seu computador.</span>
-          </li>
-          <li>
-            <span class="step-num">2</span>
-            <span>Clique no ícone de <strong>Valorant Points (V)</strong> no topo à direita.</span>
-          </li>
-          <li>
-            <span class="step-num">3</span>
-            <span>Selecione a opção <strong>"Códigos pré-pagos"</strong>.</span>
-          </li>
-          <li>
-            <span class="step-num">4</span>
-            <span>Cole o código copiado acima e clique em <strong>"Enviar"</strong>. Pronto!</span>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Ações -->
-      <div class="reward-actions">
-        <a href="https://www.instagram.com/qntcupoficial/" target="_blank" rel="noopener noreferrer" class="btn-share-instagram">
-          <i data-lucide="instagram"></i> Marcar @qntcup nos Stories!
-        </a>
-        <a href="index.html" class="btn-back-home">
-          <i data-lucide="arrow-left"></i> Voltar ao site da QNT CUP
-        </a>
-      </div>
-    </div>
-
-    <!-- ==============================================
-         PAINEL GERADOR DE LINKS SEGUROS (ORGANIZADOR)
-         ============================================== -->
-    <div class="admin-generator-card" id="adminGeneratorCard">
-      <div class="admin-header">
-        <i data-lucide="key" class="text-gold"></i>
-        <div>
-          <h2>PAINEL DE ENVIO DE PACOTES</h2>
-          <span style="font-size:0.72rem; color:var(--text-muted); font-family:var(--font-tactical);">Gere links secretos com unboxing cinematográfico</span>
-        </div>
-      </div>
-
-      <!-- Escolha Visual do Pacote -->
+      <!-- Destinatário / Preset -->
       <div class="admin-form-group">
-        <label class="admin-label">ESCOLHA O PACOTE VISUAL:</label>
-        <div class="admin-pack-choice-grid">
-          <div class="pack-choice-card selected" id="choicePackChamp" data-pack="champ">
-            <img src="assets/pack_campeao.jpg" alt="Pacote Campeão">
-            <span>PACOTE CAMPEÃO</span>
-          </div>
-          <div class="pack-choice-card" id="choicePackMvp" data-pack="mvp">
-            <img src="assets/pack_mvp.jpg" alt="Pacote MVP">
-            <span>PACOTE MVP</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">DESTINATÁRIO / TIPO DE PREMIAÇÃO:</label>
-        <select id="genRecipient" class="admin-select">
-          <option value="sgl_champ">🏆 Jogador da Se Ganhar é Lucro (Campeão - 1.000 VP)</option>
-          <option value="mvp_final">👑 Yse - MVP da Grande Final (1.000 VP)</option>
-          <option value="mvp_lohan">⭐ Lohan1213 - MVP da Repescagem & Semi B (1.000 VP)</option>
-          <option value="mvp_acyer">⭐ Acyer - MVP da 1ª Rodada (1.000 VP)</option>
-          <option value="mvp_nixt">⭐ Nixt - MVP da Final - Mapa 1 (1.000 VP)</option>
-          <option value="custom">✏️ Personalizado (Digitar Nick e Conquista)</option>
+        <label class="admin-form-label">JOGADOR / DESTINATÁRIO:</label>
+        <select class="admin-select" id="genRecipient">
+          <option value="sgl_champ">🏆 SGL (Time Campeão da 1ª Edição)</option>
+          <option value="mvp_final">⭐ YSE (MVP da Grande Final)</option>
+          <option value="mvp_lohan">⭐ LOHAN1213 (MVP Repescagem & Semi B)</option>
+          <option value="mvp_acyer">⭐ ACYER (MVP Rodada 1)</option>
+          <option value="mvp_nixt">⭐ NIXT (MVP Mapa 1 Final)</option>
+          <option value="custom">✏️ Personalizado (Digitar Nick & Conquista)</option>
         </select>
       </div>
 
-      <div class="admin-form-group" id="customFields" style="display: none;">
-        <label class="admin-label">NICK DO JOGADOR:</label>
-        <input type="text" id="genCustomNick" placeholder="Ex: yse, Flash, etc." class="admin-input">
-        <label class="admin-label" style="margin-top: 6px;">CONQUISTA / TÍTULO:</label>
-        <input type="text" id="genCustomConquest" placeholder="Ex: CAMPEÃO DA QNT CUP 2026" class="admin-input">
+      <!-- Campos Personalizados (Opcionais) -->
+      <div id="customFields" style="display: none; flex-direction: column; gap: 10px;">
+        <div class="admin-form-group">
+          <label class="admin-form-label">NICK DO JOGADOR:</label>
+          <input type="text" class="admin-input" id="genCustomNick" placeholder="Ex: ASKT, NOVOJOGADOR">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">TÍTULO DA CONQUISTA:</label>
+          <input type="text" class="admin-input" id="genCustomConquest" placeholder="Ex: DESTAQUE DA SEMIFINAL">
+        </div>
       </div>
 
+      <!-- Código de 1.000 VP -->
       <div class="admin-form-group">
-        <label class="admin-label">CÓDIGO DO GIFT CARD (VALORANT POINTS):</label>
-        <input type="text" id="genCodeInput" placeholder="Ex: RA-8F92A-4KLM-90Q" class="admin-input">
+        <label class="admin-form-label">CÓDIGO DE RESGATE (GIFT CARD 1.000 VP):</label>
+        <input type="text" class="admin-input" id="genCodeInput" placeholder="Ex: RIOT-VP-ABCD-1234-EF56" value="RIOT-VP-8921-QNT-2026">
       </div>
 
-      <button type="button" class="btn-admin-generate" id="btnGenerateLink">
-        <i data-lucide="sparkles"></i> GERAR LINK EXCLUSIVO DE UNBOXING
+      <button type="button" class="btn-admin-action" id="btnGenerateLink">
+        <i data-lucide="link"></i> GERAR LINK DO JOGADOR
       </button>
 
+      <!-- Resultado do Link Gerado -->
       <div class="admin-result-box" id="adminResultBox">
-        <div class="admin-result-title"><i data-lucide="check-circle-2"></i> LINK INDIVIDUAL PRONTO PARA ENVIAR NO PRIVADO:</div>
-        <input type="text" id="adminGeneratedLink" readonly class="admin-link-input">
-        <div class="admin-buttons-row">
-          <button type="button" class="btn-admin-copy" id="btnCopyGenLink">
-            <i data-lucide="copy"></i> COPIAR LINK P/ WHATSAPP
+        <div class="admin-result-label">
+          <i data-lucide="check-circle"></i> LINK SEGURO GERADO PRONTO PARA ENVIO:
+        </div>
+        <input type="text" class="admin-generated-link" id="adminGeneratedLink" readonly>
+        <div class="admin-link-actions">
+          <button type="button" class="btn-link-action btn-copy-link" id="btnCopyGenLink">
+            <i data-lucide="copy"></i> Copiar Link
           </button>
-          <a href="#" target="_blank" id="btnTestGenLink" class="btn-admin-test">
+          <a href="#" class="btn-link-action btn-test-link" id="btnTestGenLink">
             <i data-lucide="external-link"></i> Testar Abertura
           </a>
         </div>
       </div>
+    </div> <!-- /admin-generator-panel -->
 
-      <a href="index.html" class="btn-back-home" style="margin-top: 14px;">
-        <i data-lucide="arrow-left"></i> Voltar à Página Principal
-      </a>
-    </div>
-
-  </div>
+  </div> <!-- /main-wrap -->
 
   <div class="toast-msg" id="toastMsg">
-    <i data-lucide="check"></i> <span>Código copiado para a área de transferência!</span>
+    <i data-lucide="check" style="color: var(--green);"></i>
+    <span id="toastText">Ação realizada!</span>
   </div>
 
   <script>
-    if (window.lucide) {
-      window.lucide.createIcons();
-    }
-
     // ==========================================
-    // ÁUDIO TÁTICO CINEMATOGRÁFICO (WEB AUDIO API)
+    // SÍNTESE DE ÁUDIO VIA WEB AUDIO API
     // ==========================================
     let audioCtx = null;
     function getAudioCtx() {
       if (!audioCtx) {
-        const AudioClass = window.AudioContext || window.webkitAudioContext;
-        if (AudioClass) audioCtx = new AudioClass();
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
       }
       return audioCtx;
     }
 
-    // 1. Som de carga e tensão (pré-rasgo)
-    function playChargeSound() {
-      const ctx = getAudioCtx();
-      if (!ctx) return;
-      if (ctx.state === 'suspended') ctx.resume();
-
-      const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(80, now);
-      osc.frequency.exponentialRampToValueAtTime(320, now + 0.4);
-
-      gain.gain.setValueAtTime(0.01, now);
-      gain.gain.linearRampToValueAtTime(0.25, now + 0.35);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(now + 0.45);
-    }
-
-    // 2. Som de rasgo do pacote metálico (Foil Rip Synthesizer)
+    // 1. Som de rasgo crocante de embalagem metálica
     function playFoilRipSound() {
       const ctx = getAudioCtx();
       if (!ctx) return;
       if (ctx.state === 'suspended') ctx.resume();
 
-      // Ruído branco filtrado para simular o papel alumínio rasgando
-      const bufferSize = ctx.sampleRate * 0.25;
+      const bufferSize = ctx.sampleRate * 0.28;
       const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) {
-        data[i] = Math.random() * 2 - 1;
+        data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
       }
 
       const noise = ctx.createBufferSource();
@@ -1205,13 +1322,13 @@
 
       const filter = ctx.createBiquadFilter();
       filter.type = 'bandpass';
-      filter.frequency.setValueAtTime(3500, ctx.currentTime);
-      filter.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.22);
-      filter.Q.value = 3.0;
+      filter.frequency.setValueAtTime(3200, ctx.currentTime);
+      filter.frequency.exponentialRampToValueAtTime(700, ctx.currentTime + 0.26);
+      filter.Q.value = 3.5;
 
       const gain = ctx.createGain();
-      gain.gain.setValueAtTime(0.4, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.24);
+      gain.gain.setValueAtTime(0.55, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.28);
 
       noise.connect(filter);
       filter.connect(gain);
@@ -1220,7 +1337,30 @@
       noise.start();
     }
 
-    // 3. Som de fanfarra de vitória e impacto épico
+    // 2. Som de atrito/deslizar suave do card saindo
+    function playCardSlideSound() {
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      if (ctx.state === 'suspended') ctx.resume();
+
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(220, now);
+      osc.frequency.exponentialRampToValueAtTime(540, now + 0.6);
+
+      gain.gain.setValueAtTime(0.02, now);
+      gain.gain.linearRampToValueAtTime(0.12, now + 0.3);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.6);
+    }
+
+    // 3. Som triunfante de revelação e fanfarra
     function playEpicVictorySound() {
       const ctx = getAudioCtx();
       if (!ctx) return;
@@ -1228,32 +1368,32 @@
 
       const now = ctx.currentTime;
 
-      // Bass Drop Impacto
+      // Sub-bass impact
       const sub = ctx.createOscillator();
       const subGain = ctx.createGain();
       sub.type = 'sine';
-      sub.frequency.setValueAtTime(160, now);
-      sub.frequency.exponentialRampToValueAtTime(32, now + 0.5);
+      sub.frequency.setValueAtTime(140, now);
+      sub.frequency.exponentialRampToValueAtTime(35, now + 0.55);
       subGain.gain.setValueAtTime(0.5, now);
       subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
       sub.connect(subGain);
       subGain.connect(ctx.destination);
-      sub.start();
+      sub.start(now);
       sub.stop(now + 0.6);
 
-      // Chords Dourados de Revelação (Esports Victory Fanfare)
-      const freqs = [392.00, 523.25, 659.25, 783.99, 1046.50]; // G4, C5, E5, G5, C6
+      // Chords de glória
+      const freqs = [392.00, 523.25, 659.25, 783.99, 1046.50];
       freqs.forEach((freq, idx) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freq, now + 0.15 + idx * 0.07);
-        gain.gain.setValueAtTime(0.18, now + 0.15 + idx * 0.07);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7 + idx * 0.07);
+        osc.frequency.setValueAtTime(freq, now + 0.12 + idx * 0.08);
+        gain.gain.setValueAtTime(0.2, now + 0.12 + idx * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.75 + idx * 0.08);
         osc.connect(gain);
         gain.connect(ctx.destination);
-        osc.start(now + 0.15 + idx * 0.07);
-        osc.stop(now + 0.8 + idx * 0.07);
+        osc.start(now + 0.12 + idx * 0.08);
+        osc.stop(now + 0.85 + idx * 0.08);
       });
     }
 
@@ -1280,20 +1420,19 @@
         ? ['#ff4655', '#ffffff', '#ffd700', '#ff8591', '#c01428']
         : ['#ffd700', '#ffffff', '#ffa000', '#fff275', '#00f0ff'];
 
-      // Explosão de confetes e moedas douradas
-      for (let i = 0; i < 120; i++) {
-        const isCoin = Math.random() > 0.6;
+      for (let i = 0; i < 90; i++) {
+        const isCoin = Math.random() > 0.65;
         particles.push({
-          x: canvas.width / 2 + (Math.random() - 0.5) * 40,
-          y: canvas.height * 0.45 + (Math.random() - 0.5) * 40,
-          vx: (Math.random() - 0.5) * 18,
-          vy: -Math.random() * 16 - 5,
-          size: isCoin ? Math.random() * 8 + 6 : Math.random() * 7 + 3,
+          x: canvas.width / 2 + (Math.random() - 0.5) * 60,
+          y: canvas.height * 0.4 + (Math.random() - 0.5) * 40,
+          vx: (Math.random() - 0.5) * 14,
+          vy: -Math.random() * 14 - 4,
+          size: isCoin ? Math.random() * 8 + 6 : Math.random() * 6 + 3,
           isCoin: isCoin,
           color: colors[Math.floor(Math.random() * colors.length)],
-          gravity: 0.38,
+          gravity: 0.32,
           rotation: Math.random() * 360,
-          vRot: (Math.random() - 0.5) * 12,
+          vRot: (Math.random() - 0.5) * 10,
           opacity: 1
         });
       }
@@ -1312,7 +1451,7 @@
         p.y += p.vy;
         p.vy += p.gravity;
         p.rotation += p.vRot;
-        p.opacity -= 0.008;
+        p.opacity -= 0.009;
 
         if (p.opacity > 0 && p.y < canvas.height + 60) {
           alive = true;
@@ -1347,44 +1486,50 @@
     // ==========================================
     // 3D TILT EFFECT NO PACOTE
     // ==========================================
-    const foilPack = document.getElementById('foilPack');
+    const boosterPack = document.getElementById('boosterPack');
     const packScene = document.getElementById('packScene');
+    let isPackOpened = false;
 
-    if (packScene && foilPack) {
+    if (packScene && boosterPack) {
       packScene.addEventListener('mousemove', (e) => {
-        if (foilPack.classList.contains('ripping') || foilPack.classList.contains('ripped')) return;
+        if (isPackOpened) return;
         const rect = packScene.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
         const y = e.clientY - rect.top - rect.height / 2;
-        const rotY = (x / (rect.width / 2)) * 14;
-        const rotX = -(y / (rect.height / 2)) * 14;
-        foilPack.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.03)`;
+        const rotY = (x / (rect.width / 2)) * 12;
+        const rotX = -(y / (rect.height / 2)) * 12;
+        boosterPack.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
       });
 
       packScene.addEventListener('mouseleave', () => {
-        if (foilPack.classList.contains('ripping') || foilPack.classList.contains('ripped')) return;
-        foilPack.style.transform = '';
+        if (isPackOpened) return;
+        boosterPack.style.transform = '';
       });
+
+      // Suporte a Touch no celular
+      packScene.addEventListener('touchmove', (e) => {
+        if (isPackOpened || !e.touches[0]) return;
+        const rect = packScene.getBoundingClientRect();
+        const touch = e.touches[0];
+        const x = touch.clientX - rect.left - rect.width / 2;
+        const y = touch.clientY - rect.top - rect.height / 2;
+        const rotY = (x / (rect.width / 2)) * 10;
+        const rotX = -(y / (rect.height / 2)) * 10;
+        boosterPack.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      }, { passive: true });
     }
 
     // ==========================================
-    // CONTROLE DO RESGATE & TOKENS
+    // DECODE & PAYLOAD HANDLING
     // ==========================================
-    function getPayloadFromURL() {
-      const hash = window.location.hash.substring(1);
-      const params = new URLSearchParams(hash || window.location.search);
-      const token = params.get('t') || params.get('data') || params.get('token');
-
-      if (!token) return null;
-
+    function decodePayload(token) {
       try {
-        const decoded = decodeURIComponent(escape(atob(token)));
-        return JSON.parse(decoded);
+        const jsonStr = decodeURIComponent(escape(atob(token)));
+        return JSON.parse(jsonStr);
       } catch (e) {
         try {
           return JSON.parse(atob(token));
         } catch (err) {
-          console.error("Token inválido", err);
           return null;
         }
       }
@@ -1395,13 +1540,20 @@
       return btoa(unescape(encodeURIComponent(jsonStr)));
     }
 
-    const packStage = document.getElementById('packStage');
-    const foilPackImg = document.getElementById('foilPackImg');
-    const packTagPill = document.getElementById('packTagPill');
-    const btnRipPack = document.getElementById('btnRipPack');
-    const flashOverlay = document.getElementById('flashOverlay');
+    function showToast(text) {
+      const toast = document.getElementById('toastMsg');
+      const toastText = document.getElementById('toastText');
+      if (!toast || !toastText) return;
+      toastText.textContent = text;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
 
-    const rewardCard = document.getElementById('rewardCard');
+    // Referências DOM
+    const unboxingStage = document.getElementById('unboxingStage');
+    const packTagPill = document.getElementById('packTagPill');
+    const foilPackImgTop = document.getElementById('foilPackImgTop');
+    const foilPackImgBottom = document.getElementById('foilPackImgBottom');
     const rewardPackThumb = document.getElementById('rewardPackThumb');
     const rewardPackOriginText = document.getElementById('rewardPackOriginText');
     const rewardPlayerName = document.getElementById('rewardPlayerName');
@@ -1410,98 +1562,153 @@
     const rewardAmountVal = document.getElementById('rewardAmountVal');
     const codeText = document.getElementById('codeText');
     const btnCopyCode = document.getElementById('btnCopyCode');
-
-    const adminGeneratorCard = document.getElementById('adminGeneratorCard');
-    const toastMsg = document.getElementById('toastMsg');
+    const btnRipPack = document.getElementById('btnRipPack');
+    const tearStripSeam = document.getElementById('tearStripSeam');
+    const tearLaserTrail = document.getElementById('tearLaserTrail');
+    const packSliceTop = document.getElementById('packSliceTop');
+    const packSliceBottom = document.getElementById('packSliceBottom');
+    const cardInsert = document.getElementById('cardInsert');
+    const unboxingControlsBar = document.getElementById('unboxingControlsBar');
+    const adminPanel = document.getElementById('adminPanel');
 
     let currentPayload = null;
 
-    function showToast(text) {
-      if (!toastMsg) return;
-      const span = toastMsg.querySelector('span');
-      if (span) span.textContent = text;
-      toastMsg.classList.add('show');
-      setTimeout(() => toastMsg.classList.remove('show'), 2800);
-    }
-
+    // Inicialização da Página
     function initPage() {
-      currentPayload = getPayloadFromURL();
+      const hash = window.location.hash;
+      let token = null;
 
-      if (!currentPayload) {
-        // Sem token: Exibir o Painel Gerador da Organização
-        if (packStage) packStage.style.display = 'none';
-        if (rewardCard) rewardCard.style.display = 'none';
-        if (adminGeneratorCard) adminGeneratorCard.style.display = 'block';
-        return;
-      }
-
-      // Com token: Carregar o Pacote Visual Correto
-      const isMvp = currentPayload.type === 'mvp' || (currentPayload.pack === 'mvp');
-
-      if (isMvp) {
-        document.body.classList.add('theme-mvp');
-        if (foilPackImg) foilPackImg.src = 'assets/pack_mvp.jpg';
-        if (rewardPackThumb) rewardPackThumb.src = 'assets/pack_mvp.jpg';
-        if (rewardPackOriginText) rewardPackOriginText.textContent = 'PACOTE MVP • 1ª EDIÇÃO';
-        if (packTagPill) packTagPill.innerHTML = '<i data-lucide="zap"></i> PACOTE EXCLUSIVO MVP // QNT CUP';
-        if (btnRipPack) btnRipPack.innerHTML = '<i data-lucide="scissors"></i> RASGAR PACOTE MVP';
+      if (hash.startsWith('#t=')) {
+        token = hash.substring(3);
       } else {
-        document.body.classList.remove('theme-mvp');
-        if (foilPackImg) foilPackImg.src = 'assets/pack_campeao.jpg';
-        if (rewardPackThumb) rewardPackThumb.src = 'assets/pack_campeao.jpg';
-        if (rewardPackOriginText) rewardPackOriginText.textContent = 'PACOTE CAMPEÃO • SGL';
-        if (packTagPill) packTagPill.innerHTML = '<i data-lucide="crown"></i> PACOTE DO CAMPEÃO // 1ª EDIÇÃO';
-        if (btnRipPack) btnRipPack.innerHTML = '<i data-lucide="scissors"></i> RASGAR PACOTE DO CAMPEÃO';
+        const params = new URLSearchParams(window.location.search);
+        token = params.get('t');
       }
 
-      // Preencher Card da Recompensa
-      if (rewardPlayerName) rewardPlayerName.textContent = currentPayload.name || 'JOGADOR';
-      if (rewardConquest) rewardConquest.textContent = currentPayload.conquest || (isMvp ? 'MVP DA PARTIDA // QNT CUP' : 'CAMPEÃO DA 1ª EDIÇÃO // QNT CUP');
-      if (rewardSubinfo) rewardSubinfo.textContent = currentPayload.sub || 'Parabéns pela vitória histórica!';
-      if (rewardAmountVal) rewardAmountVal.textContent = currentPayload.amount || '1.000 VP';
-      if (codeText) codeText.textContent = currentPayload.code || 'RIOT-VP-XXXX-XXXX';
+      if (token) {
+        currentPayload = decodePayload(token);
+      }
+
+      if (currentPayload) {
+        applyPayload(currentPayload);
+        if (adminPanel) adminPanel.style.display = 'none';
+        if (unboxingStage) unboxingStage.style.display = 'flex';
+      } else {
+        // Sem token: Exibe o Painel Admin com preview
+        if (adminPanel) adminPanel.style.display = 'flex';
+        applyPayload({
+          name: 'CAMPEÃO SGL',
+          type: 'champ',
+          pack: 'champ',
+          conquest: 'CAMPEÃO DA 1ª EDIÇÃO // QNT CUP',
+          sub: 'Se Ganhar é Lucro (SGL) • Premiação Oficial',
+          amount: '1.000 VP',
+          code: 'RIOT-VP-8921-QNT-2026'
+        });
+      }
 
       if (window.lucide) window.lucide.createIcons();
     }
 
-    // Abertura Cinematográfica do Pacote
-    function ripOpenPack() {
-      if (!foilPack || foilPack.classList.contains('ripping') || foilPack.classList.contains('ripped')) return;
+    function applyPayload(payload) {
+      currentPayload = payload;
+      const isMvp = payload.type === 'mvp' || (payload.pack === 'mvp');
 
-      playChargeSound();
-      foilPack.classList.add('ripping');
+      if (isMvp) {
+        document.body.classList.add('theme-mvp');
+        if (packTagPill) packTagPill.innerHTML = '<i data-lucide="star"></i> PACOTE OFICIAL MVP // 1ª EDIÇÃO';
+        if (foilPackImgTop) foilPackImgTop.src = 'assets/pack_mvp.jpg';
+        if (foilPackImgBottom) foilPackImgBottom.src = 'assets/pack_mvp.jpg';
+        if (rewardPackThumb) rewardPackThumb.src = 'assets/pack_mvp.jpg';
+        if (rewardPackOriginText) rewardPackOriginText.textContent = 'PACOTE MVP DA RODADA';
+      } else {
+        document.body.classList.remove('theme-mvp');
+        if (packTagPill) packTagPill.innerHTML = '<i data-lucide="crown"></i> PACOTE DO CAMPEÃO SGL // 1ª EDIÇÃO';
+        if (foilPackImgTop) foilPackImgTop.src = 'assets/pack_campeao.jpg';
+        if (foilPackImgBottom) foilPackImgBottom.src = 'assets/pack_campeao.jpg';
+        if (rewardPackThumb) rewardPackThumb.src = 'assets/pack_campeao.jpg';
+        if (rewardPackOriginText) rewardPackOriginText.textContent = 'PACOTE DO CAMPEÃO SGL';
+      }
 
-      // 1. Sequência de Rasgo (após 450ms)
-      setTimeout(() => {
-        playFoilRipSound();
-        if (flashOverlay) flashOverlay.classList.add('flash');
+      if (rewardPlayerName) rewardPlayerName.textContent = payload.name || 'CAMPEÃO';
+      if (rewardConquest) rewardConquest.textContent = payload.conquest || 'PREMIAÇÃO OFICIAL QNT CUP';
+      if (rewardSubinfo) rewardSubinfo.textContent = payload.sub || 'Parabéns pela vitória histórica!';
+      if (rewardAmountVal) rewardAmountVal.textContent = payload.amount || '1.000 VP';
+      if (codeText) codeText.textContent = payload.code || 'RIOT-VP-XXXX-XXXX';
 
-        // 2. Explosão de Confetes & Fanfarra
-        setTimeout(() => {
-          playEpicVictorySound();
-          if (flashOverlay) flashOverlay.classList.remove('flash');
-
-          foilPack.classList.remove('ripping');
-          foilPack.classList.add('ripped');
-
-          const isMvp = currentPayload?.type === 'mvp' || (currentPayload?.pack === 'mvp');
-          triggerEpicBurst(isMvp);
-
-          // 3. Card Emerge da Luz
-          setTimeout(() => {
-            if (packStage) packStage.style.display = 'none';
-            if (rewardCard) rewardCard.style.display = 'flex';
-            if (window.lucide) window.lucide.createIcons();
-          }, 450);
-        }, 120);
-
-      }, 500);
+      if (window.lucide) window.lucide.createIcons();
     }
 
-    foilPack?.addEventListener('click', ripOpenPack);
-    btnRipPack?.addEventListener('click', ripOpenPack);
+    // ===================================================
+    // ABERTURA FÍSICA E REALISTA DO PACOTE (SEM EXPLOSÃO)
+    // ===================================================
+    function ripOpenPack() {
+      if (isPackOpened) return;
+      isPackOpened = true;
 
-    // Botão de Copiar Código
+      // Cancela animação de flutuação para o corte ser firme
+      if (boosterPack) boosterPack.style.animation = 'none';
+
+      // 1. Áudio de corte/rasgo e laser cortando a costura
+      playFoilRipSound();
+      if (tearLaserTrail) tearLaserTrail.style.width = '100%';
+
+      // 2. Após 200ms: A ponta superior rasga e voa para fora
+      setTimeout(() => {
+        if (packSliceTop) packSliceTop.classList.add('is-torn');
+        if (tearStripSeam) tearStripSeam.style.opacity = '0';
+        if (packSliceBottom) packSliceBottom.classList.add('pouch-open');
+
+        // 3. Após 320ms: O Card desliza para cima saindo de dentro da embalagem aberta!
+        setTimeout(() => {
+          playCardSlideSound();
+          if (cardInsert) cardInsert.classList.add('is-sliding');
+
+          // 4. Após 1150ms: O card se posiciona no centro e revela o código com fanfarra
+          setTimeout(() => {
+            playEpicVictorySound();
+
+            const isMvp = currentPayload?.type === 'mvp' || (currentPayload?.pack === 'mvp');
+            triggerEpicBurst(isMvp);
+
+            if (cardInsert) {
+              cardInsert.classList.remove('is-sliding');
+              cardInsert.classList.add('is-revealed');
+            }
+
+            if (boosterPack) boosterPack.classList.add('opened');
+            if (packSliceBottom) packSliceBottom.classList.add('spent');
+            if (unboxingControlsBar) unboxingControlsBar.style.display = 'none';
+
+            if (window.lucide) window.lucide.createIcons();
+          }, 850);
+
+        }, 320);
+
+      }, 200);
+    }
+
+    // Gatilhos de Abertura (Botão, Clique no pacote, Linha de corte)
+    btnRipPack?.addEventListener('click', ripOpenPack);
+    packSliceTop?.addEventListener('click', ripOpenPack);
+    packSliceBottom?.addEventListener('click', ripOpenPack);
+    tearStripSeam?.addEventListener('click', ripOpenPack);
+
+    // Suporte a deslizar o dedo (swipe) na linha de rasgo
+    let touchStartX = 0;
+    tearStripSeam?.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches[0]) touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    tearStripSeam?.addEventListener('touchmove', (e) => {
+      if (isPackOpened || !e.touches || !e.touches[0]) return;
+      const currentX = e.touches[0].clientX;
+      if (currentX - touchStartX > 35) {
+        ripOpenPack();
+      }
+    }, { passive: true });
+
+    // Botão de Copiar Código de 1 Clique
     btnCopyCode?.addEventListener('click', async () => {
       const code = codeText?.textContent.trim();
       if (!code) return;
@@ -1557,7 +1764,6 @@
         customFields.style.display = val === 'custom' ? 'flex' : 'none';
       }
 
-      // Auto-seleciona o visual de pacote apropriado
       if (val.startsWith('mvp')) {
         selectedPackType = 'mvp';
         choicePackMvp?.classList.add('selected');
@@ -1651,7 +1857,7 @@
 
       if (adminGeneratedLink) adminGeneratedLink.value = fullUrl;
       if (btnTestGenLink) btnTestGenLink.href = fullUrl;
-      if (adminResultBox) adminResultBox.style.display = 'block';
+      if (adminResultBox) adminResultBox.style.display = 'flex';
 
       showToast('Link individual gerado com sucesso!');
     });
