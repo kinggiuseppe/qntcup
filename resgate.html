@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>QNT CUP | Resgate de Premiação Oficial</title>
+  <link rel="icon" type="image/x-icon" href="assets/banner.jpg">
+
+  <!-- Google Fonts: Teko, Chakra Petch, Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&family=Teko:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-primary: #070a0f;
+      --bg-card: rgba(15, 20, 28, 0.92);
+      --valorant-red: #ff4655;
+      --gold: #ffd700;
+      --cyan: #00f0ff;
+      --green: #00e676;
+      --purple: #c084fc;
+      --text-main: #ece8e1;
+      --text-muted: #8b97a2;
+      --border-subtle: rgba(255, 255, 255, 0.1);
+      --font-display: 'Teko', sans-serif;
+      --font-tactical: 'Chakra Petch', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Background Cyber Grid & Vignette */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(20, 28, 40, 0.5) 0%, #05070a 90%);
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 32px 32px;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Confetti Canvas */
+    #fxCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .claim-container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Top Brand Nav */
+    .top-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      text-decoration: none;
+      color: var(--text-main);
+      transition: transform 0.2s;
+    }
+
+    .top-brand:hover {
+      transform: scale(1.03);
+    }
+
+    .top-logo-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 70, 85, 0.4);
+      object-fit: cover;
+    }
+
+    .top-brand-text {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    .top-brand-text span {
+      color: var(--valorant-red);
+    }
+
+    /* ===================================================
+       CRATE / LOOT BOX DISPLAY (STATE 1: UNOPENED)
+       =================================================== */
+    .crate-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      transition: all 0.5s ease;
+    }
+
+    .crate-stage-tag {
+      font-family: var(--font-tactical);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .crate-box {
+      width: 220px;
+      height: 220px;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease;
+      margin: 15px 0 25px 0;
+    }
+
+    .crate-box:hover {
+      transform: scale(1.04);
+    }
+
+    .crate-box:active {
+      transform: scale(0.97);
+    }
+
+    /* Ambient Pulsing Aura */
+    .crate-aura {
+      position: absolute;
+      inset: -20px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 215, 0, 0.25) 0%, transparent 70%);
+      animation: auraPulse 2.4s infinite ease-in-out;
+      pointer-events: none;
+    }
+
+    .crate-wrapper.theme-mvp .crate-aura {
+      background: radial-gradient(circle, rgba(255, 70, 85, 0.3) 0%, transparent 70%);
+    }
+
+    @keyframes auraPulse {
+      0% { transform: scale(0.85); opacity: 0.4; }
+      50% { transform: scale(1.15); opacity: 0.85; }
+      100% { transform: scale(0.85); opacity: 0.4; }
+    }
+
+    /* Tactical Container 3D Body */
+    .crate-body {
+      width: 190px;
+      height: 190px;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #182230 0%, #0d131c 100%);
+      border: 2px solid var(--gold);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 215, 0, 0.35);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .crate-wrapper.theme-mvp .crate-body {
+      border-color: var(--valorant-red);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 70, 85, 0.4);
+    }
+
+    /* Laser Seam Lines */
+    .crate-seam-h {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: rgba(255, 215, 0, 0.6);
+      top: 50%;
+      box-shadow: 0 0 8px #ffd700;
+    }
+
+    .crate-seam-v {
+      position: absolute;
+      height: 100%;
+      width: 2px;
+      background: rgba(255, 215, 0, 0.6);
+      left: 50%;
+      box-shadow: 0 0 8px #ffd700;
+    }
+
+    .crate-wrapper.theme-mvp .crate-seam-h,
+    .crate-wrapper.theme-mvp .crate-seam-v {
+      background: rgba(255, 70, 85, 0.7);
+      box-shadow: 0 0 8px #ff4655;
+    }
+
+    /* Center Emblem */
+    .crate-emblem {
+      width: 84px;
+      height: 84px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 215, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      padding: 8px;
+    }
+
+    .crate-wrapper.theme-mvp .crate-emblem {
+      border-color: rgba(255, 70, 85, 0.6);
+    }
+
+    .crate-emblem img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+    }
+
+    /* Unlocking Shake Animation */
+    .crate-box.shaking {
+      animation: crateShake 0.6s infinite ease-in-out;
+    }
+
+    @keyframes crateShake {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      20% { transform: translate(-3px, 2px) rotate(-2deg); }
+      40% { transform: translate(3px, -2px) rotate(2deg); }
+      60% { transform: translate(-3px, -1px) rotate(-1deg); }
+      80% { transform: translate(3px, 2px) rotate(1deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+
+    /* Opening Burst Effect */
+    .crate-box.opening .crate-body {
+      transform: scale(1.35);
+      opacity: 0;
+      filter: blur(10px);
+      transition: all 0.7s cubic-bezier(0.1, 0.9, 0.2, 1);
+    }
+
+    /* Action Trigger Button */
+    .btn-open-crate {
+      background: linear-gradient(135deg, var(--gold) 0%, #e6a100 100%);
+      color: #05070a;
+      border: none;
+      font-family: var(--font-tactical);
+      font-size: 0.95rem;
+      font-weight: 800;
+      padding: 14px 28px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: 0.8px;
+      box-shadow: 0 4px 20px rgba(255, 215, 0, 0.35);
+      transition: all 0.25s ease;
+      animation: buttonPulse 2s infinite ease-in-out;
+    }
+
+    .crate-wrapper.theme-mvp .btn-open-crate {
+      background: linear-gradient(135deg, var(--valorant-red) 0%, #c01428 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 20px rgba(255, 70, 85, 0.4);
+    }
+
+    @keyframes buttonPulse {
+      0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+      50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.6); }
+      100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+    }
+
+    .btn-open-crate:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    .crate-hint {
+      font-family: var(--font-tactical);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* ===================================================
+       REWARD CARD DISPLAY (STATE 2: OPENED / REVEALED)
+       =================================================== */
+    .reward-card {
+      display: none;
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      border-radius: 12px;
+      padding: 24px 20px;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), inset 0 0 30px rgba(255, 215, 0, 0.08);
+      animation: cardAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reward-card.theme-mvp {
+      border-color: rgba(255, 70, 85, 0.45);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), inset 0 0 30px rgba(255, 70, 85, 0.08);
+    }
+
+    @keyframes cardAppear {
+      0% { opacity: 0; transform: translateY(40px) scale(0.9); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Header Badge inside card */
+    .reward-badge-pill {
+      font-family: var(--font-tactical);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(255, 215, 0, 0.15);
+      color: var(--gold);
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .reward-card.theme-mvp .reward-badge-pill {
+      background: rgba(255, 70, 85, 0.15);
+      color: var(--valorant-red);
+      border-color: rgba(255, 70, 85, 0.4);
+    }
+
+    /* Player Nick Title */
+    .reward-player-name {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      line-height: 1;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .reward-conquest {
+      font-family: var(--font-tactical);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .reward-card.theme-mvp .reward-conquest {
+      color: var(--valorant-red);
+    }
+
+    .reward-subinfo {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* Prize Value Big Emblem */
+    .reward-amount-box {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .reward-vp-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: radial-gradient(circle, rgba(245, 176, 65, 0.3) 0%, transparent 80%);
+      border: 1px solid rgba(245, 176, 65, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+
+    .reward-amount-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .reward-amount-val {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      line-height: 1;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .reward-amount-desc {
+      font-family: var(--font-tactical);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    /* Gift Card Code Box */
+    .code-box-wrapper {
+      width: 100%;
+      margin-bottom: 18px;
+    }
+
+    .code-box-label {
+      font-family: var(--font-tactical);
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-subtle);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .code-box {
+      width: 100%;
+      background: #05070a;
+      border: 1px dashed var(--gold);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      position: relative;
+    }
+
+    .reward-card.theme-mvp .code-box {
+      border-color: var(--valorant-red);
+    }
+
+    .code-text {
+      font-family: 'Courier New', monospace;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: #ffffff;
+      word-break: break-all;
+    }
+
+    .btn-copy-code {
+      background: rgba(255, 215, 0, 0.18);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-family: var(--font-tactical);
+      font-size: 0.75rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .reward-card.theme-mvp .btn-copy-code {
+      background: rgba(255, 70, 85, 0.18);
+      border-color: var(--valorant-red);
+      color: var(--valorant-red);
+    }
+
+    .btn-copy-code:hover {
+      background: var(--gold);
+      color: #05070a;
+    }
+
+    .reward-card.theme-mvp .btn-copy-code:hover {
+      background: var(--valorant-red);
+      color: #ffffff;
+    }
+
+    .btn-copy-code.copied {
+      background: var(--green) !important;
+      border-color: var(--green) !important;
+      color: #05070a !important;
+    }
+
+    /* Activation Guide Accordion */
+    .activation-guide {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+    }
+
+    .guide-title {
+      font-family: var(--font-tactical);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .guide-steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .guide-steps li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .step-num {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-size: 0.6rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Actions Footer */
+    .reward-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .btn-share-instagram {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      font-family: var(--font-tactical);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-share-instagram:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-back-home {
+      color: var(--text-subtle);
+      font-family: var(--font-tactical);
+      font-size: 0.72rem;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: color 0.2s;
+    }
+
+    .btn-back-home:hover {
+      color: var(--text-main);
+    }
+
+    /* ===================================================
+       ADMIN LINK GENERATOR (VISIBLE WHEN NO TOKEN IN URL)
+       =================================================== */
+    .admin-generator-card {
+      display: none;
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    .admin-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .admin-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--gold);
+      letter-spacing: 0.5px;
+    }
+
+    .admin-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .admin-label {
+      font-family: var(--font-tactical);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-subtle);
+      letter-spacing: 0.5px;
+    }
+
+    .admin-select, .admin-input {
+      background: #05070a;
+      border: 1px solid var(--border-subtle);
+      color: #ffffff;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-family: var(--font-tactical);
+      font-size: 0.82rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .admin-select:focus, .admin-input:focus {
+      border-color: var(--gold);
+    }
+
+    .btn-admin-generate {
+      width: 100%;
+      background: linear-gradient(135deg, var(--gold) 0%, #e6a100 100%);
+      color: #05070a;
+      border: none;
+      font-family: var(--font-tactical);
+      font-size: 0.88rem;
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .admin-result-box {
+      display: none;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 8px;
+      padding: 14px;
+      margin-top: 16px;
+    }
+
+    .admin-result-title {
+      font-family: var(--font-tactical);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .admin-link-input {
+      width: 100%;
+      background: #000;
+      border: 1px solid var(--border-subtle);
+      color: var(--cyan);
+      font-family: monospace;
+      font-size: 0.78rem;
+      padding: 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .admin-buttons-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-admin-copy {
+      flex: 1;
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      font-family: var(--font-tactical);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-admin-test {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-family: var(--font-tactical);
+      font-size: 0.72rem;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+    }
+
+    /* Toast Notification */
+    .toast-msg {
+      position: fixed;
+      bottom: 24px;
+      background: rgba(10, 14, 20, 0.95);
+      border: 1px solid var(--green);
+      color: var(--green);
+      font-family: var(--font-tactical);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .toast-msg.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="fxCanvas"></canvas>
+
+  <div class="claim-container">
+    
+    <!-- Header Brand -->
+    <a href="index.html" class="top-brand">
+      <img src="assets/banner.jpg" alt="QNT CUP" class="top-logo-badge">
+      <div class="top-brand-text">QNT <span>CUP</span> • RESGATE</div>
+    </a>
+
+    <!-- ==============================================
+         ESTADO 1: CÁPSULA / LOOT BOX LACRADA
+         ============================================== -->
+    <div class="crate-wrapper" id="crateWrapper">
+      <div class="crate-stage-tag" id="crateStageTag">
+        <i data-lucide="shield-check"></i> PACOTE DE SUPRIMENTOS OFICIAL
+      </div>
+
+      <div class="crate-box" id="crateBox">
+        <div class="crate-aura"></div>
+        <div class="crate-body">
+          <div class="crate-seam-h"></div>
+          <div class="crate-seam-v"></div>
+          <div class="crate-emblem" id="crateEmblem">
+            <img src="assets/team_sgl.png" alt="SGL" id="crateEmblemImg">
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn-open-crate" id="btnOpenCrate">
+        <i data-lucide="unlock"></i> DESBLOQUEAR RECOMPENSA
+      </button>
+
+      <span class="crate-hint">
+        <i data-lucide="sparkles"></i> Toque na caixa ou no botão para abrir
+      </span>
+    </div>
+
+    <!-- ==============================================
+         ESTADO 2: RECOMPENSA REVELADA (CARD FINAL)
+         ============================================== -->
+    <div class="reward-card" id="rewardCard">
+      <div class="reward-badge-pill" id="rewardBadgePill">
+        <i data-lucide="award"></i> <span id="rewardBadgeText">CONQUISTA OFICIAL</span>
+      </div>
+
+      <h1 class="reward-player-name" id="rewardPlayerName">JOGADOR</h1>
+      <div class="reward-conquest" id="rewardConquest">CAMPEÃO DA QNT CUP 2026</div>
+      <p class="reward-subinfo" id="rewardSubinfo">Se Ganhar é Lucro • 1.000 VP por Jogador</p>
+
+      <!-- Box de Quantidade do Prêmio -->
+      <div class="reward-amount-box">
+        <div class="reward-vp-icon">VP</div>
+        <div class="reward-amount-text">
+          <span class="reward-amount-val" id="rewardAmountVal">1.000 VP</span>
+          <span class="reward-amount-desc">VALORANT POINTS // CÓDIGO PRÉ-PAGO</span>
+        </div>
+      </div>
+
+      <!-- Card do Código -->
+      <div class="code-box-wrapper">
+        <div class="code-box-label">
+          <span>SEU CÓDIGO EXCLUSIVO RIOT GAMES:</span>
+          <span><i data-lucide="lock"></i> USO ÚNICO</span>
+        </div>
+        <div class="code-box">
+          <span class="code-text" id="codeText">XXXX-XXXX-XXXX-XXXX</span>
+          <button type="button" class="btn-copy-code" id="btnCopyCode">
+            <i data-lucide="copy"></i> COPIAR
+          </button>
+        </div>
+      </div>
+
+      <!-- Guia Passo a Passo de Ativação -->
+      <div class="activation-guide">
+        <div class="guide-title">
+          <i data-lucide="help-circle"></i> COMO ATIVAR SEU CÓDIGO NO VALORANT:
+        </div>
+        <ul class="guide-steps">
+          <li>
+            <span class="step-num">1</span>
+            <span>Abra o client do <strong>Valorant</strong> no seu computador.</span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span>Clique no ícone de <strong>Valorant Points (V)</strong> no canto superior direito.</span>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <span>Escolha a opção de pagamento <strong>"Códigos pré-pagos"</strong>.</span>
+          </li>
+          <li>
+            <span class="step-num">4</span>
+            <span>Cole o código copiado acima e clique em <strong>"Enviar"</strong>. Pronto!</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Ações -->
+      <div class="reward-actions">
+        <a href="https://www.instagram.com/qntcupoficial/" target="_blank" rel="noopener noreferrer" class="btn-share-instagram">
+          <i data-lucide="instagram"></i> Marcar @qntcup nos Stories!
+        </a>
+        <a href="index.html" class="btn-back-home">
+          <i data-lucide="arrow-left"></i> Voltar ao site da QNT CUP
+        </a>
+      </div>
+    </div>
+
+    <!-- ==============================================
+         PAINEL GERADOR DE LINKS (SE ACESSADO SEM TOKEN)
+         ============================================== -->
+    <div class="admin-generator-card" id="adminGeneratorCard">
+      <div class="admin-header">
+        <i data-lucide="key" class="text-gold"></i>
+        <div>
+          <h2>GERADOR DE PACOTES DE PREMIAÇÃO</h2>
+          <span style="font-size:0.7rem; color:var(--text-muted); font-family:var(--font-tactical);">Painel exclusivo da organização para gerar links secretos</span>
+        </div>
+      </div>
+
+      <div class="admin-form-group">
+        <label class="admin-label">DESTINATÁRIO / TIPO DE PREMIAÇÃO:</label>
+        <select id="genRecipient" class="admin-select">
+          <option value="sgl_champ">🏆 Jogador da Se Ganhar é Lucro (Campeão - 1.000 VP)</option>
+          <option value="mvp_final">👑 Yse - MVP da Grande Final (1.000 VP)</option>
+          <option value="mvp_lohan">⭐ Lohan1213 - MVP da Repescagem & Semi B (1.000 VP)</option>
+          <option value="mvp_acyer">⭐ Acyer - MVP da 1ª Rodada (1.000 VP)</option>
+          <option value="mvp_nixt">⭐ Nixt - MVP da Final - Mapa 1 (1.000 VP)</option>
+          <option value="custom">✏️ Personalizado (Digitar Nome e Título)</option>
+        </select>
+      </div>
+
+      <div class="admin-form-group" id="customFields" style="display: none;">
+        <label class="admin-label">NICK DO JOGADOR:</label>
+        <input type="text" id="genCustomNick" placeholder="Ex: yse, Flash, etc." class="admin-input">
+        <label class="admin-label" style="margin-top: 6px;">CONQUISTA / TÍTULO:</label>
+        <input type="text" id="genCustomConquest" placeholder="Ex: CAMPEÃO DA QNT CUP 2026" class="admin-input">
+      </div>
+
+      <div class="admin-form-group">
+        <label class="admin-label">CÓDIGO DO GIFT CARD (VALORANT POINTS):</label>
+        <input type="text" id="genCodeInput" placeholder="Ex: RA-8F92A-4KLM-90Q" class="admin-input">
+      </div>
+
+      <button type="button" class="btn-admin-generate" id="btnGenerateLink">
+        <i data-lucide="sparkles"></i> GERAR LINK SECRETO DE RESGATE
+      </button>
+
+      <div class="admin-result-box" id="adminResultBox">
+        <div class="admin-result-title"><i data-lucide="check-circle-2"></i> LINK INDIVIDUAL PRONTO PARA ENVIAR:</div>
+        <input type="text" id="adminGeneratedLink" readonly class="admin-link-input">
+        <div class="admin-buttons-row">
+          <button type="button" class="btn-admin-copy" id="btnCopyGenLink">
+            <i data-lucide="copy"></i> COPIAR LINK P/ WHATSAPP
+          </button>
+          <a href="#" target="_blank" id="btnTestGenLink" class="btn-admin-test">
+            <i data-lucide="external-link"></i> Testar
+          </a>
+        </div>
+      </div>
+
+      <a href="index.html" class="btn-back-home" style="margin-top: 14px;">
+        <i data-lucide="arrow-left"></i> Voltar à Página Principal
+      </a>
+    </div>
+
+  </div>
+
+  <div class="toast-msg" id="toastMsg">
+    <i data-lucide="check"></i> <span>Código copiado para a área de transferência!</span>
+  </div>
+
+  <script>
+    // Inicializar Ícones
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+
+    // ==========================================
+    // SISTEMA DE ÁUDIO TÁTICO (WEB AUDIO API)
+    // ==========================================
+    let audioCtx = null;
+    function getAudioCtx() {
+      if (!audioCtx) {
+        const AudioClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioClass) audioCtx = new AudioClass();
+      }
+      return audioCtx;
+    }
+
+    function playCrateClickSound() {
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      if (ctx.state === 'suspended') ctx.resume();
+
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(400, now);
+      osc.frequency.exponentialRampToValueAtTime(150, now + 0.1);
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(now + 0.1);
+    }
+
+    function playVictoryUnboxSound() {
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      if (ctx.state === 'suspended') ctx.resume();
+
+      const now = ctx.currentTime;
+
+      // 1. Bass Drop / Mechanical Unlock
+      const subOsc = ctx.createOscillator();
+      const subGain = ctx.createGain();
+      subOsc.type = 'sine';
+      subOsc.frequency.setValueAtTime(140, now);
+      subOsc.frequency.exponentialRampToValueAtTime(35, now + 0.4);
+      subGain.gain.setValueAtTime(0.4, now);
+      subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+      subOsc.connect(subGain);
+      subGain.connect(ctx.destination);
+      subOsc.start();
+      subOsc.stop(now + 0.45);
+
+      // 2. Victory Arpeggio (Gold Chime)
+      const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+      notes.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now + 0.1 + idx * 0.08);
+        gain.gain.setValueAtTime(0.18, now + 0.1 + idx * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5 + idx * 0.08);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + 0.1 + idx * 0.08);
+        osc.stop(now + 0.6 + idx * 0.08);
+      });
+    }
+
+    // ==========================================
+    // SISTEMA DE CONFETES / PARTÍCULAS
+    // ==========================================
+    const canvas = document.getElementById('fxCanvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    let particles = [];
+    let animationId = null;
+
+    function resizeCanvas() {
+      if (!canvas) return;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function triggerConfetti(themeColor = '#ffd700') {
+      if (!canvas || !ctx) return;
+      particles = [];
+      const colors = [themeColor, '#ffffff', '#00f0ff', '#ff4655', '#ffd700'];
+
+      for (let i = 0; i < 90; i++) {
+        particles.push({
+          x: canvas.width / 2 + (Math.random() - 0.5) * 60,
+          y: canvas.height / 2 + (Math.random() - 0.5) * 60,
+          vx: (Math.random() - 0.5) * 16,
+          vy: -Math.random() * 14 - 3,
+          size: Math.random() * 7 + 3,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          gravity: 0.38,
+          rotation: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 10,
+          opacity: 1
+        });
+      }
+
+      if (animationId) cancelAnimationFrame(animationId);
+      animateParticles();
+    }
+
+    function animateParticles() {
+      if (!ctx || !canvas) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      let alive = false;
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += p.gravity;
+        p.rotation += p.vRot;
+        p.opacity -= 0.009;
+
+        if (p.opacity > 0 && p.y < canvas.height + 50) {
+          alive = true;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rotation * Math.PI) / 180);
+          ctx.globalAlpha = Math.max(0, p.opacity);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+          ctx.restore();
+        }
+      });
+
+      if (alive) {
+        animationId = requestAnimationFrame(animateParticles);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    // ==========================================
+    // DECODIFICAÇÃO DE TOKENS DA URL
+    // ==========================================
+    function getPayloadFromURL() {
+      // 1. Checa Hash (#t=... ou #data=...)
+      const hash = window.location.hash.substring(1);
+      const params = new URLSearchParams(hash || window.location.search);
+      const token = params.get('t') || params.get('data') || params.get('token');
+
+      if (!token) return null;
+
+      try {
+        // Base64 decode com suporte a UTF-8
+        const decoded = decodeURIComponent(escape(atob(token)));
+        return JSON.parse(decoded);
+      } catch (e) {
+        try {
+          return JSON.parse(atob(token));
+        } catch (err) {
+          console.error("Token inválido", err);
+          return null;
+        }
+      }
+    }
+
+    function encodePayload(obj) {
+      const jsonStr = JSON.stringify(obj);
+      return btoa(unescape(encodeURIComponent(jsonStr)));
+    }
+
+    // ==========================================
+    // CONTROLE DE ESTADOS DA PÁGINA
+    // ==========================================
+    const crateWrapper = document.getElementById('crateWrapper');
+    const crateBox = document.getElementById('crateBox');
+    const btnOpenCrate = document.getElementById('btnOpenCrate');
+    const crateEmblemImg = document.getElementById('crateEmblemImg');
+    const crateStageTag = document.getElementById('crateStageTag');
+
+    const rewardCard = document.getElementById('rewardCard');
+    const rewardBadgePill = document.getElementById('rewardBadgePill');
+    const rewardBadgeText = document.getElementById('rewardBadgeText');
+    const rewardPlayerName = document.getElementById('rewardPlayerName');
+    const rewardConquest = document.getElementById('rewardConquest');
+    const rewardSubinfo = document.getElementById('rewardSubinfo');
+    const rewardAmountVal = document.getElementById('rewardAmountVal');
+    const codeText = document.getElementById('codeText');
+    const btnCopyCode = document.getElementById('btnCopyCode');
+
+    const adminGeneratorCard = document.getElementById('adminGeneratorCard');
+    const toastMsg = document.getElementById('toastMsg');
+
+    let currentPayload = null;
+
+    function showToast(text) {
+      if (!toastMsg) return;
+      const span = toastMsg.querySelector('span');
+      if (span) span.textContent = text;
+      toastMsg.classList.add('show');
+      setTimeout(() => toastMsg.classList.remove('show'), 2800);
+    }
+
+    function initPage() {
+      currentPayload = getPayloadFromURL();
+
+      if (!currentPayload) {
+        // Sem token: Exibir o Painel Gerador da Organização
+        if (crateWrapper) crateWrapper.style.display = 'none';
+        if (rewardCard) rewardCard.style.display = 'none';
+        if (adminGeneratorCard) adminGeneratorCard.style.display = 'block';
+        return;
+      }
+
+      // Com token: Configurar a Caixa personalizada
+      const isMvp = currentPayload.type === 'mvp';
+
+      if (isMvp) {
+        crateWrapper?.classList.add('theme-mvp');
+        rewardCard?.classList.add('theme-mvp');
+        if (crateStageTag) crateStageTag.innerHTML = '<i data-lucide="zap"></i> PACOTE DE MVP // RECONHECIMENTO';
+        if (crateEmblemImg) crateEmblemImg.src = 'assets/banner.jpg';
+        if (btnOpenCrate) btnOpenCrate.innerHTML = '<i data-lucide="unlock"></i> DESBLOQUEAR PREMIAÇÃO DE MVP';
+      } else {
+        crateWrapper?.classList.remove('theme-mvp');
+        rewardCard?.classList.remove('theme-mvp');
+        if (crateStageTag) crateStageTag.innerHTML = '<i data-lucide="crown"></i> PACOTE DO CAMPEÃO // 1º LUGAR';
+        if (crateEmblemImg) crateEmblemImg.src = 'assets/team_sgl.png';
+        if (btnOpenCrate) btnOpenCrate.innerHTML = '<i data-lucide="unlock"></i> DESBLOQUEAR PREMIAÇÃO DE CAMPEÃO';
+      }
+
+      // Preencher Card da Recompensa
+      if (rewardPlayerName) rewardPlayerName.textContent = currentPayload.name || 'JOGADOR';
+      if (rewardConquest) rewardConquest.textContent = currentPayload.conquest || (isMvp ? 'MVP DA PARTIDA' : 'CAMPEÃO DA QNT CUP 2026');
+      if (rewardSubinfo) rewardSubinfo.textContent = currentPayload.sub || 'Parabéns pela grande atuação!';
+      if (rewardAmountVal) rewardAmountVal.textContent = currentPayload.amount || '1.000 VP';
+      if (codeText) codeText.textContent = currentPayload.code || 'RIOT-VP-XXXX-XXXX';
+      if (rewardBadgeText) rewardBadgeText.textContent = isMvp ? 'RECONHECIMENTO MVP 👑' : 'CAMPEÃ OFICIAL 🏆';
+
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function openLootCrate() {
+      if (!crateBox) return;
+
+      playCrateClickSound();
+      crateBox.classList.add('shaking');
+
+      setTimeout(() => {
+        playVictoryUnboxSound();
+        crateBox.classList.remove('shaking');
+        crateBox.classList.add('opening');
+
+        const themeColor = currentPayload?.type === 'mvp' ? '#ff4655' : '#ffd700';
+        triggerConfetti(themeColor);
+
+        setTimeout(() => {
+          if (crateWrapper) crateWrapper.style.display = 'none';
+          if (rewardCard) rewardCard.style.display = 'flex';
+          if (window.lucide) window.lucide.createIcons();
+        }, 550);
+      }, 700);
+    }
+
+    crateBox?.addEventListener('click', openLootCrate);
+    btnOpenCrate?.addEventListener('click', openLootCrate);
+
+    // Botão de Copiar Código
+    btnCopyCode?.addEventListener('click', async () => {
+      const code = codeText?.textContent.trim();
+      if (!code) return;
+
+      try {
+        await navigator.clipboard.writeText(code);
+        btnCopyCode.innerHTML = '<i data-lucide="check"></i> COPIADO!';
+        btnCopyCode.classList.add('copied');
+        showToast('Código copiado com sucesso!');
+        setTimeout(() => {
+          btnCopyCode.innerHTML = '<i data-lucide="copy"></i> COPIAR';
+          btnCopyCode.classList.remove('copied');
+          if (window.lucide) window.lucide.createIcons();
+        }, 3000);
+      } catch (err) {
+        showToast('Código pronto para copiar: ' + code);
+      }
+    });
+
+    // ==========================================
+    // PAINEL GERADOR DE LINKS SEGUROS
+    // ==========================================
+    const genRecipient = document.getElementById('genRecipient');
+    const customFields = document.getElementById('customFields');
+    const genCustomNick = document.getElementById('genCustomNick');
+    const genCustomConquest = document.getElementById('genCustomConquest');
+    const genCodeInput = document.getElementById('genCodeInput');
+    const btnGenerateLink = document.getElementById('btnGenerateLink');
+    const adminResultBox = document.getElementById('adminResultBox');
+    const adminGeneratedLink = document.getElementById('adminGeneratedLink');
+    const btnCopyGenLink = document.getElementById('btnCopyGenLink');
+    const btnTestGenLink = document.getElementById('btnTestGenLink');
+
+    genRecipient?.addEventListener('change', (e) => {
+      if (customFields) {
+        customFields.style.display = e.target.value === 'custom' ? 'flex' : 'none';
+      }
+    });
+
+    btnGenerateLink?.addEventListener('click', () => {
+      const recipient = genRecipient?.value;
+      const code = genCodeInput?.value.trim() || 'RIOT-VP-EXEMPLO';
+
+      let payload = {
+        name: 'CAMPEÃO',
+        type: 'champ',
+        conquest: 'CAMPEÃO DA 1ª EDIÇÃO // QNT CUP 2026',
+        sub: 'Se Ganhar é Lucro (SGL) • Premiação Oficial',
+        amount: '1.000 VP',
+        code: code
+      };
+
+      if (recipient === 'sgl_champ') {
+        payload = {
+          name: 'CAMPEÃO SGL',
+          type: 'champ',
+          conquest: 'CAMPEÃO DA 1ª EDIÇÃO // QNT CUP 2026',
+          sub: 'Se Ganhar é Lucro (SGL) • Premiação Oficial de 1º Lugar',
+          amount: '1.000 VP',
+          code: code
+        };
+      } else if (recipient === 'mvp_final') {
+        payload = {
+          name: 'YSE',
+          type: 'mvp',
+          conquest: 'MVP DA GRANDE FINAL // QNT CUP 2026',
+          sub: 'SGL 2 x 1 Ragnarök • Atuação Lendária na Decisão MD3',
+          amount: '1.000 VP',
+          code: code
+        };
+      } else if (recipient === 'mvp_lohan') {
+        payload = {
+          name: 'LOHAN1213',
+          type: 'mvp',
+          conquest: 'MVP DA REPESCAGEM & SEMIFINAL B',
+          sub: 'Katarrentos • Atuação Destaque no Mata-Mata',
+          amount: '1.000 VP',
+          code: code
+        };
+      } else if (recipient === 'mvp_acyer') {
+        payload = {
+          name: 'ACYER',
+          type: 'mvp',
+          conquest: 'MVP DA PRIMEIRA RODADA // JOGO #01',
+          sub: 'Ragnarök 13 x 10 Katarrentos • Destaque da Partida',
+          amount: '1.000 VP',
+          code: code
+        };
+      } else if (recipient === 'mvp_nixt') {
+        payload = {
+          name: 'NIXT',
+          type: 'mvp',
+          conquest: 'MVP DA GRANDE FINAL // MAPA 1',
+          sub: 'Ragnarök 13 x 5 SGL • Vitória Expressiva na Abertura da Final',
+          amount: '1.000 VP',
+          code: code
+        };
+      } else if (recipient === 'custom') {
+        payload = {
+          name: genCustomNick?.value.trim().toUpperCase() || 'JOGADOR',
+          type: 'champ',
+          conquest: genCustomConquest?.value.trim() || 'PREMIAÇÃO OFICIAL QNT CUP',
+          sub: '1ª Edição da QNT CUP 2026',
+          amount: '1.000 VP',
+          code: code
+        };
+      }
+
+      const token = encodePayload(payload);
+      const baseUrl = window.location.origin + window.location.pathname;
+      const fullUrl = `${baseUrl}#t=${token}`;
+
+      if (adminGeneratedLink) adminGeneratedLink.value = fullUrl;
+      if (btnTestGenLink) btnTestGenLink.href = fullUrl;
+      if (adminResultBox) adminResultBox.style.display = 'block';
+
+      showToast('Link individual gerado com sucesso!');
+    });
+
+    btnCopyGenLink?.addEventListener('click', async () => {
+      const link = adminGeneratedLink?.value;
+      if (!link) return;
+      try {
+        await navigator.clipboard.writeText(link);
+        showToast('Link copiado! Envie no WhatsApp do jogador.');
+      } catch (e) {
+        showToast('Link pronto para copiar');
+      }
+    });
+
+    // Iniciar
+    initPage();
+  </script>
+</body>
+</html>
